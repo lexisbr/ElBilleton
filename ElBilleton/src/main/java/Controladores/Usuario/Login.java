@@ -69,7 +69,12 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            request.getRequestDispatcher("/Login.jsp").forward(request, response);
+        } catch (IOException | ServletException e) {
+            System.out.println("Login Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -112,13 +117,13 @@ public class Login extends HttpServlet {
                 Gerente gerente = gerenteModel.validacionLogin(username, password);
                 if (gerente != null) {
                     request.getSession().setAttribute("user", username);
-                    System.out.println("Ingresa gerente" + username);
-                    // response.sendRedirect(request.getContextPath()+"");
+                    request.getSession().setAttribute("gerente", gerente);
+                    response.sendRedirect(request.getContextPath()+"/EstadoTurnoGerente");
                 } else {
                     request.setAttribute("message", 0);
                     request.getRequestDispatcher("/Login.jsp").forward(request, response);
                 }
-            }else{
+            } else {
                 request.setAttribute("message", 0);
                 request.getRequestDispatcher("/Login.jsp").forward(request, response);
             }

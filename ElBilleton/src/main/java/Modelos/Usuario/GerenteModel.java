@@ -12,16 +12,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 
 /**
  *
  * @author lex
  */
 public class GerenteModel {
-    
+
     //Constantes estaticas para base de datos
     private final String GERENTE = "SELECT * FROM " + Gerente.GERENTE_DB_NAME;
     private final String BUSCAR_GERENTE = "SELECT * FROM " + Gerente.GERENTE_DB_NAME + " WHERE " + Gerente.GERENTE_ID_DB_NAME + " =?";
+    private final String TURNO_GERENTE = "SELECT turno FROM " + Gerente.GERENTE_DB_NAME + " WHERE " + Gerente.GERENTE_ID_DB_NAME + " =?";
 
     private static Connection connection = Conexion.getInstance();
 
@@ -58,6 +60,52 @@ public class GerenteModel {
             return gerente;
         }
         return null;
+    }
+
+    /*
+        Obtiene turno para verificar que este dentro de su turno para permitir ejectuar acciones de creacion y edicion
+     */
+    public String obtenerTurno(int codigo) throws SQLException {
+
+        PreparedStatement preSt = connection.prepareStatement(TURNO_GERENTE);
+        preSt.setInt(1, codigo);
+        ResultSet result = preSt.executeQuery();
+
+        while (result.next()) {
+            return result.getString(Gerente.TURNO_DB_NAME);
+        }
+        return null;
+    }
+
+    /*
+        Verifica si esta dentro de su turno 
+     */
+    public Boolean estaDentroTurno(int codigo) throws SQLException {
+        String turno = obtenerTurno(codigo);
+        LocalTime horaActual = LocalTime.now();
+        LocalTime horaInicio;
+        LocalTime horaFinal;
+        if (turno.equals("MATUTINO")) {
+            horaInicio = LocalTime.parse("06:00");
+            horaFinal = LocalTime.parse("14:30");
+            if (horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else if (turno.equals("VESPERTINO")) {
+            horaInicio = LocalTime.parse("13:00");
+            horaFinal = LocalTime.parse("22:00");
+            if (horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        return false;
     }
 
 }

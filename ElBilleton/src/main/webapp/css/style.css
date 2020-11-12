@@ -80,16 +80,19 @@ table {
     width: 100px;
     height: 100px;
     position: absolute;
-    top:-50px;
+    top:-100px;
     left: calc(50% - 50px);
 }
 
 .login-box h1{
   margin: 0;
-  padding: 0 0 20px;
+  padding: 0 0 10px;
   text-align: center;
-  font-size: 28px;
+  font-size: 42px;
+  font-family: "Lucida Console", Monaco, monospace;
   text-shadow: 2px 1px 1px gray;
+  position: relative;
+  top: -40px;
 }
 
 .login-box label{
@@ -153,4 +156,127 @@ table {
   font-size: 18px;
   color: red;
 }
+
+/*
+    ESTILO DE ENCABEZADO NAVBAR
+*/
+
+
+#index{
+  margin: 0;
+  padding: 0;
+  background: url(../img/fondo_index.jpg) no-repeat center top;
+  background-size: cover;
+  height: 100vh;
+  text-align: center;
+  font: 300 20px/1.7 sans-serif;
+}
+
+#encabezado{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background: url(../img/header.jpg);
+  background-size: cover;
+  height: 250px;
+
+}
+
+#logoEncabezado{
+  width: 200px;
+  height: 200px;
+  img:  url(../img/logo1.jpg);
+}
+
+#tituloEncabezado{
+  font-size: 55px;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.navbar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:#9FA0A0;
+  height: 60px;
+  font-family: 'Open sans';
+  z-index: 2;
+
+}
+
+.navbar ul{
+  list-style: none;
+  z-index: 2;
+}
+
+.menu > li{
+  color: black;
+  position: relative;
+  display: inline-block;
+}
+
+.menu li a:hover{
+  color: #004BF7;
+  transition: all .1s;
+}
+
+.menu >li>a{
+  display: block;
+  padding: 12px 30px;
+  color: #353535;
+  font-family: 'Open sans';
+  text-decoration: none;
+}
+
+.submenu{
+  position: absolute;
+  background: #333333;
+  width: 100%;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1.5s;
+  z-index: 2;
+}
+
+.submenu li a{
+  display: block;
+  padding: 15px;
+  color: #fff;
+  font-family: 'Open sans';
+  text-decoration: none;
+}
+
+.menu li:hover .submenu{
+    visibility: visible;
+    opacity: 1;
+}
+
+/*
+    MENU CONTAINER
+*/
+
+.contenido{
+  padding: 50px 0;
+  background:  #013FFF;
+  color: white;
+}
+
+.title{
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+.contenido h1{
+  text-align: left;
+  margin-left: 200px;
+}
+
+.contenido .centrar form{
+  margin: auto;
+  width: 50%;
+  border: 3px solid black;
+  padding: 10px;
+}
+
+
+
 

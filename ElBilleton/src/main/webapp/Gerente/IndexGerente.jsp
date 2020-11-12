@@ -7,11 +7,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
+      <!-- Encabezado -->
+      <%@include file="Encabezado.jsp" %>
+       <section class="contenido">
+          <h2 class="title">Bienvenido Gerente</h2>
+          <h1>Codigo: ${gerente.getCodigo()}</h1>
+          <h1>Nombre: ${gerente.getNombre()}</h1>
+          <h1>DPI: ${gerente.getDpi()}</h1>
+          <h1>Turno: ${gerente.getTurno()}</h1>
+          <h1>Estado: ${estado}</h1>
+      </section>
     </body>
 </html>

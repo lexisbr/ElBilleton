@@ -13,11 +13,11 @@
     <head>
         <meta charset="utf-8">
         <title>Login | El Billeton</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style.css?3.0">
     </head>
     <body id="login">
         <div class="login-box">
-            <img class="logo" src="img/logo.png" alt="Logo hospital">
+            <img class="logo" src="img/logo1.png" alt="Logo hospital">
             <h1>El Billeton</h1>
             
             <c:if test="${message == 0}">
