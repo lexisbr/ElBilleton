@@ -264,6 +264,7 @@ table {
 .title{
   margin-bottom: 20px;
   font-size: 40px;
+  color: black;
 }
 .contenido h1{
   text-align: left;
@@ -275,6 +276,23 @@ table {
   width: 50%;
   border: 3px solid black;
   padding: 10px;
+}
+
+.container .guardar{
+    height: 80px;
+    width: 200px;
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
 }
 
 

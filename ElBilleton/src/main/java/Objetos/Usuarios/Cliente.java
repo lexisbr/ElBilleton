@@ -6,7 +6,7 @@
 package Objetos.Usuarios;
 
 import java.io.InputStream;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -25,9 +25,9 @@ public class Cliente {
     public static final String PDFDPI_DB_NAME = "pdfDPI";
     public static final String PASSWORD_DB_NAME = "password";
     
-    private int codigo;
+    private long codigo;
     private String nombre;
-    private int dpi;
+    private String dpi;
     private String direccion;
     private String sexo;
     private Date fecha_nacimiento;
@@ -37,7 +37,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int codigo, String nombre, int dpi, String direccion, String sexo, Date fecha_nacimiento, InputStream pdfDPI, String password) {
+    public Cliente(long codigo, String nombre, String dpi, String direccion, String sexo, Date fecha_nacimiento, InputStream pdfDPI, String password) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.dpi = dpi;
@@ -48,7 +48,7 @@ public class Cliente {
         this.password = password;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
@@ -56,7 +56,7 @@ public class Cliente {
         return nombre;
     }
 
-    public int getDpi() {
+    public String getDpi() {
         return dpi;
     }
 
@@ -80,7 +80,7 @@ public class Cliente {
         return password;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 
@@ -88,7 +88,7 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public void setDpi(int dpi) {
+    public void setDpi(String dpi) {
         this.dpi = dpi;
     }
 

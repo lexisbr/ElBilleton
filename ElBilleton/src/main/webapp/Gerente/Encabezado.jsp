@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerente | El Billeton</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css?8.9">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?3.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?5.1">
 </head>
 <body id="index">
 
@@ -45,7 +45,7 @@
             <li><a href="#">Opciones</a>
                 <ul class="submenu">
                     <li><a href="">Establecer limites para reportes</a></li>
-                    <li><a href="">Cargar archivos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoArchivo">Cargar archivos</a></li>
                 </ul>
             </li>
             <li><a href="#">Reporte</a>
@@ -56,10 +56,10 @@
             <li><a href="../Login.jsp">Cerrar Sesion</a></li>
         </ul>
     </nav>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    
-    if (session.getAttribute("user") == null) {
-        response.sendRedirect("Login");
-    }
-%>
+    <%
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
+        if (session.getAttribute("user") == null) {
+            response.sendRedirect("Login");
+        }
+    %>

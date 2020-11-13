@@ -21,10 +21,10 @@ public class Cajero {
     public static final String SEXO_DB_NAME = "sexo";
     public static final String PASSWORD_DB_NAME = "password";
     
-    private int codigo;
+    private long codigo;
     private String nombre;
     private String turno;
-    private int dpi;
+    private String dpi;
     private String direccion;
     private String sexo;
     private String password;
@@ -32,7 +32,7 @@ public class Cajero {
     public Cajero() {
     }
 
-    public Cajero(int codigo, String nombre, String turno, int dpi, String direccion, String sexo, String password) {
+    public Cajero(long codigo, String nombre, String turno, String dpi, String direccion, String sexo, String password) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.turno = turno;
@@ -42,7 +42,7 @@ public class Cajero {
         this.password = password;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
@@ -54,7 +54,7 @@ public class Cajero {
         return turno;
     }
 
-    public int getDpi() {
+    public String getDpi() {
         return dpi;
     }
 
@@ -70,7 +70,7 @@ public class Cajero {
         return password;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 
@@ -82,7 +82,7 @@ public class Cajero {
         this.turno = turno;
     }
 
-    public void setDpi(int dpi) {
+    public void setDpi(String dpi) {
         this.dpi = dpi;
     }
 
