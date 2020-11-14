@@ -15,7 +15,11 @@
             <h2 class="title" >Registrar Cliente</h2>
             <hr>
             <div class="centrar">
-                <form action="../CrearCliente" method="POST"  enctype="multipart/form-data" class="form-control" style="width: 500px; height: 550px; background: #003366;">
+                <form action="../CrearCliente" method="POST"  enctype="multipart/form-data" class="form-control" style="width: 500px; height: 750px; background: #003366;">
+                    <div class="form-group">
+                        <h1 class="subtitulo">Fecha actual</h1>
+                        <input type="date" name="fecha" value="<%=LocalDate.now()%>" readonly="" required="">
+                    </div>
                     <div class="form-group">
                         <input type="text" name="nombre" class="form-control" placeholder="Nombre" required=""/>
                     </div>
@@ -42,6 +46,11 @@
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" class="form-control" placeholder="Password" required=""/>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <h1 class="subtitulo">Monto para abrir cuenta</h1>
+                        <input type="number" name="monto" class="form-control" placeholder="Monto" required="" step=".01"/>
                     </div>
                     <br>
                     <input type="submit" value="Guardar" class="guardar"/>

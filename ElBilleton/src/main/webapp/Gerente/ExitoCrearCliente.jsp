@@ -11,7 +11,8 @@
       <!--Informacion de usuario-->
       <section class="contenidoExito" style="">
           <h2 class="title">Se ha creado cliente exitosamente</h2>
-          <h1>Codigo del Cliente: ${clienteCreado}</h1>
+          <h1>Codigo del cliente: ${cliente_codigo}</h1>
+          <h1>Codigo de la cuenta: ${cuenta_codigo}</h1>
       </section>
     </body>
 </html>

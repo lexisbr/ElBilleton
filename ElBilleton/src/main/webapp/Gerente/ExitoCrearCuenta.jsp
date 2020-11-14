@@ -9,9 +9,9 @@
 <html>
     <%@include file="Encabezado.jsp" %>
     <!--Informacion de usuario-->
-    <section class="contenidoExito" style="background-color: #00cc00">
+    <section class="contenidoExito" style="">
         <h2 class="title">Se ha creado cuenta exitosamente</h2>
-        <h1>Codigo de la cuenta ${cuentaCreada}</h1>
+        <h1>Codigo de la cuenta: ${cuentaCreada}</h1>
     </section>
 </body>
 </html>

@@ -34,13 +34,10 @@ public class CrearCuenta extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String fecha_creacion = request.getParameter("fecha_creacion");
+            String fecha_creacion = request.getParameter("fecha");
             String monto = request.getParameter("monto");
             String cliente_codigo = request.getParameter("cliente_codigo");
-            System.out.println("fecha: "+ fecha_creacion);
-            System.out.println("monto: "+ monto);
             Date fecha_convertida = Date.valueOf(fecha_creacion);
-            
             
             Cuenta cuenta = new Cuenta(0,fecha_convertida,Double.parseDouble(monto), Long.parseLong(cliente_codigo));
             

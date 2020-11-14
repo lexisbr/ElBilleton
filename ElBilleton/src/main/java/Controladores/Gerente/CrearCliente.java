@@ -6,9 +6,11 @@
 package Controladores.Gerente;
 
 import Clases.CrearArchivo;
+import Modelos.Banco.CuentaModel;
 import Modelos.Historial.HistorialClienteModel;
 import Modelos.Historial.HistorialGerenteModel;
 import Modelos.Usuario.ClienteModel;
+import Objetos.Banco.Cuenta;
 import Objetos.Usuarios.Cliente;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 public class CrearCliente extends HttpServlet {
 
     ClienteModel clienteModel = new ClienteModel();
-    
+    CuentaModel cuentaModel = new CuentaModel();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,23 +48,28 @@ public class CrearCliente extends HttpServlet {
             String fecha_nacimiento = request.getParameter("fecha");
             String password = request.getParameter("password");
             InputStream pdfDpi = obtenerPdf.obtenerArchivo("pdfDpi", request);
+
+            String monto = request.getParameter("monto");
+            String fecha = request.getParameter("fecha");
             
-            Cliente cliente = new Cliente(0,nombre,dpi,direccion,sexo,Date.valueOf(fecha_nacimiento),pdfDpi,password);
-            
-            long codigoGenerado = clienteModel.agregarCliente(cliente);
-            cliente.setCodigo(codigoGenerado);
-            
+            Cliente cliente = new Cliente(0, nombre, dpi, direccion, sexo, Date.valueOf(fecha_nacimiento), pdfDpi, password);
+            long codigoGeneradoCliente = clienteModel.agregarCliente(cliente);
+            cliente.setCodigo(codigoGeneradoCliente);
             HistorialClienteModel historialModel = new HistorialClienteModel();
             historialModel.agregarHistorialCliente(cliente);
+
+            Cuenta cuenta = new Cuenta(0, Date.valueOf(fecha), Double.parseDouble(monto), codigoGeneradoCliente);
             
-            request.setAttribute("clienteCreado", codigoGenerado);
+            long codigoGeneradoCuenta = cuentaModel.agregarCuenta(cuenta);
+            
+            request.setAttribute("cuenta_codigo", codigoGeneradoCuenta);
+            request.setAttribute("cliente_codigo", codigoGeneradoCliente);
+            
             request.getRequestDispatcher("Gerente/ExitoCrearCliente.jsp").forward(request, response);
-            
-            
-        } catch (SQLException e) {
-            System.out.println("Error al agregar cliente "+e);
+
+        } catch (Exception e) {
+            System.out.println("Error al agregar cliente " + e);
         }
-        
 
     }
 
