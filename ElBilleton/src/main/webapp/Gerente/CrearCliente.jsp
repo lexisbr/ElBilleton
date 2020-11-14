@@ -9,13 +9,14 @@
 <!DOCTYPE html>
 <html>
     <!-- Encabezado -->
+  
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
         <div class="container">
             <h2 class="title" >Registrar Cliente</h2>
             <hr>
             <div class="centrar">
-                <form action="../CrearCliente" method="POST"  enctype="multipart/form-data" class="form-control" style="width: 500px; height: 750px; background: #003366;">
+                <form action="../CrearCliente" method="POST"  onsubmit="return noespacios()" enctype="multipart/form-data" class="form-control" style="width: 500px; height: 750px; background: #003366;">
                     <div class="form-group">
                         <h1 class="subtitulo">Fecha actual</h1>
                         <input type="date" name="fecha" value="<%=LocalDate.now()%>" readonly="" required="">
@@ -37,7 +38,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                         <h1 class="subtitulo">Fecha de nacimiento</h1>
+                        <h1 class="subtitulo">Fecha de nacimiento</h1>
                         <input type="date" name="fecha" value="" min="1900-01-01" max="<%= LocalDate.now()%>" required="">
                     </div>
                     <div class="form-group">

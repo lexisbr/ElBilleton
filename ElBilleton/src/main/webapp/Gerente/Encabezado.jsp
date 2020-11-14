@@ -4,10 +4,23 @@
     Author     : lex
 --%>
 
+<%@page import="Objetos.Usuarios.Gerente"%>
+<%@page import="Modelos.Usuario.GerenteModel"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <!DOCTYPE html>
 <head>
+    <script type="text/javascript">
+        function noespacios() {
+            var er = new RegExp(/\s/);
+            var nombre = document.getElementById('nombre').value;
+            if (er.test(nombre)) {
+                alert('No se permiten espacios');
+                return false;
+            } else
+                return true;
+        }
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerente | El Billeton</title>
@@ -58,9 +71,15 @@
         </ul>
     </nav>
     <%
+        GerenteModel gerenteModel = new GerenteModel();
+
+        Gerente gerente = gerenteModel.obtenerGerente(Long.parseLong(session.getAttribute("user").toString()));
+
+        session.setAttribute("usuario", gerente);
+
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 
         if (session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath()+"/Login");
+            response.sendRedirect(request.getContextPath() + "/Login");
         }
     %>

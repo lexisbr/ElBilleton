@@ -5,7 +5,7 @@
  */
 package Controladores.Gerente;
 
-import Modelos.Usuario.CajeroModel;
+import Modelos.Usuario.GerenteModel;
 import Objetos.Usuarios.Gerente;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/ObtenerDatos")
 public class ObtenerDatos extends HttpServlet {
 
-    CajeroModel cajeroModel = new CajeroModel();
+    GerenteModel gerenteModel = new GerenteModel();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)

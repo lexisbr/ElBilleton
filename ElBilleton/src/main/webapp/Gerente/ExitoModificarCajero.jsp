@@ -14,8 +14,8 @@
             <h2 class="title">Se ha actualizado cajero exitosamente</h2>
             <h1>Codigo del cliente: ${cajero_codigo}</h1>
         </c:if>
-        <c:if test="${exito==1}">
-            <h2 class="title">Se ha actualizado gerente exitosamente</h2>
+        <c:if test="${exito==2}">
+            <h2 class="title">Sus datos han sido actualizados exitosamente</h2>
             <h1>Codigo del gerente: ${gerente_codigo}</h1>
         </c:if>
 
