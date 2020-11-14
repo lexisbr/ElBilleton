@@ -23,28 +23,9 @@ public class CrearArchivo {
     
     private String pathArchivos;
     
-    public File construirArchivo(String parametro,HttpServletRequest request){
-        try {
-            Part filePart = request.getPart(parametro);
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            InputStream inputStream = filePart.getInputStream();
-            OutputStream outputStream = new FileOutputStream(fileName);
-            inputStream.transferTo(outputStream);
-            File file = Paths.get(filePart.getSubmittedFileName()).toFile();
-            
-            setPathArchivos(file.getAbsolutePath().replace("/"+file.getName(), "/"));
-            return file;
-            
-        } catch (IOException | ServletException e) {
-            System.out.println("Construir Error: " + e.getMessage());
-            return null;
-        }
-    }
-    
     public InputStream obtenerArchivo(String parametro,HttpServletRequest request){
         try {
             Part filePart = request.getPart(parametro);
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             return filePart.getInputStream();
         } catch (IOException | ServletException e) {
             System.out.println("Obtener archivo Error: " + e.getMessage());

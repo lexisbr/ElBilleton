@@ -52,12 +52,6 @@ public class LeerArchivo {
             enviarCajero = new XMLCajero(listadoCajeros);
             enviarCliente = new XMLCliente(listadoClientes, pathArchivos);
             enviarTransaccion = new XMLTransaccion(listadoTransacciones);
-            
-           /* etiquetaGerenteDB(listadoGerentes);
-            etiquetaCajeroDB(listadoCajeros);
-            etiquetaClienteDB(listadoClientes);
-            etiquetaTransaccionDB(listadoTransacciones);*/
-
         
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             System.out.println(ex.getMessage());

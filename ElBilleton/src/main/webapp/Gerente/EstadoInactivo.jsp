@@ -9,7 +9,7 @@
 <html>
       <%@include file="Encabezado.jsp" %>
       <!--Informacion de usuario-->
-      <section class="contenido" style="background-color: #cc0000">
+      <section class="contenidoExito" style="background-color: #cc0000">
           <h2 class="title">No se encuentra dentro de su turno</h2>
       </section>
     </body>

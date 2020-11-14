@@ -11,6 +11,7 @@ import Objetos.Banco.Cuenta;
 import Objetos.Usuarios.Cliente;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class XMLCliente {
             ArrayList<Cuenta> cuentas = new ArrayList<>();
 
             for (int i = 0; i < listadoCliente.getLength(); i++) {
+                System.out.println("============Cliente==============");
                 cliente = new Cliente();
                 cuentas.clear();
                 // Cojo el nodo actual
@@ -82,7 +84,7 @@ public class XMLCliente {
 
             }
 
-        } catch (FileNotFoundException | DOMException | SQLException e) {
+        } catch (NumberFormatException | FileNotFoundException | DOMException | SQLException | UnsupportedEncodingException e) {
             System.out.println("Error al analizar cliente " + e);
         }
 
@@ -166,60 +168,68 @@ public class XMLCliente {
     }
 
     public void crearCliente(Cliente cliente, String tag, String atributo) throws FileNotFoundException {
+        try {
 
-        switch (tag.toUpperCase()) {
-            case "CODIGO":
-                cliente.setCodigo(Integer.parseInt(atributo));
-                break;
+            switch (tag.toUpperCase()) {
+                case "CODIGO":
+                    cliente.setCodigo(Long.parseLong(atributo));
+                    break;
 
-            case "NOMBRE":
-                cliente.setNombre(atributo);
-                break;
+                case "NOMBRE":
+                    cliente.setNombre(atributo);
+                    break;
 
-            case "DPI":
-                cliente.setDpi(atributo);
-                break;
+                case "DPI":
+                    cliente.setDpi(atributo);
+                    break;
 
-            case "BIRTH":
-                cliente.setFecha_nacimiento(Date.valueOf(atributo));
-                break;
+                case "BIRTH":
+                    cliente.setFecha_nacimiento(Date.valueOf(atributo));
+                    break;
 
-            case "DIRECCION":
-                cliente.setDireccion(atributo);
-                break;
+                case "DIRECCION":
+                    cliente.setDireccion(atributo);
+                    break;
 
-            case "SEXO":
-                cliente.setSexo(atributo);
-                break;
+                case "SEXO":
+                    cliente.setSexo(atributo);
+                    break;
 
-            case "DPI-PDF":
-                cliente.setPdfDPI(new FileInputStream(pathPdf + atributo));
-                break;
+                case "DPI-PDF":
+                    cliente.setPdfDPI(new FileInputStream(pathPdf + atributo));
+                    break;
 
-            case "PASSWORD":
-                cliente.setPassword(atributo);
-                break;
+                case "PASSWORD":
+                    cliente.setPassword(atributo);
+                    break;
 
-            default:
+                default:
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir " + e);
         }
+
     }
 
     public void crearCuenta(Cuenta cuenta, String tag, String atributo) {
+        try {
+            switch (tag.toUpperCase()) {
+                case "CODIGO":
+                    cuenta.setCodigo(Long.parseLong(atributo));
+                    break;
+                case "CREADA":
+                    cuenta.setFecha_creacion(Date.valueOf(atributo));
+                    break;
+                case "CREDITO":
+                    cuenta.setMonto(Double.parseDouble(atributo));
+                    break;
+                default:
+                    System.out.println("Etiqueta no conocida");
+            }
 
-        switch (tag.toUpperCase()) {
-            case "CODIGO":
-                cuenta.setCodigo(Long.parseLong(atributo));
-                break;
-            case "CREADA":
-                cuenta.setFecha_creacion(Date.valueOf(atributo));
-                break;
-            case "CREDITO":
-                cuenta.setMonto(Double.parseDouble(atributo));
-                break;
-            default:
-                System.out.println("Etiqueta no conocida");
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir " + e);
         }
-
     }
 
     public String getPathPdf() {

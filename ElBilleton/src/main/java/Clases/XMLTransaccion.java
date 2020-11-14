@@ -29,13 +29,13 @@ public class XMLTransaccion {
         clasificarEtiquetas();
     }
 
-    public void clasificarEtiquetas() {
+    public void clasificarEtiquetas() throws NumberFormatException {
 
         try {
             Transaccion transaccion;
 
             for (int i = 0; i < listadoTransaccion.getLength(); i++) {
-
+                System.out.println("============Transaccion==============");
                 transaccion = new Transaccion();
                 // Cojo el nodo actual
                 Node nodo = listadoTransaccion.item(i);
@@ -66,45 +66,50 @@ public class XMLTransaccion {
 
             }
 
-        } catch (SQLException | DOMException e) {
+        } catch (NumberFormatException | SQLException | DOMException e) {
             System.out.println("Error al analizar transaccion " + e);
         }
 
     }
 
     public void crearTransaccion(Transaccion transaccion, String tag, String atributo) {
+        try {
+            switch (tag.toUpperCase()) {
+                case "CODIGO":
+                    transaccion.setCodigo(Long.parseLong(atributo));
+                    break;
 
-        switch (tag.toUpperCase()) {
-            case "CODIGO":
-                transaccion.setCodigo(Integer.parseInt(atributo));
-                break;
+                case "CUENTA-ID":
+                    transaccion.setCuenta_codigo(Long.parseLong(atributo));
+                    break;
 
-            case "CUENTA-ID":
-                transaccion.setCuenta_codigo(Long.parseLong(atributo));
-                break;
+                case "FECHA":
+                    transaccion.setFecha(Date.valueOf(atributo));
+                    break;
 
-            case "FECHA":
-                transaccion.setFecha(Date.valueOf(atributo));
-                break;
+                case "HORA":
+                    transaccion.setHora(Time.valueOf(atributo));
+                    break;
 
-            case "HORA":
-                transaccion.setHora(Time.valueOf(atributo));
-                break;
+                case "TIPO":
+                    transaccion.setTipo(atributo);
+                    break;
 
-            case "TIPO":
-                transaccion.setTipo(atributo);
-                break;
+                case "MONTO":
+                    transaccion.setMonto(Double.parseDouble(atributo));
+                    break;
 
-            case "MONTO":
-                transaccion.setMonto(Double.parseDouble(atributo));
-                break;
+                case "CAJERO-ID":
+                    transaccion.setCajero_codigo(Long.parseLong(atributo));
+                    break;
 
-            case "CAJERO-ID":
-                transaccion.setCajero_codigo(Long.parseLong(atributo));
-                break;
+                default:
+            }
 
-            default:
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir "+e);
         }
+
     }
 
 }

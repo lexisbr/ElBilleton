@@ -53,12 +53,11 @@ public class ImportarDatos extends HttpServlet{
             
             LeerArchivo analizador = new LeerArchivo();
             analizador.dividirEtiquetas(file, crearArchivo.getPathArchivos());
-            request.getRequestDispatcher("/Gerente/ExitoCargaDatos.jsp").forward(request, response);
-            
+            response.sendRedirect(request.getContextPath() + "/Gerente/ExitoCargaDatos.jsp");
             
         } catch (IOException | ServletException e) {
             System.out.println("Error: "+e);
-            request.getRequestDispatcher("/Gerente/EstadoInactivo.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/Gerente/EstadoInactivo.jsp");
         }
         
     

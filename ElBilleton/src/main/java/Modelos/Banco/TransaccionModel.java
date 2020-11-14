@@ -34,18 +34,22 @@ public class TransaccionModel {
      * @throws SQLException
      */
     public void agregarTransaccionArchivo(Transaccion transaccion) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_TRANSACCION_CON_CODIGO, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_TRANSACCION_CON_CODIGO, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setLong(1, transaccion.getCodigo());
-        preSt.setDate(2, transaccion.getFecha());
-        preSt.setTime(3, transaccion.getHora());
-        preSt.setString(4, transaccion.getTipo());
-        preSt.setDouble(5, transaccion.getMonto());
-        preSt.setLong(6, transaccion.getCuenta_codigo());
-        preSt.setLong(7, transaccion.getCajero_codigo());
-        
-        preSt.executeUpdate();
-       
+            preSt.setLong(1, transaccion.getCodigo());
+            preSt.setDate(2, transaccion.getFecha());
+            preSt.setTime(3, transaccion.getHora());
+            preSt.setString(4, transaccion.getTipo());
+            preSt.setDouble(5, transaccion.getMonto());
+            preSt.setLong(6, transaccion.getCuenta_codigo());
+            preSt.setLong(7, transaccion.getCajero_codigo());
+
+            preSt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error en gerente " + e);
+        }
+
     }
 
     /**
@@ -57,22 +61,26 @@ public class TransaccionModel {
      * @throws SQLException
      */
     public long agregarTransaccion(Transaccion transaccion) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_TRANSACCION_SIN_CODIGO, Statement.RETURN_GENERATED_KEYS);
+        try {
 
-        preSt.setDate(1, transaccion.getFecha());
-        preSt.setTime(2, transaccion.getHora());
-        preSt.setString(3, transaccion.getTipo());
-        preSt.setDouble(4, transaccion.getMonto());
-        preSt.setLong(5, transaccion.getCuenta_codigo());
-        preSt.setLong(6, transaccion.getCajero_codigo());
+            PreparedStatement preSt = connection.prepareStatement(CREAR_TRANSACCION_SIN_CODIGO, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.executeUpdate();
+            preSt.setDate(1, transaccion.getFecha());
+            preSt.setTime(2, transaccion.getHora());
+            preSt.setString(3, transaccion.getTipo());
+            preSt.setDouble(4, transaccion.getMonto());
+            preSt.setLong(5, transaccion.getCuenta_codigo());
+            preSt.setLong(6, transaccion.getCajero_codigo());
 
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            preSt.executeUpdate();
+
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en gerente " + e);
         }
-
         return -1;
     }
 

@@ -25,25 +25,25 @@ public class EstadoTurnoArchivo extends HttpServlet {
     GerenteModel gerenteModel = new GerenteModel();
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
         try {
 
             if (request.getSession().getAttribute("user") == null) {
                 response.sendRedirect(request.getContextPath() + "/Login");
             }
 
-            Gerente gerente = (Gerente) request.getSession().getAttribute("gerente");
+            Gerente gerente = (Gerente) request.getSession().getAttribute("usuario");
             System.out.println("Gerente " + gerente.getCodigo());
 
             if (gerenteModel.estaDentroTurno(gerente.getCodigo())) {
                 request.getSession().setAttribute("estado", "ACTIVO");
-                request.getRequestDispatcher("/Gerente/CargarDatos.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/Gerente/CargarDatos.jsp");
             } else {
                 request.getSession().setAttribute("estado", "INACTIVO");
-                request.getRequestDispatcher("/Gerente/EstadoInactivo.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/Gerente/EstadoInactivo.jsp");
             }
 
-        } catch (SQLException | IOException | NumberFormatException | ServletException e) {
+        } catch (SQLException | IOException | NumberFormatException  e) {
             System.out.println("Error: " + e.getMessage());
         }
     }

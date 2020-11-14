@@ -8,6 +8,7 @@ package Clases;
 import Modelos.Usuario.ClienteModel;
 import Modelos.Usuario.GerenteModel;
 import Objetos.Usuarios.Gerente;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,9 +35,8 @@ public class XMLGerente {
         // Recorro las etiquetas
         try {
             Gerente gerente;
-
             for (int i = 0; i < listadoGerente.getLength(); i++) {
-
+                System.out.println("============Gerente==============");
                 gerente = new Gerente();
 
                 // Cojo el nodo actual
@@ -54,6 +54,8 @@ public class XMLGerente {
                         // Compruebo si es un nodo
                         if (hijo.getNodeType() == Node.ELEMENT_NODE) {
                             // Muestro el contenido
+                            System.out.println("Etiqueta: " + hijo.getNodeName()
+                                    + ", Valor: " + hijo.getTextContent());
                             crearGerente(gerente, hijo.getNodeName(), hijo.getTextContent());
                         }
                     }
@@ -61,50 +63,54 @@ public class XMLGerente {
                 }
             }
 
-        } catch (DOMException | SQLException e) {
+        } catch (DOMException | SQLException | UnsupportedEncodingException | NumberFormatException e) {
             System.out.println("Error al analizar gerente " + e);
         }
 
     }
 
-    public void crearGerente(Gerente gerente, String tag, String atributo) {
+    public void crearGerente(Gerente gerente, String tag, String atributo) throws NumberFormatException {
+        try {
 
-        switch (tag.toUpperCase()) {
-            case "CODIGO":
-                gerente.setCodigo(Long.parseLong(atributo));
-                break;
+            switch (tag.toUpperCase()) {
+                case "CODIGO":
+                    gerente.setCodigo(Long.parseLong(atributo));
+                    break;
 
-            case "NOMBRE":
-                gerente.setNombre(atributo);
-                break;
+                case "NOMBRE":
+                    gerente.setNombre(atributo);
+                    break;
 
-            case "TURNO":
-                if (atributo.equalsIgnoreCase("MATUTINO")) {
-                    gerente.setTurno(atributo);
-                } else if (atributo.equalsIgnoreCase("VESPERTINO")) {
-                    gerente.setTurno(atributo);
-                } else {
-                    // No se reconoce si tiene un Horario Matutino o Vespertino 
-                    System.out.println("No existe turno");
-                }
-                break;
-            case "DPI":
-                gerente.setDpi(atributo);
-                break;
+                case "TURNO":
+                    if (atributo.equalsIgnoreCase("MATUTINO")) {
+                        gerente.setTurno(atributo);
+                    } else if (atributo.equalsIgnoreCase("VESPERTINO")) {
+                        gerente.setTurno(atributo);
+                    } else {
+                        // No se reconoce si tiene un Horario Matutino o Vespertino 
+                        System.out.println("No existe turno");
+                    }
+                    break;
+                case "DPI":
+                    gerente.setDpi(atributo);
+                    break;
 
-            case "DIRECCION":
-                gerente.setDireccion(atributo);
-                break;
+                case "DIRECCION":
+                    gerente.setDireccion(atributo);
+                    break;
 
-            case "SEXO":
-                gerente.setSexo(atributo);
-                break;
+                case "SEXO":
+                    gerente.setSexo(atributo);
+                    break;
 
-            case "PASSWORD":
-                gerente.setPassword(atributo);
-                break;
+                case "PASSWORD":
+                    gerente.setPassword(atributo);
+                    break;
 
-            default:
+                default:
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir " + e);
         }
     }
 

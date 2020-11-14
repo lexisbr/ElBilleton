@@ -18,61 +18,71 @@ import java.sql.Statement;
  * @author lex
  */
 public class CuentaModel {
-    private final String CREAR_CUENTA_SIN_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME +") VALUES (?,?,?)";
-    private final String CREAR_CUENTA_CON_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.CUENTA_ID_DB_NAME + "," +Cuenta.FECHA_CREACION_DB_NAME+","+Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME +") VALUES (?,?,?,?)";
-    
-     private static Connection connection = Conexion.getInstance();
 
-    
+    private final String CREAR_CUENTA_SIN_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?)";
+    private final String CREAR_CUENTA_CON_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.CUENTA_ID_DB_NAME + "," + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?,?)";
+
+    private static Connection connection = Conexion.getInstance();
+
     /**
-     * Agregamos una nueva cuenta desde la carga de archivos, al completar la insercion devuelve el codigo autogenerado.
-     * 
-     * @param cuenta
-     * @return 
-     * @throws SQLException 
-     */
-     public long agregarCuentaArchivo(Cuenta cuenta) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA_CON_CODIGO, Statement.RETURN_GENERATED_KEYS);
-
-        preSt.setLong(1, cuenta.getCodigo());
-        preSt.setDate(2, cuenta.getFecha_creacion());
-        preSt.setDouble(3, cuenta.getMonto());
-        preSt.setLong(4, cuenta.getCliente_codigo());
-
-        preSt.executeUpdate();
-        
-        
-
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
-        }
-
-        return -1;
-    }
-     
-     /**
-     * Agregamos una nueva cuenta, al completar la insercion devuelve el codigo autogenerado.
-     * 
+     * Agregamos una nueva cuenta desde la carga de archivos, al completar la
+     * insercion devuelve el codigo autogenerado.
+     *
      * @param cuenta
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
-     public long agregarCuenta(Cuenta cuenta) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA_SIN_CODIGO, Statement.RETURN_GENERATED_KEYS);
+    public long agregarCuentaArchivo(Cuenta cuenta) throws SQLException {
+        try {
 
-        preSt.setDate(1, cuenta.getFecha_creacion());
-        preSt.setDouble(2, cuenta.getMonto());
-        preSt.setLong(3, cuenta.getCliente_codigo());
+            PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA_CON_CODIGO, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.executeUpdate();
+            preSt.setLong(1, cuenta.getCodigo());
+            preSt.setDate(2, cuenta.getFecha_creacion());
+            preSt.setDouble(3, cuenta.getMonto());
+            preSt.setLong(4, cuenta.getCliente_codigo());
 
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            preSt.executeUpdate();
+
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en cuenta " + e);
         }
 
         return -1;
     }
-    
+
+    /**
+     * Agregamos una nueva cuenta, al completar la insercion devuelve el codigo
+     * autogenerado.
+     *
+     * @param cuenta
+     * @return
+     * @throws SQLException
+     */
+    public long agregarCuenta(Cuenta cuenta) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA_SIN_CODIGO, Statement.RETURN_GENERATED_KEYS);
+
+            preSt.setDate(1, cuenta.getFecha_creacion());
+            preSt.setDouble(2, cuenta.getMonto());
+            preSt.setLong(3, cuenta.getCliente_codigo());
+
+            preSt.executeUpdate();
+
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error en cuenta " + e);
+        }
+
+        return -1;
+    }
+
 }

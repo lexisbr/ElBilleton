@@ -7,7 +7,10 @@ package Clases;
 
 import Modelos.Usuario.CajeroModel;
 import Objetos.Usuarios.Cajero;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,9 +34,8 @@ public class XMLCajero {
         // Recorro las etiquetas
         try {
             Cajero cajero;
-
+            System.out.println("Cajeros : " + listadoCajero.getLength());
             for (int i = 0; i < listadoCajero.getLength(); i++) {
-
                 cajero = new Cajero();
                 // Cojo el nodo actual
                 Node nodo = listadoCajero.item(i);
@@ -50,62 +52,66 @@ public class XMLCajero {
                         // Compruebo si es un nodo
                         if (hijo.getNodeType() == Node.ELEMENT_NODE) {
                             // Muestro el contenido
+                            System.out.println("Etiqueta: " + hijo.getNodeName()
+                                    + ", Valor: " + hijo.getTextContent());
                             crearCajero(cajero, hijo.getNodeName(), hijo.getTextContent());
                         }
 
                     }
                     cajeroModel.agregarCajeroArchivo(cajero);
-
                 }
-
             }
-
-        } catch (SQLException | DOMException e) {
+        } catch (NumberFormatException | SQLException | DOMException | UnsupportedEncodingException e) {
             System.out.println("Error al analizar cajero " + e);
         }
 
     }
 
     public void crearCajero(Cajero cajero, String tag, String atributo) {
+        try {
+            switch (tag.toUpperCase()) {
+                case "CODIGO":
+                    cajero.setCodigo(Long.parseLong(atributo));
+                    break;
 
-        switch (tag.toUpperCase()) {
-            case "CODIGO":
-                cajero.setCodigo(Long.parseLong(atributo));
-                break;
+                case "NOMBRE":
+                    cajero.setNombre(atributo);
+                    break;
 
-            case "NOMBRE":
-                cajero.setNombre(atributo);
-                break;
+                case "TURNO":
+                    if (atributo.equalsIgnoreCase("MATUTINO")) {
+                        cajero.setTurno(atributo);
+                    } else if (atributo.equalsIgnoreCase("VESPERTINO")) {
+                        cajero.setTurno(atributo);
+                    } else {
+                        // No se reconoce si tiene un Horario Matutino o Vespertino 
+                        System.out.println("No existe turno");
+                    }
+                    break;
 
-            case "TURNO":
-                 if (atributo.equalsIgnoreCase("MATUTINO")) {
-                    cajero.setTurno(atributo);
-                } else if (atributo.equalsIgnoreCase("VESPERTINO")) {
-                    cajero.setTurno(atributo);
-                } else {
-                    // No se reconoce si tiene un Horario Matutino o Vespertino 
-                    System.out.println("No existe turno");
-                }
-                break;
+                case "DPI":
+                    cajero.setDpi(atributo);
+                    break;
 
-            case "DPI":
-                cajero.setDpi(atributo);
-                break;
+                case "DIRECCION":
+                    cajero.setDireccion(atributo);
+                    break;
 
-            case "DIRECCION":
-                cajero.setDireccion(atributo);
-                break;
+                case "SEXO":
+                    cajero.setSexo(atributo);
+                    break;
 
-            case "SEXO":
-                cajero.setSexo(atributo);
-                break;
+                case "PASSWORD":
+                    cajero.setPassword(atributo);
+                    break;
 
-            case "PASSWORD":
-                cajero.setPassword(atributo);
-                break;
+                default:
+            }
 
-            default:
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir " + e);
         }
+
     }
 
 }

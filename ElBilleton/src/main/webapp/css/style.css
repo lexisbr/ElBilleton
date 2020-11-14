@@ -19,35 +19,35 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;
+    display: block;
 }
 body {
-	line-height: 1;
+    line-height: 1;
 }
 ol, ul {
-	list-style: none;
+    list-style: none;
 }
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /*
@@ -85,76 +85,76 @@ table {
 }
 
 .login-box h1{
-  margin: 0;
-  padding: 0 0 10px;
-  text-align: center;
-  font-size: 42px;
-  font-family: "Lucida Console", Monaco, monospace;
-  text-shadow: 2px 1px 1px gray;
-  position: relative;
-  top: -40px;
+    margin: 0;
+    padding: 0 0 10px;
+    text-align: center;
+    font-size: 42px;
+    font-family: "Lucida Console", Monaco, monospace;
+    text-shadow: 2px 1px 1px gray;
+    position: relative;
+    top: -40px;
 }
 
 .login-box label{
-  margin: 0;
-  padding: 0;
-  font-weight: bold;
-  display: block;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    display: block;
 }
 
 .login-box input{
-  width: 100%;
-  margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .login-box input[type="text"],
 .login-box input[type="password"]{
-  border: none;
-  border-bottom: 1px solid #ffffff;
-  background: transparent;
-  outline: none;
-  height: 40px;
-  color: white;
-  font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: white;
+    font-size: 16px;
 }
 
 .login-box input[type="submit"]{
-  border: none;
-  outline: none;
-  height: 40px;
-  background: #338AFF;
-  color: white;
-  font-size: 18px;
-  border-radius: 20px;
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #338AFF;
+    color: white;
+    font-size: 18px;
+    border-radius: 20px;
 }
 
 .login-box a{
-  text-decoration: none;
-  font-size: 12px;
-  line-height: 20px;
-  color: darkgrey;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
 }
 
 .login-box a:hover{
-  color: #33CEFF;
+    color: #33CEFF;
 }
 
 .login-box select{
-  background: black;
-  height: 40px;
-  color: white;
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 20px;
+    background: black;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 
 .login-box .error{
-  margin: 0;
-  padding: 0 0 10px;
-  text-align: center;
-  font-size: 18px;
-  color: red;
+    margin: 0;
+    padding: 0 0 10px;
+    text-align: center;
+    font-size: 18px;
+    color: red;
 }
 
 /*
@@ -163,87 +163,86 @@ table {
 
 
 #index{
-  margin: 0;
-  padding: 0;
-  background: url(../img/fondo_index.jpg) no-repeat center top;
-  background-size: cover;
-  height: 100vh;
-  text-align: center;
-  font: 300 20px/1.7 sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #009999;
+    height: 100vh;
+    text-align: center;
+    font: 300 20px/1.7 sans-serif;
 }
 
 #encabezado{
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  background: url(../img/header.jpg);
-  background-size: cover;
-  height: 250px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background: url(../img/header.jpg);
+    background-size: cover;
+    height: 250px;
 
 }
 
 #logoEncabezado{
-  width: 200px;
-  height: 200px;
-  img:  url(../img/logo1.jpg);
+    width: 200px;
+    height: 200px;
+    img:  url(../img/logo1.jpg);
 }
 
 #tituloEncabezado{
-  font-size: 55px;
-  font-family: "Lucida Console", Monaco, monospace;
+    font-size: 55px;
+    font-family: "Lucida Console", Monaco, monospace;
 }
 
 .navbar{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background:#9FA0A0;
-  height: 60px;
-  font-family: 'Open sans';
-  z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#9FA0A0;
+    height: 60px;
+    font-family: 'Open sans';
+    z-index: 2;
 
 }
 
 .navbar ul{
-  list-style: none;
-  z-index: 2;
+    list-style: none;
+    z-index: 2;
 }
 
 .menu > li{
-  color: black;
-  position: relative;
-  display: inline-block;
+    color: black;
+    position: relative;
+    display: inline-block;
 }
 
 .menu li a:hover{
-  color: #004BF7;
-  transition: all .1s;
+    color: #004BF7;
+    transition: all .1s;
 }
 
 .menu >li>a{
-  display: block;
-  padding: 12px 30px;
-  color: #353535;
-  font-family: 'Open sans';
-  text-decoration: none;
+    display: block;
+    padding: 12px 30px;
+    color: #353535;
+    font-family: 'Open sans';
+    text-decoration: none;
 }
 
 .submenu{
-  position: absolute;
-  background: #333333;
-  width: 100%;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 1.5s;
-  z-index: 2;
+    position: absolute;
+    background: #333333;
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.5s;
+    z-index: 2;
 }
 
 .submenu li a{
-  display: block;
-  padding: 15px;
-  color: #fff;
-  font-family: 'Open sans';
-  text-decoration: none;
+    display: block;
+    padding: 15px;
+    color: #fff;
+    font-family: 'Open sans';
+    text-decoration: none;
 }
 
 .menu li:hover .submenu{
@@ -256,26 +255,30 @@ table {
 */
 
 .contenido{
-  padding: 50px 0;
-  background:  #013FFF;
-  color: white;
+    padding: 50px 0;
+    background: url(../img/fondo_contenido.jpg) center top;
+    color: white;
 }
 
 .title{
-  margin-bottom: 20px;
-  font-size: 40px;
-  color: black;
-}
-.contenido h1{
-  text-align: left;
-  margin-left: 200px;
+    margin-bottom: 20px;
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
 }
 
+.contenido h1{
+    text-align: left;
+    margin-left: 200px;
+}
+
+
+
 .contenido .centrar form{
-  margin: auto;
-  width: 50%;
-  border: 3px solid black;
-  padding: 10px;
+    margin: auto;
+    width: 50%;
+    border: 3px solid black;
+    padding: 10px;
 }
 
 .container .guardar{
@@ -295,6 +298,78 @@ table {
     box-shadow: 0 9px #999;
 }
 
+.form-group{
+    margin-bottom: 15px;
 
+}
 
+.form-group h1{
+    text-align: center;
+    margin-left: 5px;
+    color: #cccccc;
+    font-size: 18px;
+}
 
+.contenido hr{
+    border-color: white;
+    border-width: 3px;
+    width: 60%;
+}
+
+/*
+    ESTILO BARRA BUSCAR
+*/
+
+.search {
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.searchTerm {
+    width: 100%;
+    border: 3px solid #00B4CC;
+    border-right: none;
+    padding: 5px;
+    height: 40px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: black;
+    z-index: 0;
+}
+
+.searchTerm:focus{
+    color: #00B4CC;
+}
+
+.searchButton {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #00B4CC;
+    background: #00B4CC;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 0;
+}
+
+.wrap{
+    width: 30%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 50px;
+}
+
+.contenidoExito{
+    padding: 50px 0;
+    background: #339900;
+    color: white;
+}
+
+.contenidoExito h1{
+    font-size: 30px;
+    font-style: italic;
+}
