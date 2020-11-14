@@ -13,6 +13,7 @@ import Objetos.Banco.Cuenta;
 import Objetos.Historiales.HistorialCliente;
 import Objetos.Usuarios.Cliente;
 import Objetos.Usuarios.Gerente;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.websocket.Decoder;
 
 /**
  *
@@ -29,13 +31,17 @@ public class ClienteModel {
 
     //Constantes estaticas para base de datos
     private final String CLIENTES = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME;
-    private final String CLIENTES_FILTRO = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME+" WHERE "+Cliente.CLIENTE_ID_DB_NAME+" LIKE CONCAT('%',?,'%')";
+    private final String CLIENTES_FILTRO = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + " LIKE CONCAT('%',?,'%')";
     private final String BUSCAR_CLIENTE = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + " =?";
     private final String CREAR_CLIENTE_SIN_CODIGO = "INSERT INTO " + Cliente.CLIENTE_DB_NAME + " (" + Cliente.NOMBRE_DB_NAME + "," + Cliente.DPI_DB_NAME + "," + Cliente.DIRECCION_DB_NAME + "," + Cliente.SEXO_DB_NAME
             + "," + Cliente.FECHA_NACIMIENTO_DB_NAME + "," + Cliente.PDFDPI_DB_NAME + "," + Cliente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
     private final String CREAR_CLIENTE_CON_CODIGO = "INSERT INTO " + Cliente.CLIENTE_DB_NAME + " (" + Cliente.CLIENTE_ID_DB_NAME + "," + Cliente.NOMBRE_DB_NAME + ","
             + Cliente.DPI_DB_NAME + "," + Cliente.DIRECCION_DB_NAME + "," + Cliente.SEXO_DB_NAME + "," + Cliente.FECHA_NACIMIENTO_DB_NAME + "," + Cliente.PDFDPI_DB_NAME + "," + Cliente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?,?)";
-    
+    private final String DPI_CLIENTE = "SELECT " + Cliente.PDFDPI_DB_NAME + " FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + "= ?";
+    private final String ACTUALIZAR_CLIENTE = "UPDATE " + Cliente.CLIENTE_DB_NAME + " SET " + Cliente.NOMBRE_DB_NAME + "=?,"
+            + Cliente.FECHA_NACIMIENTO_DB_NAME + "=?," + Cliente.DPI_DB_NAME + "=?," + Cliente.DIRECCION_DB_NAME + "=?," + Cliente.SEXO_DB_NAME + "=?,"
+            + Cliente.PASSWORD_DB_NAME + "=?," + Cliente.PDFDPI_DB_NAME + "=? WHERE " + Cliente.CLIENTE_ID_DB_NAME + " =?";
+
     private static Connection connection = Conexion.getInstance();
 
     HistorialClienteModel historial_cliente = new HistorialClienteModel();
@@ -140,20 +146,21 @@ public class ClienteModel {
             }
             cliente.setPassword(Encriptador.desencriptar(cliente.getPassword()));
             return cliente;
-        } catch (UnsupportedEncodingException | SQLException e) {
+        } catch (NullPointerException | UnsupportedEncodingException | SQLException e) {
             System.out.println("Error en cliente " + e);
         }
         return null;
     }
-    
+
     /**
      * Metodo para obtener una lista con los clientes existentes
-     * @return 
+     *
+     * @return
      */
-    public ArrayList<Cliente> obtenerClientes(){
+    public ArrayList<Cliente> obtenerClientes() {
         try {
             ArrayList<Cliente> listaClientes = new ArrayList<>();
-            
+
             PreparedStatement preSt = connection.prepareStatement(CLIENTES);
             ResultSet result = preSt.executeQuery();
 
@@ -173,21 +180,22 @@ public class ClienteModel {
                 listaClientes.add(cliente);
             }
             return listaClientes;
-            
+
         } catch (SQLException e) {
             System.out.println("Error en lista de clientes " + e);
         }
         return null;
     }
-    
-     /**
+
+    /**
      * Metodo para obtener una lista con los clientes filtrando por codigo
-     * @return 
+     *
+     * @return
      */
-    public ArrayList<Cliente> obtenerClientesFiltrando(long codigo){
+    public ArrayList<Cliente> obtenerClientesFiltrando(long codigo) {
         try {
             ArrayList<Cliente> listaClientes = new ArrayList<>();
-            
+
             PreparedStatement preSt = connection.prepareStatement(CLIENTES_FILTRO);
             preSt.setLong(1, codigo);
             ResultSet result = preSt.executeQuery();
@@ -208,11 +216,63 @@ public class ClienteModel {
                 listaClientes.add(cliente);
             }
             return listaClientes;
-            
+
         } catch (SQLException e) {
             System.out.println("Error en lista de clientes " + e);
         }
         return null;
+    }
+
+    /**
+     * Devuelve el archivo pdf del dpi
+     *
+     * @param codigo
+     * @return
+     */
+    public InputStream obtenerDPI(long codigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(DPI_CLIENTE);
+            preSt.setLong(1, codigo);
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                return result.getBlob(1).getBinaryStream();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener dpi de db " + e);
+            return null;
+        }
+        return null;
+    }
+
+    /**
+     * Modificar los datos del cliente
+     *
+     * @param cliente
+     * @param codigoCliente
+     * @throws SQLException
+     */
+    public void modificarCliente(Cliente cliente) throws SQLException{
+        try {
+            cliente.setPassword(Encriptador.encriptar(cliente.getPassword()));
+            PreparedStatement preSt = connection.prepareStatement(ACTUALIZAR_CLIENTE);
+
+            preSt.setString(1, cliente.getNombre());
+            preSt.setDate(2, cliente.getFecha_nacimiento());
+            preSt.setString(3, cliente.getDpi());
+            preSt.setString(4, cliente.getDireccion());
+            preSt.setString(5, cliente.getSexo());
+            preSt.setString(6, cliente.getPassword());
+            preSt.setBinaryStream(7, cliente.getPdfDPI());
+            preSt.setLong(8, cliente.getCodigo());
+            preSt.executeUpdate();
+
+        } catch (UnsupportedEncodingException | SQLException e) {
+            System.out.println("Error en actualizar "+e);
+        }
+
     }
 
     /**
@@ -230,7 +290,7 @@ public class ClienteModel {
             if (cliente != null && cliente.getPassword().equals(password)) {
                 return cliente;
             }
-        } catch (UnsupportedEncodingException | SQLException e) {
+        } catch (NullPointerException | UnsupportedEncodingException | SQLException e) {
             System.out.println("Error en cliente " + e);
         }
         return null;

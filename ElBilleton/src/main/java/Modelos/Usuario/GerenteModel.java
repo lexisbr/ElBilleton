@@ -32,7 +32,10 @@ public class GerenteModel {
             + "," + Gerente.SEXO_DB_NAME + "," + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?)";
     private final String CREAR_GERENTE_CON_CODIGO = "INSERT INTO " + Gerente.GERENTE_DB_NAME + " (" + Gerente.GERENTE_ID_DB_NAME + "," + Gerente.NOMBRE_DB_NAME + "," + Gerente.TURNO_DB_NAME
             + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME + "," + Gerente.SEXO_DB_NAME + "," + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
-
+    private final String MODIFICAR_GERENTE = "UPDATE " + Gerente.GERENTE_DB_NAME + " SET " + Gerente.NOMBRE_DB_NAME + "=?,"
+            + Gerente.TURNO_DB_NAME + "=?," + Gerente.DPI_DB_NAME + "=?," + Gerente.DIRECCION_DB_NAME + "=?," + Gerente.SEXO_DB_NAME + "=?,"
+            + Gerente.PASSWORD_DB_NAME + "=? WHERE " + Gerente.GERENTE_ID_DB_NAME + " =?";
+    
     private static Connection connection = Conexion.getInstance();
 
     HistorialGerenteModel historialGerente = new HistorialGerenteModel();
@@ -145,6 +148,26 @@ public class GerenteModel {
             return null;
         }
         
+    }
+    
+     public void modificarGerente(Gerente gerente) throws SQLException{
+        try {
+            gerente.setPassword(Encriptador.encriptar(gerente.getPassword()));
+            PreparedStatement preSt = connection.prepareStatement(MODIFICAR_GERENTE);
+
+           preSt.setString(1, gerente.getNombre());
+            preSt.setString(2, gerente.getTurno());
+            preSt.setString(3, gerente.getDpi());
+            preSt.setString(4, gerente.getDireccion());
+            preSt.setString(5, gerente.getSexo());
+            preSt.setString(6, gerente.getPassword());
+            preSt.setLong(7, gerente.getCodigo());
+            preSt.executeUpdate();
+
+        } catch (UnsupportedEncodingException | SQLException e) {
+            System.out.println("Error en actualizar "+e);
+        }
+
     }
 
     /**

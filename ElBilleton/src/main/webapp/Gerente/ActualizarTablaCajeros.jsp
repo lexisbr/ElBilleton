@@ -9,8 +9,8 @@
     <!--Encabezado-->
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
-        <form action="ObtenerClientesParaActualizar" method="GET">
-            <h2 class="title">Seleccionar cliente</h2>
+        <form action="ObtenerCajeros" method="GET">
+            <h2 class="title">Seleccionar cajero</h2>
             <hr>
             
             <div class="wrap">
@@ -23,21 +23,21 @@
                     <tr>
                         <th class="text-center">Codigo</th>
                         <th class="text-center">Nombre</th>
+                        <th class="text-center">Turno</th>
                         <th class="text-center">DPI</th>
                         <th class="text-center">Direccion</th>
                         <th class="text-center">Sexo</th>
-                        <th class="text-center">Fecha de nacimiento</th>
                     </tr>
-                    <c:forEach items="${listaClientes}" var="cliente">
+                    <c:forEach items="${listaCajeros}" var="cajero">
                     <tr>
-                        <td class="text-center">${cliente.getCodigo()}</td>
-                        <td class="text-center">${cliente.getNombre()}</td>
-                        <td class="text-center">${cliente.getDpi()}</td>
-                        <td class="text-center">${cliente.getDireccion()}</td>
-                        <td class="text-center">${cliente.getSexo()}</td>
-                        <td class="text-center">${cliente.getFecha_nacimiento()}</td>
+                        <td class="text-center">${cajero.getCodigo()}</td>
+                        <td class="text-center">${cajero.getNombre()}</td>
+                        <td class="text-center">${cajero.getTurno()}</td>
+                        <td class="text-center">${cajero.getDpi()}</td>
+                        <td class="text-center">${cajero.getDireccion()}</td>
+                        <td class="text-center">${cajero.getSexo()}</td>
                         <td>
-                            <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerCliente?cliente_codigo=${cliente.getCodigo()}">Actualizar</a>
+                            <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerCajero?cajero_codigo=${cajero.getCodigo()}">Actualizar</a>
                         </td>
                     </tr>
                     </c:forEach>
