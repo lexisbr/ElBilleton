@@ -13,7 +13,7 @@
     <title>Gerente | El Billeton</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css?8.9">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?5.10">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?6.2">
 </head>
 <body id="index">
 
@@ -33,12 +33,12 @@
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=1">Cliente</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=2">Cuenta</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=3">Cajero</a></li>
-                    <li><a href="">Gerente</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=4">Gerente</a></li>
                 </ul>
             </li>
             <li><a href="#">Actualizar</a>
                 <ul class="submenu">
-                    <li><a href="">Cliente</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=5">Cliente</a></li>
                     <li><a href="">Cajero</a></li>
                     <li><a href="">Mis datos</a></li>
                 </ul>

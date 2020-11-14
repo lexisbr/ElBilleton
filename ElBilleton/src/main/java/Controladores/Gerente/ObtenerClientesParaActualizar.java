@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet("/ObtenerClientes")
-public class ObtenerClientes extends HttpServlet {
-
-    ClienteModel clienteModel = new ClienteModel();
+@WebServlet("/ObtenerClientesParaActualizar")
+public class ObtenerClientesParaActualizar extends HttpServlet {
+    
+     ClienteModel clienteModel = new ClienteModel();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,18 +42,12 @@ public class ObtenerClientes extends HttpServlet {
             
             request.setAttribute("listaClientes", listaClientes);
                 
-            request.getRequestDispatcher("/Gerente/CrearCuentaTablaClientes.jsp").forward(request, response);
+            request.getRequestDispatcher("/Gerente/ActualizarTablaClientes.jsp").forward(request, response);
 
         } catch (NullPointerException | NumberFormatException |IOException | ServletException e) {
             System.out.println("Error buscar cliente: " + e.getMessage());
         }
 
     }
-
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-    }
-
+    
 }

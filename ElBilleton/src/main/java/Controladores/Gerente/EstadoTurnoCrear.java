@@ -36,13 +36,25 @@ public class EstadoTurnoCrear extends HttpServlet{
             if (gerenteModel.estaDentroTurno(gerente.getCodigo())) {
                 request.getSession().setAttribute("estado", "ACTIVO");
                 
-                if(opcion.equals("1")){
-                    response.sendRedirect(request.getContextPath() + "/Gerente/CrearCliente.jsp");
-                }else if(opcion.equals("2")){
-                    response.sendRedirect(request.getContextPath() + "/ObtenerClientes");
-                }else if(opcion.equals("3")){
-                    response.sendRedirect(request.getContextPath() + "/Gerente/CrearCajero.jsp");
+                switch (opcion) {
+                    case "1":
+                        response.sendRedirect(request.getContextPath() + "/Gerente/CrearCliente.jsp");
+                        break;
+                    case "2":
+                        response.sendRedirect(request.getContextPath() + "/ObtenerClientes");
+                        break;
+                    case "3":
+                        response.sendRedirect(request.getContextPath() + "/Gerente/CrearCajero.jsp");
+                        break;
+                    case "4":
+                        response.sendRedirect(request.getContextPath() + "/Gerente/CrearGerente.jsp");
+                        break;
+                    case "5":
+                        response.sendRedirect(request.getContextPath() + "/ObtenerClientesParaActualizar");
+                    default:
+                        break;
                 }
+        
                 
             } else {
                 request.getSession().setAttribute("estado", "INACTIVO");
