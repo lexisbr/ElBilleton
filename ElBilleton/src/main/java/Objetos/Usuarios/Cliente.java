@@ -13,7 +13,7 @@ import java.sql.Date;
  * @author lex
  */
 public class Cliente {
-    
+
     //Constantes estaticas para base de datos
     public static final String CLIENTE_DB_NAME = "CLIENTE";
     public static final String CLIENTE_ID_DB_NAME = "codigo";
@@ -24,7 +24,8 @@ public class Cliente {
     public static final String FECHA_NACIMIENTO_DB_NAME = "fecha_nacimiento";
     public static final String PDFDPI_DB_NAME = "pdfDPI";
     public static final String PASSWORD_DB_NAME = "password";
-    
+    public static final String SUMA_DB_NAME = "monto";
+
     private long codigo;
     private String nombre;
     private String dpi;
@@ -33,6 +34,7 @@ public class Cliente {
     private Date fecha_nacimiento;
     private InputStream pdfDPI;
     private String password;
+    private double total_transacciones;
 
     public Cliente() {
     }
@@ -46,6 +48,25 @@ public class Cliente {
         this.fecha_nacimiento = fecha_nacimiento;
         this.pdfDPI = pdfDPI;
         this.password = password;
+    }
+
+    public Cliente(long codigo, String nombre, String dpi, String direccion, String sexo, Date fecha_nacimiento, InputStream pdfDPI, double total_transacciones) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.dpi = dpi;
+        this.direccion = direccion;
+        this.sexo = sexo;
+        this.fecha_nacimiento = fecha_nacimiento;
+        this.pdfDPI = pdfDPI;
+        this.total_transacciones = total_transacciones;
+    }
+
+    public double getTotal_transacciones() {
+        return total_transacciones;
+    }
+
+    public void setTotal_transacciones(double total_transacciones) {
+        this.total_transacciones = total_transacciones;
     }
 
     public long getCodigo() {
@@ -111,7 +132,5 @@ public class Cliente {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    
+
 }

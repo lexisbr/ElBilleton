@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,7 +42,10 @@ public class ClienteModel {
             + Cliente.FECHA_NACIMIENTO_DB_NAME + "=?," + Cliente.DPI_DB_NAME + "=?," + Cliente.DIRECCION_DB_NAME + "=?," + Cliente.SEXO_DB_NAME + "=?,"
             + Cliente.PASSWORD_DB_NAME + "=?," + Cliente.PDFDPI_DB_NAME + "=? WHERE " + Cliente.CLIENTE_ID_DB_NAME + " =?";
     private final String REPORTE_2 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.monto>? GROUP BY C.codigo";
-
+    private final String REPORTE_3 = "SELECT C.*,SUM(T.monto) AS monto FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo GROUP BY C.codigo HAVING SUM(T.monto)>?";
+    private final String REPORTE_4 = "SELECT C.*,SUM(CU.monto) AS monto FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo GROUP BY C.codigo ORDER BY monto DESC LIMIT 10";
+    private final String REPORTE_5 = "SELECT * FROM "+ Cliente.CLIENTE_DB_NAME +" WHERE codigo NOT IN (SELECT C.codigo FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN "+ Cuenta.CUENTA_DB_NAME +" CU ON CU.cliente_codigo=C.codigo RIGHT JOIN " +Transaccion.TRANSACCION_DB_NAME +" T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN fecha1=? AND fecha2=? GROUP BY C.codigo )";
+    
     private static Connection connection = Conexion.getInstance();
 
     HistorialClienteModel historial_cliente = new HistorialClienteModel();
@@ -329,6 +333,105 @@ public class ClienteModel {
 
         } catch (SQLException e) {
             System.out.println("Error al obtener clientes del reporte 2 " + e);
+            return null;
+        }
+    }
+
+    /**
+     * Obtener los clientes con la suma de transacciones que pase el limite
+     *
+     * @param limite
+     * @return
+     */
+    public ArrayList<Cliente> conTransaccionesSumadasMayores(Double limite) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_3);
+            preSt.setDouble(1, limite);
+
+            ArrayList<Cliente> listaClientes = new ArrayList<>();
+            Cliente cliente = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cliente = new Cliente(
+                        rs.getLong(Cliente.CLIENTE_ID_DB_NAME),
+                        rs.getString(Cliente.NOMBRE_DB_NAME),
+                        rs.getString(Cliente.DPI_DB_NAME),
+                        rs.getString(Cliente.DIRECCION_DB_NAME),
+                        rs.getString(Cliente.SEXO_DB_NAME),
+                        rs.getDate(Cliente.FECHA_NACIMIENTO_DB_NAME),
+                        rs.getBinaryStream(Cliente.PDFDPI_DB_NAME),
+                        rs.getDouble(Cliente.SUMA_DB_NAME)
+                );
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener clientes del reporte 3 " + e);
+            return null;
+        }
+    }
+
+    public ArrayList<Cliente> conMasDinero() {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_4);
+
+            ArrayList<Cliente> listaClientes = new ArrayList<>();
+            Cliente cliente = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cliente = new Cliente(
+                        rs.getLong(Cliente.CLIENTE_ID_DB_NAME),
+                        rs.getString(Cliente.NOMBRE_DB_NAME),
+                        rs.getString(Cliente.DPI_DB_NAME),
+                        rs.getString(Cliente.DIRECCION_DB_NAME),
+                        rs.getString(Cliente.SEXO_DB_NAME),
+                        rs.getDate(Cliente.FECHA_NACIMIENTO_DB_NAME),
+                        rs.getBinaryStream(Cliente.PDFDPI_DB_NAME),
+                        rs.getDouble(Cliente.SUMA_DB_NAME)
+                );
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener clientes del reporte 3 " + e);
+            return null;
+        }
+    }
+    
+     public ArrayList<Cliente> sinTransacciones(Date fecha1, Date fecha2) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_5);
+            preSt.setDate(1,fecha1);
+            preSt.setDate(2,fecha2);
+
+            ArrayList<Cliente> listaClientes = new ArrayList<>();
+            Cliente cliente = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cliente = new Cliente(
+                        rs.getLong(Cliente.CLIENTE_ID_DB_NAME),
+                        rs.getString(Cliente.NOMBRE_DB_NAME),
+                        rs.getString(Cliente.DPI_DB_NAME),
+                        rs.getString(Cliente.DIRECCION_DB_NAME),
+                        rs.getString(Cliente.SEXO_DB_NAME),
+                        rs.getDate(Cliente.FECHA_NACIMIENTO_DB_NAME),
+                        rs.getBinaryStream(Cliente.PDFDPI_DB_NAME),
+                        rs.getString(Cliente.PASSWORD_DB_NAME)
+                );
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener clientes del reporte 5 " + e);
             return null;
         }
     }
