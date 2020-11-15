@@ -29,45 +29,48 @@ import javax.servlet.http.Part;
  */
 @WebServlet("/ModificarCliente")
 @MultipartConfig
-public class ModificarCliente extends HttpServlet{
-    
+public class ModificarCliente extends HttpServlet {
+
     ClienteModel clienteModel = new ClienteModel();
     HistorialClienteModel historialCliente = new HistorialClienteModel();
-    
-     @Override
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-         try {
-             Cliente cliente;
-             CrearArchivo obtenerPdf = new CrearArchivo();
+
+        try {
+            Cliente cliente;
+            CrearArchivo obtenerPdf = new CrearArchivo();
             long codigo = Long.parseLong(request.getParameter("codigo"));
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String dpi = request.getParameter("dpi");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             Date fecha_nacimiento = Date.valueOf(request.getParameter("fecha"));
             String password = request.getParameter("password");
-            
+
             Part archivo = request.getPart("file");
-            
-            if(archivo!=null&&archivo.getSize()>0){
+             if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+                 
+            if (archivo != null && archivo.getSize() > 0) {
                 InputStream pdfDpi = obtenerPdf.obtenerArchivo("file", request);
                 cliente = new Cliente(codigo, nombre, dpi, direccion, sexo, fecha_nacimiento, pdfDpi, password);
-            }else{
+            } else {
                 cliente = new Cliente(codigo, nombre, dpi, direccion, sexo, fecha_nacimiento, clienteModel.obtenerDPI(codigo), password);
             }
-            
-            clienteModel.modificarCliente(cliente);
-            historialCliente.agregarHistorialCliente(cliente);
-            request.setAttribute("cliente_codigo", codigo);
-            request.getRequestDispatcher("Gerente/ExitoModificarCliente.jsp").forward(request, response);
-             
-             
-         } catch (UnsupportedEncodingException | NumberFormatException | SQLException e) {
-             System.out.println("Error en controlador al actualizar cliente "+e);
-         }
-    
+                clienteModel.modificarCliente(cliente);
+                historialCliente.agregarHistorialCliente(cliente);
+                request.setAttribute("cliente_codigo", codigo);
+                request.getRequestDispatcher("Gerente/ExitoModificarCliente.jsp").forward(request, response);
+            } else {
+                request.setAttribute("exito", 1);
+                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
+            }
+
+        } catch (UnsupportedEncodingException | NumberFormatException | SQLException e) {
+            System.out.println("Error en controlador al actualizar cliente " + e);
+        }
+
     }
-    
+
 }

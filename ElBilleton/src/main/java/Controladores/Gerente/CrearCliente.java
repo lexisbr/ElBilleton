@@ -41,9 +41,9 @@ public class CrearCliente extends HttpServlet {
             throws ServletException, IOException {
         try {
             CrearArchivo obtenerPdf = new CrearArchivo();
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String dpi = request.getParameter("dpi");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String fecha_nacimiento = request.getParameter("fecha");
             String password = request.getParameter("password");
@@ -51,8 +51,7 @@ public class CrearCliente extends HttpServlet {
 
             String monto = request.getParameter("monto");
             String fecha = request.getParameter("fecha");
-            System.out.println("nombre "+nombre.length());
-            if (nombre.length()>0) {
+            if (!(nombre.trim().equals("")||direccion.trim().equals(""))) {
                 Cliente cliente = new Cliente(0, nombre, dpi, direccion, sexo, Date.valueOf(fecha_nacimiento), pdfDpi, password);
                 long codigoGeneradoCliente = clienteModel.agregarCliente(cliente);
                 cliente.setCodigo(codigoGeneradoCliente);
@@ -69,7 +68,6 @@ public class CrearCliente extends HttpServlet {
                 request.getRequestDispatcher("Gerente/ExitoCrearCliente.jsp").forward(request, response);
             }else{
                   request.setAttribute("exito", 1);
-
                 request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
             }
 

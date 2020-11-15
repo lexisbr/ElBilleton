@@ -29,7 +29,7 @@
                         <input type="date" name="fecha" value="<%=fecha%>" readonly="" required="">
                     </div>
                     <div class="form-group">
-                        <input type="number" name="monto" class="form-control" placeholder="Monto" required="" step=".01"/>
+                        <input type="number" name="monto" class="form-control" min="1" placeholder="Monto" required="" step=".01"/>
                     </div>
                     <br>
                     <input type="submit" value="Guardar" class="guardar"/>

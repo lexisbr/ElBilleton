@@ -18,8 +18,9 @@
             <h2 class="title">Sus datos han sido actualizados exitosamente</h2>
             <h1>Codigo del gerente: ${gerente_codigo}</h1>
         </c:if>
-
-
+        <c:if test="${exito==3}">
+            <h2 class="title">Los limites han sido actualizados exitosamente</h2>
+        </c:if>    
     </section>
 </body>
 </html>

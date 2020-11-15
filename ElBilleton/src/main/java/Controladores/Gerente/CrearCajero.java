@@ -28,35 +28,41 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/CrearCajero")
 public class CrearCajero extends HttpServlet {
-    
+
     CajeroModel cajeroModel = new CajeroModel();
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String dpi = request.getParameter("dpi");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-            
-            Cajero cajero = new Cajero(0,nombre,turno,dpi,direccion,sexo,password);
-            
-            long codigoGenerado = cajeroModel.agregarCajero(cajero);
-            cajero.setCodigo(codigoGenerado);
-            
-            HistorialCajeroModel historialModel = new HistorialCajeroModel();
-            historialModel.agregarHistorialCajero(cajero);
-            
-            request.setAttribute("cajeroCreado", codigoGenerado);
-            request.getRequestDispatcher("Gerente/ExitoCrearCajero.jsp").forward(request, response);
-            
-            
+
+            if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+
+                Cajero cajero = new Cajero(0, nombre, turno, dpi, direccion, sexo, password);
+
+                long codigoGenerado = cajeroModel.agregarCajero(cajero);
+                cajero.setCodigo(codigoGenerado);
+
+                HistorialCajeroModel historialModel = new HistorialCajeroModel();
+                historialModel.agregarHistorialCajero(cajero);
+
+                request.setAttribute("cajeroCreado", codigoGenerado);
+                request.getRequestDispatcher("Gerente/ExitoCrearCajero.jsp").forward(request, response);
+                
+            } else {
+                request.setAttribute("exito", 1);
+                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
+            }
+
         } catch (SQLException e) {
-            System.out.println("Error al agregar cajero "+e);
+            System.out.println("Error al agregar cajero " + e);
         }
     }
-    
+
 }

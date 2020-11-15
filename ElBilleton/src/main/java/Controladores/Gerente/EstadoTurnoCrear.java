@@ -64,8 +64,9 @@ public class EstadoTurnoCrear extends HttpServlet{
         
                 
             } else {
+                request.setAttribute("exito", 0);
                 request.getSession().setAttribute("estado", "INACTIVO");
-                response.sendRedirect(request.getContextPath() + "/Gerente/EstadoInactivo.jsp");
+                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
             }
 
         } catch (SQLException | IOException | NumberFormatException  e) {

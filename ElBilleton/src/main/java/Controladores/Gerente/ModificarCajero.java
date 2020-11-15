@@ -35,20 +35,25 @@ public class ModificarCajero extends HttpServlet {
 
         try {
             long codigo = Long.parseLong(request.getParameter("codigo"));
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String dpi = request.getParameter("dpi");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-            
-            Cajero cajero = new Cajero(codigo, nombre, turno, dpi, direccion, sexo, password);
-            cajeroModel.modificarCajero(cajero);
-            historialCajero.agregarHistorialCajero(cajero);
 
-            request.setAttribute("cajero_codigo", codigo);
-            request.setAttribute("exito", 1);
-            request.getRequestDispatcher("Gerente/ExitoModificarCajero.jsp").forward(request, response);
+            if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+                Cajero cajero = new Cajero(codigo, nombre, turno, dpi, direccion, sexo, password);
+                cajeroModel.modificarCajero(cajero);
+                historialCajero.agregarHistorialCajero(cajero);
+
+                request.setAttribute("cajero_codigo", codigo);
+                request.setAttribute("exito", 1);
+                request.getRequestDispatcher("Gerente/ExitoModificarCajero.jsp").forward(request, response);
+            } else {
+                request.setAttribute("exito", 1);
+                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
+            }
 
         } catch (UnsupportedEncodingException | NumberFormatException | SQLException e) {
             System.out.println("Error en controlador al actualizar cliente " + e);

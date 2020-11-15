@@ -36,20 +36,25 @@ public class ModificarGerente extends HttpServlet {
 
         try {
             long codigo = Long.parseLong(request.getParameter("codigo"));
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String dpi = request.getParameter("dpi");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-            
-            Gerente gerente = new Gerente(codigo, nombre, turno, dpi, direccion, sexo, password);
-            gerenteModel.modificarGerente(gerente);
-            historialGerente.agregarHistorialGerente(gerente);
 
-            request.setAttribute("gerente_codigo", codigo);
-            request.setAttribute("exito", 2);
-            request.getRequestDispatcher("Gerente/ExitoModificarCajero.jsp").forward(request, response);
+            if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+                Gerente gerente = new Gerente(codigo, nombre, turno, dpi, direccion, sexo, password);
+                gerenteModel.modificarGerente(gerente);
+                historialGerente.agregarHistorialGerente(gerente);
+
+                request.setAttribute("gerente_codigo", codigo);
+                request.setAttribute("exito", 2);
+                request.getRequestDispatcher("Gerente/ExitoModificarCajero.jsp").forward(request, response);
+            } else {
+                request.setAttribute("exito", 1);
+                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
+            }
 
         } catch (UnsupportedEncodingException | NumberFormatException | SQLException e) {
             System.out.println("Error en controlador al actualizar cliente " + e);

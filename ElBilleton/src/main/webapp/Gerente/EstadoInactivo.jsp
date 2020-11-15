@@ -17,8 +17,10 @@
 
     <c:if test="${exito==1}">
         <section class="contenidoExito" style="background-color: #cc0000">
-            <h2 class="title">Ingreso algun espacio vacio</h2>
+            <h2 class="title">Ingreso algun espacio vacio en los campos</h2>
         </section>
     </c:if>
+    
+    
     </body>
 </html>

@@ -22,35 +22,39 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/CrearGerente")
 public class CrearGerente extends HttpServlet {
-    
+
     GerenteModel gerenteModel = new GerenteModel();
     HistorialGerenteModel historialModel = new HistorialGerenteModel();
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String dpi = request.getParameter("dpi");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-            
-            Gerente gerente = new Gerente(0,nombre,turno,dpi,direccion,sexo,password);
-            
-            long codigoGenerado = gerenteModel.agregarGerente(gerente);
-            gerente.setCodigo(codigoGenerado);
-            
-            historialModel.agregarHistorialGerente(gerente);
-            
-            request.setAttribute("gerenteCreado", codigoGenerado);
-            request.getRequestDispatcher("Gerente/ExitoCrearGerente.jsp").forward(request, response);
-            
-            
+
+            if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+                Gerente gerente = new Gerente(0, nombre, turno, dpi, direccion, sexo, password);
+
+                long codigoGenerado = gerenteModel.agregarGerente(gerente);
+                gerente.setCodigo(codigoGenerado);
+
+                historialModel.agregarHistorialGerente(gerente);
+
+                request.setAttribute("gerenteCreado", codigoGenerado);
+                request.getRequestDispatcher("Gerente/ExitoCrearGerente.jsp").forward(request, response);
+            } else {
+                request.setAttribute("exito", 1);
+                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
+            }
+
         } catch (SQLException e) {
-            System.out.println("Error al agregar cajero "+e);
+            System.out.println("Error al agregar cajero " + e);
         }
     }
-    
+
 }

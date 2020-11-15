@@ -162,6 +162,12 @@ CREATE TABLE IF NOT EXISTS HISTORIAL_CLIENTE(
     FOREIGN KEY (`cliente_codigo`) REFERENCES CLIENTE (`codigo`)
 );
 
-INSERT INTO CAJERO VALUES(101,'Banca virtual','Toda hora',101,'','','8cX7%%tedj4!yJm4');
+CREATE TABLE IF NOT EXISTS LIMITES_GERENTE(
+	`limite_reporte2` DOUBLE NOT NULL,
+	`limite_reporte3` DOUBLE NOT NULL,
+    PRIMARY KEY (`limite_reporte2`,`limite_reporte3`)
+);
 
+INSERT INTO CAJERO VALUES(101,'Banca virtual','Toda hora',101,'','','8cX7%%tedj4!yJm4');
+INSERT INTO LIMITES_GERENTE VALUES(0,0);
 

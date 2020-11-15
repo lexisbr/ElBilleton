@@ -58,7 +58,7 @@
             </li>
             <li><a href="#">Opciones</a>
                 <ul class="submenu">
-                    <li><a href="">Establecer limites para reportes</a></li>
+                    <li><a href="${pageContext.request.contextPath}/CargarLimites">Establecer limites para reportes</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoArchivo">Cargar archivos</a></li>
                 </ul>
             </li>

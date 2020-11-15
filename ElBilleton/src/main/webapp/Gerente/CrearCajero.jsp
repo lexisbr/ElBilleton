@@ -26,7 +26,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="number" name="dpi"  step="1" min="0" class="form-control" placeholder="DPI" required=""/>
+                        <input type="number" name="dpi" step="1" min="0" class="form-control" placeholder="DPI" required=""/>
                     </div>
                     <div class="form-group">
                         <input type="text" name="direccion" class="form-control" placeholder="Direccion" required=""/>

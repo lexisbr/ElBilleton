@@ -51,7 +51,7 @@
                     <br>
                     <div class="form-group">
                         <h1 class="subtitulo">Monto para abrir cuenta</h1>
-                        <input type="number" name="monto" class="form-control" placeholder="Monto" required="" step=".01"/>
+                        <input type="number" name="monto" class="form-control" placeholder="Monto" min="1" required="" step=".01"/>
                     </div>
                     <br>
                     <input type="submit" value="Guardar" class="guardar"/>
