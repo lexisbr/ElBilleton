@@ -62,24 +62,26 @@
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoArchivo">Cargar archivos</a></li>
                 </ul>
             </li>
-            <li><a href="#">Reporte</a>
+            <li><a href="#" style="width: 200px;">Reportes</a>
                 <ul class="submenu">
-                    <li><a href="${pageContext.request.contextPath}/Gerente/Reporte1SeleccionarEntidad.jsp">Reporte</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Gerente/Reporte1SeleccionarEntidad.jsp">Historial de cambios</a></li>
+                    <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte2">Clientes con transacciones mayores a limite 1</a></li>
                 </ul>
             </li>
             <li><a href="${pageContext.request.contextPath}/Logout">Cerrar Sesion</a></li>
         </ul>
     </nav>
     <%
-        GerenteModel gerenteModel = new GerenteModel();
-
-        Gerente gerente = gerenteModel.obtenerGerente(Long.parseLong(session.getAttribute("user").toString()));
-
-        session.setAttribute("usuario", gerente);
 
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 
         if (session.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/Login");
+        } else {
+            GerenteModel gerenteModel = new GerenteModel();
+
+            Gerente gerente = gerenteModel.obtenerGerente(Long.parseLong(session.getAttribute("user").toString()));
+
+            session.setAttribute("usuario", gerente);
         }
     %>

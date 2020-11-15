@@ -18,7 +18,8 @@
             <div class="container">
                 <table class="table table-dark table-bordered">
                     <tr>
-                        <th class="text-center">Codigo</th>
+                        <th class="text-center">Codigo de cambio</th>
+                        <th class="text-center">Codigo de cliente</th>
                         <th class="text-center">Nombre</th>
                         <th class="text-center">DPI</th>
                         <th class="text-center">Direccion</th>
@@ -27,6 +28,7 @@
                     </tr>
                     <c:forEach items="${listaHistorial}" var="historialCliente">
                     <tr>
+                        <td class="text-center">${historialCliente.getCodigo()}</td>
                         <td class="text-center">${historialCliente.getCliente_codigo()}</td>
                         <td class="text-center">${historialCliente.getNombre()}</td>
                         <td class="text-center">${historialCliente.getDpi()}</td>

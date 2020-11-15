@@ -9,6 +9,8 @@ import Clases.DuplicarPDF;
 import Clases.Encriptador;
 import Modelos.Conexion.Conexion;
 import Modelos.Historial.HistorialClienteModel;
+import Objetos.Banco.Cuenta;
+import Objetos.Banco.Transaccion;
 import Objetos.Usuarios.Cliente;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -38,6 +40,7 @@ public class ClienteModel {
     private final String ACTUALIZAR_CLIENTE = "UPDATE " + Cliente.CLIENTE_DB_NAME + " SET " + Cliente.NOMBRE_DB_NAME + "=?,"
             + Cliente.FECHA_NACIMIENTO_DB_NAME + "=?," + Cliente.DPI_DB_NAME + "=?," + Cliente.DIRECCION_DB_NAME + "=?," + Cliente.SEXO_DB_NAME + "=?,"
             + Cliente.PASSWORD_DB_NAME + "=?," + Cliente.PDFDPI_DB_NAME + "=? WHERE " + Cliente.CLIENTE_ID_DB_NAME + " =?";
+    private final String REPORTE_2 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.monto>? GROUP BY C.codigo";
 
     private static Connection connection = Conexion.getInstance();
 
@@ -58,7 +61,7 @@ public class ClienteModel {
 
             InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
             InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
-            
+
             PreparedStatement preSt = connection.prepareStatement(CREAR_CLIENTE_CON_CODIGO, Statement.RETURN_GENERATED_KEYS);
 
             //Se encripta la password
@@ -297,5 +300,36 @@ public class ClienteModel {
             System.out.println("Error en cliente " + e);
         }
         return null;
+    }
+
+    public ArrayList<Cliente> conTransaccionesMayores(Double limite) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_2);
+            preSt.setDouble(1, limite);
+
+            ArrayList<Cliente> listaClientes = new ArrayList<>();
+            Cliente cliente = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cliente = new Cliente(
+                        rs.getLong(Cliente.CLIENTE_ID_DB_NAME),
+                        rs.getString(Cliente.NOMBRE_DB_NAME),
+                        rs.getString(Cliente.DPI_DB_NAME),
+                        rs.getString(Cliente.DIRECCION_DB_NAME),
+                        rs.getString(Cliente.SEXO_DB_NAME),
+                        rs.getDate(Cliente.FECHA_NACIMIENTO_DB_NAME),
+                        rs.getBinaryStream(Cliente.PDFDPI_DB_NAME),
+                        rs.getString(Cliente.PASSWORD_DB_NAME)
+                );
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener clientes del reporte 2 " + e);
+            return null;
+        }
     }
 }

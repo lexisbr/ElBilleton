@@ -53,7 +53,7 @@ public class EstadoTurnoCrear extends HttpServlet{
                         response.sendRedirect(request.getContextPath() + "/ObtenerClientesParaActualizar");
                         break;
                     case "6":
-                        response.sendRedirect(request.getContextPath() + "/ObtenerCajeros");
+                        response.sendRedirect(request.getContextPath() + "/ObtenerCajeros?opcion=0");
                         break;
                      case "7":
                         response.sendRedirect(request.getContextPath() + "/ObtenerDatos");

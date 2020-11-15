@@ -24,7 +24,7 @@ public class HistorialClienteModel {
     //Constantes para querys 
     private final String CREAR_HISTORIAL_CLIENTE = "INSERT INTO " + HistorialCliente.HISTORIAL_CLIENTE_DB_NAME + " (" + HistorialCliente.NOMBRE_DB_NAME + "," + HistorialCliente.DPI_DB_NAME + "," + HistorialCliente.DIRECCION_DB_NAME + "," + HistorialCliente.SEXO_DB_NAME
             + "," + HistorialCliente.FECHA_NACIMIENTO_DB_NAME + "," + HistorialCliente.PDFDPI_DB_NAME + "," + HistorialCliente.PASSWORD_DB_NAME + "," + HistorialCliente.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?,?,?)";
-    private final String HISTORIA_CLIENTE = "SELECT * FROM " + HistorialCliente.HISTORIAL_CLIENTE_DB_NAME + " WHERE " + HistorialCliente.CLIENTE_CODIGO_DB_NAME + "=?";
+    private final String HISTORIA_CLIENTE = "SELECT * FROM " + HistorialCliente.HISTORIAL_CLIENTE_DB_NAME + " WHERE " + HistorialCliente.CLIENTE_CODIGO_DB_NAME + "=? ORDER BY "+HistorialCliente.CODIGO_DB_NAME+" DESC";
     private final String DPI_CLIENTE = "SELECT " + HistorialCliente.PDFDPI_DB_NAME + " FROM " + HistorialCliente.HISTORIAL_CLIENTE_DB_NAME + " WHERE " + HistorialCliente.CODIGO_DB_NAME + "= ?";
 
     private static Connection connection = Conexion.getInstance();

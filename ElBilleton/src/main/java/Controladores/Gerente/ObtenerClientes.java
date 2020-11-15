@@ -31,6 +31,7 @@ public class ObtenerClientes extends HttpServlet {
             if (request.getSession().getAttribute("user") == null) {
                 response.sendRedirect(request.getContextPath() + "/Login");
             }
+            
             ArrayList<Cliente> listaClientes;
             String codigo = request.getParameter("campo");
 
@@ -42,7 +43,6 @@ public class ObtenerClientes extends HttpServlet {
 
             request.setAttribute("listaClientes", listaClientes);
             String opcion = request.getParameter("opcion");
-            System.out.println("opcion "+opcion);
 
             switch (opcion) {
                 case "0":

@@ -8,10 +8,11 @@ package Modelos.Historial;
 import Modelos.Conexion.Conexion;
 import Objetos.Historiales.HistorialCajero;
 import Objetos.Usuarios.Cajero;
-import Objetos.Usuarios.Gerente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,7 +22,8 @@ public class HistorialCajeroModel {
         //Constantes para base de datos
     private final String CREAR_HISTORIAL_CAJERO = "INSERT INTO " + HistorialCajero.HISTORIAL_CAJERO_DB_NAME + " (" + HistorialCajero.NOMBRE_DB_NAME + "," + HistorialCajero.TURNO_DB_NAME + "," + 
             HistorialCajero.DPI_DB_NAME + "," + HistorialCajero.DIRECCION_DB_NAME + "," + HistorialCajero.SEXO_DB_NAME + "," + HistorialCajero.PASSWORD_DB_NAME + "," + HistorialCajero.CAJERO_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
-
+    private final String HISTORIAL_CAJERO = "SELECT * FROM "+HistorialCajero.HISTORIAL_CAJERO_DB_NAME+" WHERE "+HistorialCajero.CAJERO_CODIGO_DB_NAME+" =? ORDER BY "+HistorialCajero.CODIGO_DB_NAME+" DESC";;
+    
     private static Connection connection = Conexion.getInstance();
     
     /**
@@ -44,6 +46,42 @@ public class HistorialCajeroModel {
         preSt.setLong(7, historial_cajero.getCodigo());
 
         preSt.executeUpdate();
+    }
+    
+    
+    /**
+     * Obtenemos el historial de cambios de un cajero en especifico
+     * @param codigo
+     * @return 
+     */
+    public ArrayList<HistorialCajero> obtenerHistorial(long codigo){
+        try {
+            PreparedStatement preSt = connection.prepareStatement(HISTORIAL_CAJERO);
+            preSt.setLong(1, codigo);
+            
+            ArrayList <HistorialCajero> listaHistorial = new ArrayList<>();
+            HistorialCajero historialCajero = null;
+            
+            ResultSet rs = preSt.executeQuery();
+            while (rs.next()) {
+                historialCajero = new HistorialCajero(
+                rs.getInt(HistorialCajero.CODIGO_DB_NAME),
+                rs.getString(HistorialCajero.NOMBRE_DB_NAME),
+                rs.getString(HistorialCajero.TURNO_DB_NAME),
+                rs.getString(HistorialCajero.DPI_DB_NAME),
+                rs.getString(HistorialCajero.DIRECCION_DB_NAME),
+                rs.getString(HistorialCajero.SEXO_DB_NAME),
+                rs.getString(HistorialCajero.PASSWORD_DB_NAME),
+                rs.getLong(HistorialCajero.CAJERO_CODIGO_DB_NAME)
+                );
+                listaHistorial.add(historialCajero);
+            }
+            
+           return listaHistorial;
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el historial de cajero "+e);
+            return null;
+        }
     }
     
 }

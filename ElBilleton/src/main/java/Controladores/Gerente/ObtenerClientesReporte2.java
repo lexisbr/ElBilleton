@@ -5,8 +5,12 @@
  */
 package Controladores.Gerente;
 
+import Modelos.Banco.LimitesGerenteModel;
+import Modelos.Usuario.ClienteModel;
+import Objetos.Banco.LimitesGerente;
+import Objetos.Usuarios.Cliente;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +21,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet(name = "CargarTablaUsuarios", urlPatterns = {"/CargarTablaUsuarios"})
-public class CargarTablaUsuarios extends HttpServlet {
+@WebServlet(name = "ObtenerClientesReporte2", urlPatterns = {"/ObtenerClientesReporte2"})
+public class ObtenerClientesReporte2 extends HttpServlet {
 
+    ClienteModel clienteModel = new ClienteModel();
+    LimitesGerenteModel limiteModel = new LimitesGerenteModel();
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -32,28 +38,18 @@ public class CargarTablaUsuarios extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (request.getSession().getAttribute("user") == null) {
-                response.sendRedirect(request.getContextPath() + "/Login");
-            }
-            String usuario = request.getParameter("usuario");
-            System.out.println("usuario "+usuario);
-            switch (usuario) {
-                case "CLIENTE":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerClientes?opcion=1");
-                    break;
-                case "CAJERO":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerCajeros?opcion=1");
-                    break;
-                case "GERENTE":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerGerentes");
-                    break;
-                default:
-                    break;
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error al cargar usuario "+e);
+            LimitesGerente limiteGerente = limiteModel.obtenerLimites();
+            
+            ArrayList<Cliente> listaClientes = clienteModel.conTransaccionesMayores(limiteGerente.getLimite_reporte2());
+            
+            request.setAttribute("listaClientes", listaClientes);
+            request.setAttribute("limite", limiteGerente.getLimite_reporte2());
+            request.getRequestDispatcher("/Gerente/Reporte2Clientes.jsp").forward(request, response);
+            
+        } catch (IOException | ServletException e) {
+            System.out.println("Error al cargar reporte 2 "+e);
         }
+        
     }
 
     /**

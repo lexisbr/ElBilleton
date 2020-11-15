@@ -5,10 +5,13 @@
  */
 package Controladores.Gerente;
 
+import Modelos.Historial.HistorialCajeroModel;
 import Modelos.Historial.HistorialClienteModel;
+import Modelos.Historial.HistorialGerenteModel;
+import Objetos.Historiales.HistorialCajero;
 import Objetos.Historiales.HistorialCliente;
+import Objetos.Historiales.HistorialGerente;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,24 +40,34 @@ public class ObtenerHistorialUsuario extends HttpServlet {
         try {
             String tipo = request.getParameter("tipo");
             Long codigo = Long.parseLong(request.getParameter("codigo"));
-            
+
             switch (tipo) {
                 case "cliente":
                     HistorialClienteModel historialCliente = new HistorialClienteModel();
 
-                    ArrayList<HistorialCliente> listaHistorial = historialCliente.obtenerHistorialCliente(codigo);
+                    ArrayList<HistorialCliente> listaHistorialCliente = historialCliente.obtenerHistorialCliente(codigo);
 
-                    request.setAttribute("listaHistorial", listaHistorial);
+                    request.setAttribute("listaHistorial", listaHistorialCliente);
                     request.getRequestDispatcher("/Gerente/Reporte1Cliente.jsp").forward(request, response);
-
                     break;
                 case "cajero":
+                    HistorialCajeroModel historialCajero = new HistorialCajeroModel();
+
+                    ArrayList<HistorialCajero> listaHistorialCajero = historialCajero.obtenerHistorial(codigo);
+                    
+                    request.setAttribute("listaHistorial", listaHistorialCajero);
+                    request.getRequestDispatcher("/Gerente/Reporte1Cajero.jsp").forward(request, response);
                     break;
                 case "gerente":
+                    HistorialGerenteModel historialGerente = new HistorialGerenteModel();
+                    
+                    ArrayList<HistorialGerente> listaHistorialGerente = historialGerente.obtenerHistorial(codigo);
+                    request.setAttribute("listaHistorial", listaHistorialGerente);
+                    request.getRequestDispatcher("/Gerente/Reporte1Gerente.jsp").forward(request, response);
                     break;
             }
         } catch (IOException | NumberFormatException | ServletException e) {
-            System.out.println("Error al cargar el historial en servlet "+e);
+            System.out.println("Error al cargar el historial en servlet " + e);
         }
 
     }

@@ -29,23 +29,36 @@ public class ObtenerCajeros extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (request.getSession().getAttribute("user") == null) {
+            if (request.getSession().getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/Login");
             }
-            ArrayList<Cajero> listaCajeros; 
-            String codigo = request.getParameter("campo");
             
-            if(codigo == null || (codigo != null && codigo.isEmpty())){
+            ArrayList<Cajero> listaCajeros;
+            String codigo = request.getParameter("campo");
+
+            if (codigo == null || (codigo != null && codigo.isEmpty())) {
                 listaCajeros = cajeroModel.obtenerCajeros();
-            }else{
+            } else {
                 listaCajeros = cajeroModel.obtenerCajerosFiltrando(Long.parseLong(codigo));
             }
-            
-            request.setAttribute("listaCajeros", listaCajeros);
-                
-            request.getRequestDispatcher("/Gerente/ActualizarTablaCajeros.jsp").forward(request, response);
 
-        } catch (NullPointerException | NumberFormatException |IOException | ServletException e) {
+            request.setAttribute("listaCajeros", listaCajeros);
+            String opcion = request.getParameter("opcion");
+
+            switch (opcion) {
+                case "0":
+                    request.setAttribute("opcion", 0);
+                    request.getRequestDispatcher("/Gerente/ActualizarTablaCajeros.jsp").forward(request, response);
+                    break;
+                case "1":
+                    request.setAttribute("opcion", 1);
+                    request.getRequestDispatcher("/Gerente/ActualizarTablaCajeros.jsp").forward(request, response);
+                    break;
+                default:
+                    break;
+            }
+
+        } catch (NullPointerException | NumberFormatException | IOException | ServletException e) {
             System.out.println("Error buscar cliente: " + e.getMessage());
         }
 
@@ -54,7 +67,7 @@ public class ObtenerCajeros extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
 }

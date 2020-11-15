@@ -35,6 +35,10 @@ public class CrearCajero extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            if (request.getSession().getAttribute("user") == null) {
+                response.sendRedirect(request.getContextPath() + "/Login");
+            }
+            
             String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String dpi = request.getParameter("dpi");

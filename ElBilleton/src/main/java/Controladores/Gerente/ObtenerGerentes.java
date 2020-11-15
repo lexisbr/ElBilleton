@@ -5,8 +5,10 @@
  */
 package Controladores.Gerente;
 
+import Modelos.Usuario.GerenteModel;
+import Objetos.Usuarios.Gerente;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +19,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet(name = "CargarTablaUsuarios", urlPatterns = {"/CargarTablaUsuarios"})
-public class CargarTablaUsuarios extends HttpServlet {
+@WebServlet(name = "ObtenerGerentes", urlPatterns = {"/ObtenerGerentes"})
+public class ObtenerGerentes extends HttpServlet {
 
+    GerenteModel gerenteModel = new GerenteModel();
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -32,27 +35,23 @@ public class CargarTablaUsuarios extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (request.getSession().getAttribute("user") == null) {
+            if (request.getSession().getAttribute("usuario") == null) {
                 response.sendRedirect(request.getContextPath() + "/Login");
             }
-            String usuario = request.getParameter("usuario");
-            System.out.println("usuario "+usuario);
-            switch (usuario) {
-                case "CLIENTE":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerClientes?opcion=1");
-                    break;
-                case "CAJERO":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerCajeros?opcion=1");
-                    break;
-                case "GERENTE":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerGerentes");
-                    break;
-                default:
-                    break;
+            String codigo = request.getParameter("campo");
+            ArrayList<Gerente> listaGerentes;
+            
+            if (codigo == null || (codigo != null && codigo.isEmpty())) {
+                listaGerentes = gerenteModel.obtenerGerentes();
+            } else {
+                listaGerentes = gerenteModel.obtenerGerentesFiltrando(Long.parseLong(codigo));
             }
-
-        } catch (IOException e) {
-            System.out.println("Error al cargar usuario "+e);
+            
+            request.setAttribute("listaGerentes", listaGerentes);
+            request.getRequestDispatcher("/Gerente/TablaGerentes.jsp").forward(request, response);
+            
+            
+        } catch (Exception e) {
         }
     }
 
@@ -68,5 +67,4 @@ public class CargarTablaUsuarios extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
-
 }

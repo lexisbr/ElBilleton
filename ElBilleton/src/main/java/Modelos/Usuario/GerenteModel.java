@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,7 +26,8 @@ import java.time.LocalTime;
 public class GerenteModel {
 
     //Constantes estaticas para base de datos
-    private final String GERENTE = "SELECT * FROM " + Gerente.GERENTE_DB_NAME;
+    private final String GERENTES = "SELECT * FROM " + Gerente.GERENTE_DB_NAME;
+    private final String GERENTES_FILTRO = "SELECT * FROM " + Gerente.GERENTE_DB_NAME + " WHERE " + Gerente.GERENTE_ID_DB_NAME + " LIKE CONCAT('%',?,'%')";
     private final String BUSCAR_GERENTE = "SELECT * FROM " + Gerente.GERENTE_DB_NAME + " WHERE " + Gerente.GERENTE_ID_DB_NAME + " =?";
     private final String TURNO_GERENTE = "SELECT turno FROM " + Gerente.GERENTE_DB_NAME + " WHERE " + Gerente.GERENTE_ID_DB_NAME + " =?";
     private final String CREAR_GERENTE_SIN_CODIGO = "INSERT INTO " + Gerente.GERENTE_DB_NAME + " (" + Gerente.NOMBRE_DB_NAME + "," + Gerente.TURNO_DB_NAME + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME
@@ -35,7 +37,7 @@ public class GerenteModel {
     private final String MODIFICAR_GERENTE = "UPDATE " + Gerente.GERENTE_DB_NAME + " SET " + Gerente.NOMBRE_DB_NAME + "=?,"
             + Gerente.TURNO_DB_NAME + "=?," + Gerente.DPI_DB_NAME + "=?," + Gerente.DIRECCION_DB_NAME + "=?," + Gerente.SEXO_DB_NAME + "=?,"
             + Gerente.PASSWORD_DB_NAME + "=? WHERE " + Gerente.GERENTE_ID_DB_NAME + " =?";
-    
+
     private static Connection connection = Conexion.getInstance();
 
     HistorialGerenteModel historialGerente = new HistorialGerenteModel();
@@ -143,19 +145,25 @@ public class GerenteModel {
             gerente.setPassword(Encriptador.desencriptar(gerente.getPassword()));
             return gerente;
 
-        } catch (NullPointerException |UnsupportedEncodingException | SQLException e) {
+        } catch (NullPointerException | UnsupportedEncodingException | SQLException e) {
             System.out.println("Error en gerente " + e);
             return null;
         }
-        
+
     }
-    
-     public void modificarGerente(Gerente gerente) throws SQLException{
+
+    /**
+     * Metodo para modificar la informacion del gerente
+     *
+     * @param gerente
+     * @throws SQLException
+     */
+    public void modificarGerente(Gerente gerente) throws SQLException {
         try {
             gerente.setPassword(Encriptador.encriptar(gerente.getPassword()));
             PreparedStatement preSt = connection.prepareStatement(MODIFICAR_GERENTE);
 
-           preSt.setString(1, gerente.getNombre());
+            preSt.setString(1, gerente.getNombre());
             preSt.setString(2, gerente.getTurno());
             preSt.setString(3, gerente.getDpi());
             preSt.setString(4, gerente.getDireccion());
@@ -165,7 +173,7 @@ public class GerenteModel {
             preSt.executeUpdate();
 
         } catch (UnsupportedEncodingException | SQLException e) {
-            System.out.println("Error en actualizar "+e);
+            System.out.println("Error en actualizar " + e);
         }
 
     }
@@ -180,7 +188,7 @@ public class GerenteModel {
      * @throws java.io.UnsupportedEncodingException
      */
     public Gerente validacionLogin(long codigo, String password) throws SQLException, UnsupportedEncodingException {
-         Gerente gerente = obtenerGerente(codigo);
+        Gerente gerente = obtenerGerente(codigo);
         try {
             if (gerente != null && gerente.getPassword().equals(password)) {
                 return gerente;
@@ -236,6 +244,68 @@ public class GerenteModel {
         }
 
         return false;
+    }
+
+    /**
+     * Se obtiene una lista con los gerentes que existen
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Gerente> obtenerGerentes() throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(GERENTES);
+            ResultSet result = preSt.executeQuery();
+            ArrayList<Gerente> listaGerente = new ArrayList<>();
+            Gerente gerente = null;
+            while (result.next()) {
+                gerente = new Gerente(
+                        result.getLong(Gerente.GERENTE_ID_DB_NAME),
+                        result.getString(Gerente.NOMBRE_DB_NAME),
+                        result.getString(Gerente.TURNO_DB_NAME),
+                        result.getString(Gerente.DPI_DB_NAME),
+                        result.getString(Gerente.DIRECCION_DB_NAME),
+                        result.getString(Gerente.SEXO_DB_NAME),
+                        result.getString(Gerente.PASSWORD_DB_NAME)
+                );
+                listaGerente.add(gerente);
+            }
+            return listaGerente;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener cajeros " + e);
+            return null;
+        }
+    }
+
+    public ArrayList obtenerGerentesFiltrando(long codigo) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(GERENTES_FILTRO);
+            preSt.setLong(1, codigo);
+            
+            ArrayList<Gerente> listaGerentes = new ArrayList<>();
+            Gerente gerente = null;
+            
+            ResultSet result = preSt.executeQuery();
+            
+            while (result.next()) {
+                gerente = new Gerente(
+                        result.getLong(Gerente.GERENTE_ID_DB_NAME),
+                        result.getString(Gerente.NOMBRE_DB_NAME),
+                        result.getString(Gerente.TURNO_DB_NAME),
+                        result.getString(Gerente.DPI_DB_NAME),
+                        result.getString(Gerente.DIRECCION_DB_NAME),
+                        result.getString(Gerente.SEXO_DB_NAME),
+                        result.getString(Gerente.PASSWORD_DB_NAME)
+                );
+                listaGerentes.add(gerente);
+            }
+            return listaGerentes;
+            
+        } catch (SQLException e) {
+            System.out.println("Error al obtener gerentes con filtro "+e);
+            return null;
+        }
     }
 
 }

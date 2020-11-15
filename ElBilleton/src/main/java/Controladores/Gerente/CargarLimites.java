@@ -30,6 +30,10 @@ public class CargarLimites extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            if (request.getSession().getAttribute("user") == null) {
+                response.sendRedirect(request.getContextPath() + "/Login");
+            }
+            
             LimitesGerente limites = (LimitesGerente) limiteModel.obtenerLimites();
 
             request.setAttribute("limites", limites);
@@ -46,6 +50,10 @@ public class CargarLimites extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            if (request.getSession().getAttribute("user") == null) {
+                response.sendRedirect(request.getContextPath() + "/Login");
+            }
+            
             LimitesGerente limites = (LimitesGerente) limiteModel.obtenerLimites();
             request.setAttribute("exito", 2);
             request.setAttribute("limites", limites);
