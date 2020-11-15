@@ -1,24 +1,20 @@
 <%-- 
-    Document   : CrearCuentaTablaClientes
-    Created on : 13/11/2020, 22:59:05
+    Document   : Reporte1Cliente
+    Created on : 14/11/2020, 22:04:52
     Author     : lex
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <!--Encabezado-->
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
-        <form action="ObtenerClientes" method="GET">
+        <form action="" method="GET">
             <input type="hidden" name="opcion" value="0">
-            <h2 class="title">Seleccionar cliente</h2>
+            <h2 class="title">Historial de cambios de cliente</h2>
             <hr>
-            
-            <div class="wrap">
-                <%@include file="SearchBar.html" %>
-            </div>
             <br>
-
             <div class="container">
                 <table class="table table-dark table-bordered">
                     <tr>
@@ -29,16 +25,16 @@
                         <th class="text-center">Sexo</th>
                         <th class="text-center">Fecha de nacimiento</th>
                     </tr>
-                    <c:forEach items="${listaClientes}" var="cliente">
+                    <c:forEach items="${listaHistorial}" var="historialCliente">
                     <tr>
-                        <td class="text-center">${cliente.getCodigo()}</td>
-                        <td class="text-center">${cliente.getNombre()}</td>
-                        <td class="text-center">${cliente.getDpi()}</td>
-                        <td class="text-center">${cliente.getDireccion()}</td>
-                        <td class="text-center">${cliente.getSexo()}</td>
-                        <td class="text-center">${cliente.getFecha_nacimiento()}</td>
+                        <td class="text-center">${historialCliente.getCliente_codigo()}</td>
+                        <td class="text-center">${historialCliente.getNombre()}</td>
+                        <td class="text-center">${historialCliente.getDpi()}</td>
+                        <td class="text-center">${historialCliente.getDireccion()}</td>
+                        <td class="text-center">${historialCliente.getSexo()}</td>
+                        <td class="text-center">${historialCliente.getFecha_nacimiento()}</td>
                         <td>
-                            <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/Gerente/CrearCuenta.jsp?cliente_codigo=${cliente.getCodigo()}">Crear cuenta</a>
+                            <a href="${pageContext.request.contextPath}/MostrarDPIHistorial?codigo=${historialCliente.getCodigo()}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Obtener DPI</a>
                         </td>
                     </tr>
                     </c:forEach>

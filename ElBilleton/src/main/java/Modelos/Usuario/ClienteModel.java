@@ -5,14 +5,12 @@
  */
 package Modelos.Usuario;
 
+import Clases.DuplicarPDF;
 import Clases.Encriptador;
-import Modelos.Banco.CuentaModel;
 import Modelos.Conexion.Conexion;
 import Modelos.Historial.HistorialClienteModel;
-import Objetos.Banco.Cuenta;
-import Objetos.Historiales.HistorialCliente;
 import Objetos.Usuarios.Cliente;
-import Objetos.Usuarios.Gerente;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
@@ -21,7 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import javax.websocket.Decoder;
 
 /**
  *
@@ -55,7 +52,13 @@ public class ClienteModel {
      * @throws SQLException
      */
     public void agregarClienteArchivo(Cliente cliente) throws SQLException, UnsupportedEncodingException {
+
         try {
+            DuplicarPDF crearPDF = new DuplicarPDF(cliente.getPdfDPI());
+
+            InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+            InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+            
             PreparedStatement preSt = connection.prepareStatement(CREAR_CLIENTE_CON_CODIGO, Statement.RETURN_GENERATED_KEYS);
 
             //Se encripta la password
@@ -67,11 +70,11 @@ public class ClienteModel {
             preSt.setString(4, cliente.getDireccion());
             preSt.setString(5, cliente.getSexo());
             preSt.setDate(6, cliente.getFecha_nacimiento());
-            preSt.setBlob(7, cliente.getPdfDPI());
+            preSt.setBlob(7, pdf1);
             preSt.setString(8, cliente.getPassword());
 
             preSt.executeUpdate();
-
+            cliente.setPdfDPI(pdf2);
             historial_cliente.agregarHistorialCliente(cliente);
 
         } catch (NullPointerException | UnsupportedEncodingException | SQLException e) {
@@ -254,7 +257,7 @@ public class ClienteModel {
      * @param codigoCliente
      * @throws SQLException
      */
-    public void modificarCliente(Cliente cliente) throws SQLException{
+    public void modificarCliente(Cliente cliente) throws SQLException {
         try {
             cliente.setPassword(Encriptador.encriptar(cliente.getPassword()));
             PreparedStatement preSt = connection.prepareStatement(ACTUALIZAR_CLIENTE);
@@ -270,7 +273,7 @@ public class ClienteModel {
             preSt.executeUpdate();
 
         } catch (UnsupportedEncodingException | SQLException e) {
-            System.out.println("Error en actualizar "+e);
+            System.out.println("Error en actualizar " + e);
         }
 
     }

@@ -6,15 +6,16 @@
 package Controladores.Gerente;
 
 import Clases.CrearArchivo;
+import Clases.DuplicarPDF;
 import Modelos.Historial.HistorialClienteModel;
 import Modelos.Usuario.ClienteModel;
 import Objetos.Usuarios.Cliente;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -33,11 +34,11 @@ public class ModificarCliente extends HttpServlet {
 
     ClienteModel clienteModel = new ClienteModel();
     HistorialClienteModel historialCliente = new HistorialClienteModel();
+    DuplicarPDF crearPDF;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try {
             Cliente cliente;
             CrearArchivo obtenerPdf = new CrearArchivo();
@@ -50,15 +51,30 @@ public class ModificarCliente extends HttpServlet {
             String password = request.getParameter("password");
 
             Part archivo = request.getPart("file");
-             if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
-                 
-            if (archivo != null && archivo.getSize() > 0) {
-                InputStream pdfDpi = obtenerPdf.obtenerArchivo("file", request);
-                cliente = new Cliente(codigo, nombre, dpi, direccion, sexo, fecha_nacimiento, pdfDpi, password);
-            } else {
-                cliente = new Cliente(codigo, nombre, dpi, direccion, sexo, fecha_nacimiento, clienteModel.obtenerDPI(codigo), password);
-            }
-                clienteModel.modificarCliente(cliente);
+            if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+
+                if (archivo != null && archivo.getSize() > 0) {
+                    InputStream pdfDpi = obtenerPdf.obtenerArchivo("file", request);
+                    crearPDF = new DuplicarPDF(pdfDpi);
+
+                    InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+                    InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+
+                    cliente = new Cliente(codigo, nombre, dpi, direccion, sexo, fecha_nacimiento, pdf1, password);
+                    clienteModel.modificarCliente(cliente);
+                    cliente.setPdfDPI(pdf2);
+                } else {
+                    InputStream pdfDpi = clienteModel.obtenerDPI(codigo);
+                    crearPDF = new DuplicarPDF(pdfDpi);
+
+                    InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+                    InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+
+                    cliente = new Cliente(codigo, nombre, dpi, direccion, sexo, fecha_nacimiento, pdf1, password);
+                    clienteModel.modificarCliente(cliente);
+                    cliente.setPdfDPI(pdf2);
+                }
+
                 historialCliente.agregarHistorialCliente(cliente);
                 request.setAttribute("cliente_codigo", codigo);
                 request.getRequestDispatcher("Gerente/ExitoModificarCliente.jsp").forward(request, response);

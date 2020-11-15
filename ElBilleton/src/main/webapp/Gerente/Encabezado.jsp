@@ -64,7 +64,7 @@
             </li>
             <li><a href="#">Reporte</a>
                 <ul class="submenu">
-                    <li><a href="">Reporte</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Gerente/Reporte1SeleccionarEntidad.jsp">Reporte</a></li>
                 </ul>
             </li>
             <li><a href="${pageContext.request.contextPath}/Logout">Cerrar Sesion</a></li>

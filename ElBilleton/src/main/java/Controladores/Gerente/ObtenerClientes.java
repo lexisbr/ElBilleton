@@ -31,20 +31,31 @@ public class ObtenerClientes extends HttpServlet {
             if (request.getSession().getAttribute("user") == null) {
                 response.sendRedirect(request.getContextPath() + "/Login");
             }
-            ArrayList<Cliente> listaClientes; 
+            ArrayList<Cliente> listaClientes;
             String codigo = request.getParameter("campo");
-            
-            if(codigo == null || (codigo != null && codigo.isEmpty())){
+
+            if (codigo == null || (codigo != null && codigo.isEmpty())) {
                 listaClientes = clienteModel.obtenerClientes();
-            }else{
+            } else {
                 listaClientes = clienteModel.obtenerClientesFiltrando(Long.parseLong(codigo));
             }
-            
-            request.setAttribute("listaClientes", listaClientes);
-                
-            request.getRequestDispatcher("/Gerente/CrearCuentaTablaClientes.jsp").forward(request, response);
 
-        } catch (NullPointerException | NumberFormatException |IOException | ServletException e) {
+            request.setAttribute("listaClientes", listaClientes);
+            String opcion = request.getParameter("opcion");
+            System.out.println("opcion "+opcion);
+
+            switch (opcion) {
+                case "0":
+                    request.getRequestDispatcher("/Gerente/CrearCuentaTablaClientes.jsp").forward(request, response);
+                    break;
+                case "1":
+                    request.getRequestDispatcher("/Gerente/Reporte1TablaClientes.jsp").forward(request, response);
+                    break;
+                default:
+                    break;
+            }
+
+        } catch (NullPointerException | NumberFormatException | IOException | ServletException e) {
             System.out.println("Error buscar cliente: " + e.getMessage());
         }
 
@@ -53,7 +64,7 @@ public class ObtenerClientes extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
 }

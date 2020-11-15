@@ -6,12 +6,15 @@
 package Controladores.Gerente;
 
 import Clases.CrearArchivo;
+import Clases.DuplicarPDF;
 import Modelos.Banco.CuentaModel;
 import Modelos.Historial.HistorialClienteModel;
 import Modelos.Historial.HistorialGerenteModel;
 import Modelos.Usuario.ClienteModel;
 import Objetos.Banco.Cuenta;
 import Objetos.Usuarios.Cliente;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,10 +38,12 @@ public class CrearCliente extends HttpServlet {
 
     ClienteModel clienteModel = new ClienteModel();
     CuentaModel cuentaModel = new CuentaModel();
+    DuplicarPDF crearPDF;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         try {
             CrearArchivo obtenerPdf = new CrearArchivo();
             String nombre = request.getParameter("nombre").trim();
@@ -51,10 +56,17 @@ public class CrearCliente extends HttpServlet {
 
             String monto = request.getParameter("monto");
             String fecha = request.getParameter("fecha");
-            if (!(nombre.trim().equals("")||direccion.trim().equals(""))) {
-                Cliente cliente = new Cliente(0, nombre, dpi, direccion, sexo, Date.valueOf(fecha_nacimiento), pdfDpi, password);
+            if (!(nombre.trim().equals("") || direccion.trim().equals(""))) {
+                crearPDF = new DuplicarPDF(pdfDpi);
+
+                InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+                InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+
+                Cliente cliente = new Cliente(0, nombre, dpi, direccion, sexo, Date.valueOf(fecha_nacimiento), pdf1, password);
                 long codigoGeneradoCliente = clienteModel.agregarCliente(cliente);
                 cliente.setCodigo(codigoGeneradoCliente);
+                cliente.setPdfDPI(pdf2);
+
                 HistorialClienteModel historialModel = new HistorialClienteModel();
                 historialModel.agregarHistorialCliente(cliente);
 
@@ -66,8 +78,8 @@ public class CrearCliente extends HttpServlet {
                 request.setAttribute("cliente_codigo", codigoGeneradoCliente);
 
                 request.getRequestDispatcher("Gerente/ExitoCrearCliente.jsp").forward(request, response);
-            }else{
-                  request.setAttribute("exito", 1);
+            } else {
+                request.setAttribute("exito", 1);
                 request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
             }
 

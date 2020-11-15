@@ -7,9 +7,10 @@
 <!DOCTYPE html>
 <html>
     <!--Encabezado-->
-    <%@include file="Encabezado.jsp" %>
+    <%@include file="Encabezado.jsp"%>
     <section class="contenido">
-        <form action="ObtenerClientesParaActualizar" method="GET">
+        <form action="ObtenerClientes" method="GET">
+            <input type="hidden" name="opcion" value="1">
             <h2 class="title">Seleccionar cliente</h2>
             <hr>
 
@@ -17,7 +18,6 @@
                 <%@include file="SearchBar.html" %>
             </div>
             <br>
-
             <div class="container">
                 <table class="table table-dark table-bordered">
                     <tr>
@@ -37,7 +37,7 @@
                             <td class="text-center">${cliente.getSexo()}</td>
                             <td class="text-center">${cliente.getFecha_nacimiento()}</td>
                             <td>
-                                <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerCliente?cliente_codigo=${cliente.getCodigo()}">Actualizar</a>
+                                <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerHistorialUsuario?codigo=${cliente.getCodigo()}&&tipo=cliente">Historial de cambios</a>
                             </td>
                         </tr>
                     </c:forEach>

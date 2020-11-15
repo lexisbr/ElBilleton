@@ -9,7 +9,7 @@
 <html>
    <%@include file="Encabezado.jsp" %>
       <!--Informacion de usuario-->
-      <section class="contenido" style="background-color: #00cc00">
+      <section class="contenidoExito" style="">
           <h2 class="title">Se han cargado los registros correctos</h2>
       </section>
     </body>

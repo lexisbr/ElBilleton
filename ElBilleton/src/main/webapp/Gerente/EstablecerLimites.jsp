@@ -15,7 +15,7 @@
             <div class="centrar">
                  <c:if test="${exito==2}">
                         <div class="form-group" style="background-color: #cc0000;">
-                            <h1 class="title">El limite 1 no cumple con la condicion de ser menor</h1>
+                            <h1 class="title" style="color: #ffffff">El limite 1 no cumple con la condicion de ser menor</h1>
                         </div>
                     </c:if>
                 <form action="${pageContext.request.contextPath}/ModificarLimites" method="POST" class="form-control" style="width: 500px; height: 400px; background: #003366;">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group">
                         <h1 class="subtitulo">Limite de Reporte "Ver clientes con transacciones monetarias sumadas mayores a un limite"</h1>
-                        <input type="number" name="limite2" class="form-control" min="0" placeholder="Limte mayor"  value="${limites.getLimite_reporte3()}" required="" step=".01"/>
+                        <input type="number" name="limite2" class="form-control" min="0" placeholder="Limite mayor"  value="${limites.getLimite_reporte3()}" required="" step=".01"/>
                     </div>
                     <br>
                     <input type="submit" value="Guardar" class="guardar"/>
