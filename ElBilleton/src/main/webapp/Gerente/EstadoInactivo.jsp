@@ -20,7 +20,8 @@
             <h2 class="title">Ingreso algun espacio vacio en los campos</h2>
         </section>
     </c:if>
-    
-    
-    </body>
+   
+
+
+</body>
 </html>

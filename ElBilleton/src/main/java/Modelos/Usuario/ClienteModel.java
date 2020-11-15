@@ -44,7 +44,7 @@ public class ClienteModel {
     private final String REPORTE_2 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.monto>? GROUP BY C.codigo";
     private final String REPORTE_3 = "SELECT C.*,SUM(T.monto) AS monto FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo GROUP BY C.codigo HAVING SUM(T.monto)>?";
     private final String REPORTE_4 = "SELECT C.*,SUM(CU.monto) AS monto FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo GROUP BY C.codigo ORDER BY monto DESC LIMIT 10";
-    private final String REPORTE_5 = "SELECT * FROM "+ Cliente.CLIENTE_DB_NAME +" WHERE codigo NOT IN (SELECT C.codigo FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN "+ Cuenta.CUENTA_DB_NAME +" CU ON CU.cliente_codigo=C.codigo RIGHT JOIN " +Transaccion.TRANSACCION_DB_NAME +" T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN fecha1=? AND fecha2=? GROUP BY C.codigo )";
+    private final String REPORTE_5 = "SELECT * FROM "+ Cliente.CLIENTE_DB_NAME +" WHERE codigo NOT IN (SELECT C.codigo FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN "+ Cuenta.CUENTA_DB_NAME +" CU ON CU.cliente_codigo=C.codigo RIGHT JOIN " +Transaccion.TRANSACCION_DB_NAME +" T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo )";
     
     private static Connection connection = Conexion.getInstance();
 

@@ -68,6 +68,7 @@
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte2">Clientes con transacciones mayores a limite 1</a></li>
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte3">Clientes con transacciones sumadas mayores a limite 2</a></li>
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte4">10 Clientes con mas dinero</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Gerente/IntervaloReporte.jsp?opcion=0">Clientes sin transacciones</a></li>
                 </ul>
             </li>
             <li><a href="${pageContext.request.contextPath}/Logout">Cerrar Sesion</a></li>
