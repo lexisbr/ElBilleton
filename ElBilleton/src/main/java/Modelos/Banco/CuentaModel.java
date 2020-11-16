@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,6 +22,8 @@ public class CuentaModel {
 
     private final String CREAR_CUENTA_SIN_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?)";
     private final String CREAR_CUENTA_CON_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.CUENTA_ID_DB_NAME + "," + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?,?)";
+    private final String OBTENER_CUENTA = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=? && " + Cuenta.CLIENTE_CODIGO_DB_NAME + "!=?";
+    private final String OBTENER_CUENTAS = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? ";
 
     private static Connection connection = Conexion.getInstance();
 
@@ -83,6 +86,67 @@ public class CuentaModel {
         }
 
         return -1;
+    }
+
+    /**
+     * Obtiene cuenta ingresada por el cliente
+     *
+     * @param codigo
+     * @return
+     */
+    public Cuenta obtenerCuenta(long codigo, long cliente_codigo) {
+
+        try {
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTA);
+            preSt.setLong(1, codigo);
+            preSt.setLong(2, cliente_codigo);
+
+            Cuenta cuenta = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cuenta = new Cuenta(
+                        rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                        rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                        rs.getDouble(Cuenta.MONTO_DB_NAME),
+                        rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+            }
+            return cuenta;
+
+        } catch (SQLException e) {
+            System.out.println("Cuenta no existe " + e);
+            return null;
+        }
+    }
+
+    public ArrayList<Cuenta> obtenerCuentas(long cliente_codigo) {
+
+        try {
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTAS);
+            preSt.setLong(1, cliente_codigo);
+
+            ArrayList<Cuenta> listaCuentas = new ArrayList<>();
+            Cuenta cuenta = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cuenta = new Cuenta(
+                        rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                        rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                        rs.getDouble(Cuenta.MONTO_DB_NAME),
+                        rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+                listaCuentas.add(cuenta);
+            }
+            return listaCuentas;
+            
+        } catch (SQLException e) {
+            System.out.println("Cuenta no existe " + e);
+            return null;
+        }
     }
 
 }

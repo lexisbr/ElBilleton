@@ -72,8 +72,8 @@ public class Login extends HttpServlet {
                 Cliente cliente = clienteModel.validacionLogin(username, password);
                 if (cliente != null) {
                     request.getSession().setAttribute("user", username);
-                    System.out.println("Ingresa cliente" + username);
-                    // response.sendRedirect(request.getContextPath()+"");
+                    request.getSession().setAttribute("usuario", cliente);
+                    response.sendRedirect(request.getContextPath() + "/Cliente/IndexCliente.jsp");
                 } else {
                     request.setAttribute("message", 0);
                     request.getRequestDispatcher("/Login.jsp").forward(request, response);

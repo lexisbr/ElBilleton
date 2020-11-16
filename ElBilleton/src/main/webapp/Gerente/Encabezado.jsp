@@ -10,17 +10,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <!DOCTYPE html>
 <head>
-    <script type="text/javascript">
-        function noespacios() {
-            var er = new RegExp(/\s/);
-            var nombre = document.getElementById('nombre').value;
-            if (er.test(nombre)) {
-                alert('No se permiten espacios');
-                return false;
-            } else
-                return true;
-        }
-    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerente | El Billeton</title>
