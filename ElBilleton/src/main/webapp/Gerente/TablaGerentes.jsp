@@ -10,7 +10,14 @@
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
         <form action="ObtenerGerentes" method="GET">
-            <h2 class="title">Seleccionar gerente</h2>
+            <c:if test="${opcion==0}">
+                <h2 class="title">Seleccionar gerente</h2>
+                <input type="hidden" name="opcion" value="0">
+            </c:if>
+            <c:if test="${opcion==1}">
+                <h2 class="title">Visualizar gerentes</h2>
+                <input type="hidden" name="opcion" value="1">
+            </c:if>
             <hr>
             <div class="wrap">
                 <%@include file="SearchBar.html" %>
@@ -27,17 +34,19 @@
                         <th class="text-center">Sexo</th>
                     </tr>
                     <c:forEach items="${listaGerentes}" var="gerente">
-                    <tr>
-                        <td class="text-center">${gerente.getCodigo()}</td>
-                        <td class="text-center">${gerente.getNombre()}</td>
-                        <td class="text-center">${gerente.getTurno()}</td>
-                        <td class="text-center">${gerente.getDpi()}</td>
-                        <td class="text-center">${gerente.getDireccion()}</td>
-                        <td class="text-center">${gerente.getSexo()}</td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerHistorialUsuario?codigo=${gerente.getCodigo()}&&tipo=gerente">Historial de cambios</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="text-center">${gerente.getCodigo()}</td>
+                            <td class="text-center">${gerente.getNombre()}</td>
+                            <td class="text-center">${gerente.getTurno()}</td>
+                            <td class="text-center">${gerente.getDpi()}</td>
+                            <td class="text-center">${gerente.getDireccion()}</td>
+                            <td class="text-center">${gerente.getSexo()}</td>
+                             <c:if test="${opcion==0}">
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerHistorialUsuario?codigo=${gerente.getCodigo()}&&tipo=gerente">Historial de cambios</a>
+                            </td>
+                            </c:if>
+                        </tr>
                     </c:forEach>
                 </table>
             </div>

@@ -45,7 +45,7 @@ public class CargarTablaUsuarios extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/ObtenerCajeros?opcion=1");
                     break;
                 case "GERENTE":
-                    response.sendRedirect(request.getContextPath() + "/ObtenerGerentes");
+                    response.sendRedirect(request.getContextPath() + "/ObtenerGerentes?opcion=0");
                     break;
                 default:
                     break;

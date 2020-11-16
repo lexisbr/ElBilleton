@@ -49,7 +49,7 @@
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=8">Cliente</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=9">Cajero</a></li>
-                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=10">Mis datos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=10">Gerente</a></li>
                 </ul>
             </li>
             <li><a href="#" style="">Opciones</a>

@@ -25,9 +25,9 @@
             HistorialGerenteModel historialModel = new HistorialGerenteModel();
             
             Gerente gerente = new Gerente(1, "Lexis", "VESPERTINO", "1213213", "29 AVENIDA", "MASCULINO", "123456");
-            long codigoGenerado = gerenteModel.agregarGerenteArchivo(gerente);
+            //long codigoGenerado = gerenteModel.agregarGerenteArchivo(gerente);
             
-            gerente.setCodigo(codigoGenerado);
+            //gerente.setCodigo(codigoGenerado);
             historialModel.agregarHistorialGerente(gerente);
 
         } catch (Exception e) {

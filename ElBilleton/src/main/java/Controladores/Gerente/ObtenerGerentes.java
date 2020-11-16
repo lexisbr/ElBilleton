@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ObtenerGerentes extends HttpServlet {
 
     GerenteModel gerenteModel = new GerenteModel();
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -40,17 +41,26 @@ public class ObtenerGerentes extends HttpServlet {
             }
             String codigo = request.getParameter("campo");
             ArrayList<Gerente> listaGerentes;
-            
+
             if (codigo == null || (codigo != null && codigo.isEmpty())) {
                 listaGerentes = gerenteModel.obtenerGerentes();
             } else {
                 listaGerentes = gerenteModel.obtenerGerentesFiltrando(Long.parseLong(codigo));
             }
-            
+
             request.setAttribute("listaGerentes", listaGerentes);
-            request.getRequestDispatcher("/Gerente/TablaGerentes.jsp").forward(request, response);
-            
-            
+            String opcion = request.getParameter("opcion");
+            switch (opcion) {
+                case "0":
+                    request.setAttribute("opcion", 0);
+                    request.getRequestDispatcher("/Gerente/TablaGerentes.jsp").forward(request, response);
+                    break;
+                case "1":
+                    request.setAttribute("opcion", 1);
+                    request.getRequestDispatcher("/Gerente/TablaGerentes.jsp").forward(request, response);
+                    break;
+            }
+
         } catch (Exception e) {
         }
     }

@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-     <!--Encabezado-->
+    <!--Encabezado-->
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
         <form action="" method="GET">
@@ -28,15 +28,15 @@
                         <th class="text-center">Sexo</th>
                     </tr>
                     <c:forEach items="${listaHistorial}" var="gerente">
-                    <tr>
-                        <td class="text-center">${gerente.getCodigo()}</td>
-                        <td class="text-center">${gerente.getGerente_codigo()}</td>
-                        <td class="text-center">${gerente.getNombre()}</td>
-                        <td class="text-center">${gerente.getTurno()}</td>
-                        <td class="text-center">${gerente.getDpi()}</td>
-                        <td class="text-center">${gerente.getDireccion()}</td>
-                        <td class="text-center">${gerente.getSexo()}</td>
-                    </tr>
+                        <tr>
+                            <td class="text-center">${gerente.getCodigo()}</td>
+                            <td class="text-center">${gerente.getGerente_codigo()}</td>
+                            <td class="text-center">${gerente.getNombre()}</td>
+                            <td class="text-center">${gerente.getTurno()}</td>
+                            <td class="text-center">${gerente.getDpi()}</td>
+                            <td class="text-center">${gerente.getDireccion()}</td>
+                            <td class="text-center">${gerente.getSexo()}</td>
+                        </tr>
                     </c:forEach>
                 </table>
             </div>

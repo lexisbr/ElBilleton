@@ -54,6 +54,10 @@ public class ObtenerCajeros extends HttpServlet {
                     request.setAttribute("opcion", 1);
                     request.getRequestDispatcher("/Gerente/ActualizarTablaCajeros.jsp").forward(request, response);
                     break;
+                case "2":
+                    request.setAttribute("opcion", 2);
+                    request.getRequestDispatcher("/Gerente/ActualizarTablaCajeros.jsp").forward(request, response);
+                    break;
                 default:
                     break;
             }
