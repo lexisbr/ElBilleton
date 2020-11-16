@@ -62,7 +62,7 @@
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoArchivo">Cargar archivos</a></li>
                 </ul>
             </li>
-            <li><a href="#" style="width: 240px;">Reportes</a>
+            <li><a href="#" style="width: 280px;">Reportes</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/Gerente/Reporte1SeleccionarEntidad.jsp">Historial de cambios</a></li>
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte2">Clientes con transacciones mayores a limite 1</a></li>
@@ -70,6 +70,7 @@
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte4">10 Clientes con mas dinero</a></li>
                     <li><a href="${pageContext.request.contextPath}/Gerente/IntervaloReporte.jsp?opcion=0">Clientes sin transacciones</a></li>
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesParaReporte6">Historial de transacciones por cliente</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Gerente/IntervaloReporte.jsp?opcion=1">Cajero con mas transacciones</a></li>
                 </ul>
             </li>
             <li><a href="${pageContext.request.contextPath}/Logout">Cerrar Sesion</a></li>

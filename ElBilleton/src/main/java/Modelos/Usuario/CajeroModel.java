@@ -8,11 +8,12 @@ package Modelos.Usuario;
 import Clases.Encriptador;
 import Modelos.Conexion.Conexion;
 import Modelos.Historial.HistorialCajeroModel;
+import Objetos.Banco.Transaccion;
 import Objetos.Usuarios.Cajero;
 import Objetos.Usuarios.Cliente;
-import Objetos.Usuarios.Gerente;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +37,8 @@ public class CajeroModel {
     private final String MODIFICAR_CAJERO = "UPDATE " + Cajero.CAJERO_DB_NAME + " SET " + Cajero.NOMBRE_DB_NAME + "=?,"
             + Cajero.TURNO_DB_NAME + "=?," + Cajero.DPI_DB_NAME + "=?," + Cajero.DIRECCION_DB_NAME + "=?," + Cajero.SEXO_DB_NAME + "=?,"
             + Cajero.PASSWORD_DB_NAME + "=? WHERE codigo=?";
+    private final String CAJERO_MAS_TRANSACCIONES = "SELECT COUNT(*) AS transacciones,C.* FROM " + Cajero.CAJERO_DB_NAME + " C INNER JOIN " + Transaccion.TRANSACCION_DB_NAME
+            + " T ON C.codigo=T.cajero_codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1";
     
     
     private static Connection connection = Conexion.getInstance();
@@ -142,6 +145,41 @@ public class CajeroModel {
             return cajero;
 
         } catch (NullPointerException | UnsupportedEncodingException | SQLException e) {
+            System.out.println("Error en cajero " + e);
+        }
+        return null;
+    }
+    /**
+     * Obtenemos el cajero que mas transacciones ha realizado en un intervalo de tiempo
+     *
+     * @param codigo
+     * @return
+     * @throws SQLException
+     * @throws java.io.UnsupportedEncodingException
+     */
+    public Cajero conMasTransacciones(Date fecha1, Date fecha2) throws SQLException, UnsupportedEncodingException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CAJERO_MAS_TRANSACCIONES);
+            preSt.setDate(1, fecha1);
+            preSt.setDate(2, fecha2);
+            ResultSet result = preSt.executeQuery();
+
+            Cajero cajero = null;
+
+            while (result.next()) {
+                cajero = new Cajero(
+                        result.getLong(Cajero.CAJERO_ID_DB_NAME),
+                        result.getString(Cajero.NOMBRE_DB_NAME),
+                        result.getString(Cajero.TURNO_DB_NAME),
+                        result.getString(Cajero.DPI_DB_NAME),
+                        result.getString(Cajero.DIRECCION_DB_NAME),
+                        result.getString(Cajero.SEXO_DB_NAME),
+                        result.getString(Cajero.PASSWORD_DB_NAME)
+                );
+            }
+            return cajero;
+
+        } catch (NullPointerException | SQLException e) {
             System.out.println("Error en cajero " + e);
         }
         return null;

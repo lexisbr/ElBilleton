@@ -5,12 +5,12 @@
  */
 package Controladores.Gerente;
 
+import Modelos.Usuario.CajeroModel;
 import Modelos.Usuario.ClienteModel;
+import Objetos.Usuarios.Cajero;
 import Objetos.Usuarios.Cliente;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,6 +46,12 @@ public class CargarReporteIntervalo extends HttpServlet {
 
                         break;
                     case "1":
+                        CajeroModel cajeroModel = new CajeroModel();
+                        
+                        Cajero cajero = cajeroModel.conMasTransacciones(fecha1, fecha2);
+                        
+                        request.setAttribute("cajero", cajero);
+                        request.getRequestDispatcher("/Gerente/CajeroReporte7.jsp").forward(request, response);
                         break;
 
                 }
