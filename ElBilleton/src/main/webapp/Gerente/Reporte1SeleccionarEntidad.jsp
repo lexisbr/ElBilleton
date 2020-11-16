@@ -16,12 +16,12 @@
                     <hr>
                 <form action="${pageContext.request.contextPath}/CargarTablaUsuarios" class="form-control" method="GET" enctype="multipart/form-data" style="width: 500px; height: 200px; background: #003366;">
                      <div class="form-group">
-                        <select class="sexo" name="usuario" required="">
-                            <option value="">Usuarios</option>
-                            <option value="CLIENTE">Cliente</option>
-                            <option value="CAJERO">Cajero</option>
-                            <option value="GERENTE">Gerente</option>
-                        </select>
+                         <select class="sexo" name="usuario" required="">
+                             <option value="">Usuarios</option>
+                             <option value="CLIENTE">Cliente</option>
+                             <option value="CAJERO">Cajero</option>
+                             <option value="GERENTE">Gerente</option>
+                         </select>
                     </div>
                     <br>
                     <input type="submit" value="Continuar" class="guardar" name="guardar"/>

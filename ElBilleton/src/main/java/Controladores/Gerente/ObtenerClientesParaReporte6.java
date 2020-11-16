@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet("/ObtenerClientesParaActualizar")
-public class ObtenerClientesParaActualizar extends HttpServlet {
+@WebServlet("/ObtenerClientesParaReporte6")
+public class ObtenerClientesParaReporte6 extends HttpServlet {
 
     ClienteModel clienteModel = new ClienteModel();
 
@@ -31,18 +31,29 @@ public class ObtenerClientesParaActualizar extends HttpServlet {
             if (request.getSession().getAttribute("user") == null) {
                 response.sendRedirect(request.getContextPath() + "/Login");
             }
-            ArrayList<Cliente> listaClientes;
-            String codigo = request.getParameter("campo");
+            ArrayList<Cliente> listaClientes = null;
+            String campo = request.getParameter("campo");
+            String filtro = request.getParameter("filtro");
 
-            if (codigo == null || (codigo != null && codigo.isEmpty())) {
+            if (campo == null || (campo != null && campo.isEmpty())) {
                 listaClientes = clienteModel.obtenerClientes();
             } else {
-                listaClientes = clienteModel.obtenerClientesFiltrando(Long.parseLong(codigo));
+                switch (filtro) {
+                    case "NOMBRE":
+                        listaClientes = clienteModel.obtenerClientesFiltrandoNombre(campo);
+                        request.setAttribute("listaClientes", listaClientes);
+                        break;
+                    case "DINERO":
+                        listaClientes = clienteModel.obtenerClientesFiltrandoMonto(campo);
+                        request.setAttribute("listaClientes", listaClientes);
+                        break;
+                }
+
             }
 
             request.setAttribute("listaClientes", listaClientes);
-            request.setAttribute("opcion", 1);
-            request.getRequestDispatcher("/Gerente/ActualizarTablaClientes.jsp").forward(request, response);
+            request.setAttribute("opcion", 0);
+            request.getRequestDispatcher("/Gerente/TablaClientesReporte6.jsp").forward(request, response);
 
         } catch (NullPointerException | NumberFormatException | IOException | ServletException e) {
             System.out.println("Error buscar cliente: " + e.getMessage());

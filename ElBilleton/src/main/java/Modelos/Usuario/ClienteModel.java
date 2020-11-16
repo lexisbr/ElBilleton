@@ -32,6 +32,8 @@ public class ClienteModel {
     //Constantes estaticas para base de datos
     private final String CLIENTES = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME;
     private final String CLIENTES_FILTRO = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + " LIKE CONCAT('%',?,'%')";
+    private final String CLIENTES_FILTRO_NOMBRE = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.NOMBRE_DB_NAME + " LIKE CONCAT('%',?,'%')";
+    private final String CLIENTES_FILTRO_MONTO = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON CU.cliente_codigo=C.codigo WHERE CU.monto>? GROUP BY C.codigo ORDER BY C.nombre DESC";
     private final String BUSCAR_CLIENTE = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + " =?";
     private final String CREAR_CLIENTE_SIN_CODIGO = "INSERT INTO " + Cliente.CLIENTE_DB_NAME + " (" + Cliente.NOMBRE_DB_NAME + "," + Cliente.DPI_DB_NAME + "," + Cliente.DIRECCION_DB_NAME + "," + Cliente.SEXO_DB_NAME
             + "," + Cliente.FECHA_NACIMIENTO_DB_NAME + "," + Cliente.PDFDPI_DB_NAME + "," + Cliente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
@@ -44,8 +46,8 @@ public class ClienteModel {
     private final String REPORTE_2 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.monto>? GROUP BY C.codigo";
     private final String REPORTE_3 = "SELECT C.*,SUM(T.monto) AS monto FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo GROUP BY C.codigo HAVING SUM(T.monto)>?";
     private final String REPORTE_4 = "SELECT C.*,SUM(CU.monto) AS monto FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo GROUP BY C.codigo ORDER BY monto DESC LIMIT 10";
-    private final String REPORTE_5 = "SELECT * FROM "+ Cliente.CLIENTE_DB_NAME +" WHERE codigo NOT IN (SELECT C.codigo FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN "+ Cuenta.CUENTA_DB_NAME +" CU ON CU.cliente_codigo=C.codigo RIGHT JOIN " +Transaccion.TRANSACCION_DB_NAME +" T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo )";
-    
+    private final String REPORTE_5 = "SELECT * FROM " + Cliente.CLIENTE_DB_NAME + " WHERE codigo NOT IN (SELECT C.codigo FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON CU.cliente_codigo=C.codigo RIGHT JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo )";
+
     private static Connection connection = Conexion.getInstance();
 
     HistorialClienteModel historial_cliente = new HistorialClienteModel();
@@ -233,6 +235,77 @@ public class ClienteModel {
         return null;
     }
 
+
+    /**
+     * Metodo para obtener una lista con los clientes filtrando por monto de dinero
+     *
+     * @return
+     */
+    public ArrayList<Cliente> obtenerClientesFiltrandoMonto(String monto) {
+        try {
+            ArrayList<Cliente> listaClientes = new ArrayList<>();
+            double dinero = Double.parseDouble(monto);
+            PreparedStatement preSt = connection.prepareStatement(CLIENTES_FILTRO_MONTO);
+            preSt.setDouble(1, dinero);
+            ResultSet result = preSt.executeQuery();
+
+            Cliente cliente = null;
+
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CLIENTE_ID_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getDate(Cliente.FECHA_NACIMIENTO_DB_NAME),
+                        result.getBinaryStream(Cliente.PDFDPI_DB_NAME),
+                        result.getString(Cliente.PASSWORD_DB_NAME)
+                );
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        } catch (NumberFormatException | SQLException e) {
+            System.out.println("Error en lista de clientes " + e);
+        }
+        return null;
+    }
+    /**
+     * Metodo para obtener una lista con los clientes filtrando por nombre
+     *
+     * @return
+     */
+    public ArrayList<Cliente> obtenerClientesFiltrandoNombre(String nombre) {
+        try {
+            ArrayList<Cliente> listaClientes = new ArrayList<>();
+
+            PreparedStatement preSt = connection.prepareStatement(CLIENTES_FILTRO_NOMBRE);
+            preSt.setString(1, nombre);
+            ResultSet result = preSt.executeQuery();
+
+            Cliente cliente = null;
+
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CLIENTE_ID_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getDate(Cliente.FECHA_NACIMIENTO_DB_NAME),
+                        result.getBinaryStream(Cliente.PDFDPI_DB_NAME),
+                        result.getString(Cliente.PASSWORD_DB_NAME)
+                );
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+
+        } catch (SQLException e) {
+            System.out.println("Error en lista de clientes " + e);
+        }
+        return null;
+    }
     /**
      * Devuelve el archivo pdf del dpi
      *
@@ -403,12 +476,12 @@ public class ClienteModel {
             return null;
         }
     }
-    
-     public ArrayList<Cliente> sinTransacciones(Date fecha1, Date fecha2) {
+
+    public ArrayList<Cliente> sinTransacciones(Date fecha1, Date fecha2) {
         try {
             PreparedStatement preSt = connection.prepareStatement(REPORTE_5);
-            preSt.setDate(1,fecha1);
-            preSt.setDate(2,fecha2);
+            preSt.setDate(1, fecha1);
+            preSt.setDate(2, fecha2);
 
             ArrayList<Cliente> listaClientes = new ArrayList<>();
             Cliente cliente = null;

@@ -13,7 +13,7 @@
     <section class="contenido">
         <form action="" method="GET">
             <input type="hidden" name="opcion" value="0">
-            <h2 class="title">Clientes con transacciones mayores al limite</h2>
+            <h2 class="title">Transacciones del Cliente</h2>
             <hr>
             <div class="form-group" style="margin-left: -40px;">
                 <h1 style="font-size: 35px;">Cliente: ${cliente_codigo}</h1>

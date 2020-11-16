@@ -9,10 +9,16 @@
     <!--Encabezado-->
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
-        <form action="ObtenerClientesParaActualizar" method="GET">
+        <form action="ObtenerClientesParaReporte6" method="GET">
             <h2 class="title">Seleccionar cliente</h2>
             <hr>
-
+            <div class="wrap">
+                <select class="" name="filtro" required="">
+                    <option value="">Filtro</option>
+                    <option value="NOMBRE">Por nombre</option>
+                    <option value="DINERO">Mayor a cantidad de dinero</option>
+                </select>
+            </div>
             <div class="wrap">
                 <%@include file="SearchBar.html" %>
             </div>
@@ -36,17 +42,10 @@
                             <td class="text-center">${cliente.getDireccion()}</td>
                             <td class="text-center">${cliente.getSexo()}</td>
                             <td class="text-center">${cliente.getFecha_nacimiento()}</td>
-                            <c:if test="${opcion==0}">
                             <td>
                                 <input type="hidden" name="opcion" value="0">
                                 <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerTransaccionesReporte6?cliente_codigo=${cliente.getCodigo()}">Transacciones</a>
                             </td>
-                            </c:if> 
-                            <c:if test="${opcion==1}">
-                            <td>
-                                <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerCliente?cliente_codigo=${cliente.getCodigo()}">Actualizar</a>
-                            </td>
-                            </c:if> 
                         </tr>
                     </c:forEach>
                 </table>

@@ -231,12 +231,12 @@ public class GerenteModel {
         LocalTime horaActual = LocalTime.now();
         LocalTime horaInicio;
         LocalTime horaFinal;
-        if (turno.equals("MATUTINO")) {
+        if (turno.equalsIgnoreCase("MATUTINO")) {
             horaInicio = LocalTime.parse("00:00");
             horaFinal = LocalTime.parse("23:59");
             return horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual);
 
-        } else if (turno.equals("VESPERTINO")) {
+        } else if (turno.equalsIgnoreCase("VESPERTINO")) {
             horaInicio = LocalTime.parse("00:00");
             horaFinal = LocalTime.parse("23:59");
             return horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual);

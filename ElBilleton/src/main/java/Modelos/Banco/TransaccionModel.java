@@ -25,10 +25,13 @@ public class TransaccionModel {
 
     private final String CREAR_TRANSACCION_SIN_CODIGO = "INSERT INTO " + Transaccion.TRANSACCION_DB_NAME + " (" + Transaccion.FECHA_DB_NAME + "," + Transaccion.HORA_DB_NAME + "," + Transaccion.TIPO_DB_NAME + "," + Transaccion.MONTO_DB_NAME + "," + Transaccion.CUENTA_CODIGO_DB_NAME + "," + Transaccion.CAJERO_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?)";
     private final String CREAR_TRANSACCION_CON_CODIGO = "INSERT INTO " + Transaccion.TRANSACCION_DB_NAME + " (" + Transaccion.CODIGO_DB_NAME + "," + Transaccion.FECHA_DB_NAME + "," + Transaccion.HORA_DB_NAME + "," + Transaccion.TIPO_DB_NAME + "," + Transaccion.MONTO_DB_NAME + "," + Transaccion.CUENTA_CODIGO_DB_NAME + "," + Transaccion.CAJERO_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
-    private final String OBTENER_TRANSACCIONES_REPORTE2 = "SELECT T.*,CL."+Cliente.CLIENTE_ID_DB_NAME+" AS codigo_cliente FROM "+Transaccion.TRANSACCION_DB_NAME+" T INNER JOIN "+Cuenta.CUENTA_DB_NAME+" C "
-            + "ON T."+Transaccion.CUENTA_CODIGO_DB_NAME+" = C."+Cuenta.CUENTA_ID_DB_NAME+" INNER JOIN "+Cliente.CLIENTE_DB_NAME+" CL ON CL."+Cliente.CLIENTE_ID_DB_NAME+" = C."+Cuenta.CLIENTE_CODIGO_DB_NAME
-            + " WHERE T."+Transaccion.MONTO_DB_NAME+">? && CL."+Cliente.CLIENTE_ID_DB_NAME+" = ?";
-    
+    private final String OBTENER_TRANSACCIONES_REPORTE2 = "SELECT T.*,CL." + Cliente.CLIENTE_ID_DB_NAME + " AS codigo_cliente FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN " + Cuenta.CUENTA_DB_NAME + " C "
+            + "ON T." + Transaccion.CUENTA_CODIGO_DB_NAME + " = C." + Cuenta.CUENTA_ID_DB_NAME + " INNER JOIN " + Cliente.CLIENTE_DB_NAME + " CL ON CL." + Cliente.CLIENTE_ID_DB_NAME + " = C." + Cuenta.CLIENTE_CODIGO_DB_NAME
+            + " WHERE T." + Transaccion.MONTO_DB_NAME + ">? && CL." + Cliente.CLIENTE_ID_DB_NAME + " = ?";
+    private final String OBTENER_TRANSACCIONES_REPORTE6 = "SELECT T.*,CL." + Cliente.CLIENTE_ID_DB_NAME + " AS codigo_cliente FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN " + Cuenta.CUENTA_DB_NAME + " C "
+            + "ON T." + Transaccion.CUENTA_CODIGO_DB_NAME + " = C." + Cuenta.CUENTA_ID_DB_NAME + " INNER JOIN " + Cliente.CLIENTE_DB_NAME + " CL ON CL." + Cliente.CLIENTE_ID_DB_NAME + " = C." + Cuenta.CLIENTE_CODIGO_DB_NAME
+            + " WHERE CL." + Cliente.CLIENTE_ID_DB_NAME + " = ?";
+
     private static Connection connection = Conexion.getInstance();
 
     /**
@@ -90,37 +93,80 @@ public class TransaccionModel {
         return -1;
     }
 
-    
-    public ArrayList<Transaccion> obtenerTransacciones(double limite, long cliente_codigo){
+    /**
+     * Obtenemos las transacciones de un cliente en especifico que sean mayores
+     * al limite establecido
+     *
+     * @param limite
+     * @param cliente_codigo
+     * @return
+     */
+    public ArrayList<Transaccion> obtenerTransacciones(double limite, long cliente_codigo) {
         try {
             PreparedStatement preSt = connection.prepareStatement(OBTENER_TRANSACCIONES_REPORTE2);
             preSt.setDouble(1, limite);
             preSt.setLong(2, cliente_codigo);
-            
+
             ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
             Transaccion transaccion = null;
-            
+
             ResultSet result = preSt.executeQuery();
-            
-            while (result.next()) {                
+
+            while (result.next()) {
                 transaccion = new Transaccion(
-                result.getLong(Transaccion.CODIGO_DB_NAME),
-                result.getDate(Transaccion.FECHA_DB_NAME),
-                result.getTime(Transaccion.HORA_DB_NAME),
-                result.getString(Transaccion.TIPO_DB_NAME),
-                result.getDouble(Transaccion.MONTO_DB_NAME),
-                result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
-                result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
                 );
-               listaTransacciones.add(transaccion);
+                listaTransacciones.add(transaccion);
             }
             return listaTransacciones;
-            
+
         } catch (SQLException e) {
-            System.out.println("Error al obtener las transacciones "+e);
+            System.out.println("Error al obtener las transacciones para reporte 2 " + e);
             return null;
         }
     }
+
     
-    
+    /**
+     * Obtener todas las transacciones de un cliente en especifico 
+     * @param limite
+     * @param cliente_codigo
+     * @return 
+     */
+    public ArrayList<Transaccion> obtenerTransacciones(long cliente_codigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_TRANSACCIONES_REPORTE6);
+            preSt.setLong(1, cliente_codigo);
+
+            ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
+            Transaccion transaccion = null;
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                transaccion = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                listaTransacciones.add(transaccion);
+            }
+            return listaTransacciones;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las transacciones " + e);
+            return null;
+        }
+    }
+
 }
