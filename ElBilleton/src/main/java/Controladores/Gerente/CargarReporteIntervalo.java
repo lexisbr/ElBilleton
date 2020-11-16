@@ -51,6 +51,8 @@ public class CargarReporteIntervalo extends HttpServlet {
                         CajeroModel cajeroModel = new CajeroModel();
                         
                         Cajero cajero = cajeroModel.conMasTransacciones(fecha1, fecha2);
+                        request.setAttribute("fecha1", fecha1);
+                        request.setAttribute("fecha2", fecha2);
                         
                         request.setAttribute("cajero", cajero);
                         request.getRequestDispatcher("/Gerente/CajeroReporte7.jsp").forward(request, response);

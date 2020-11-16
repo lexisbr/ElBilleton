@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b428fd1-e07a-4e8b-9258-57b587e865d5">
+	<property name="ireport.zoom" value="0.9090909090909117"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(*) AS transacciones,C.* FROM CAJERO C INNER JOIN TRANSACCION T ON C.codigo=T.cajero_codigo WHERE T.fecha BETWEEN $P{fecha1} AND $P{fecha2} GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1;
+]]>
+	</queryString>
+	<field name="transacciones" class="java.lang.Long"/>
+	<field name="codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="turno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dpi" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="password" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-28" y="-32" width="857" height="109" backcolor="#000099" uuid="3215b696-2afa-4c87-9f98-10f359955482"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="24" width="392" height="46" forecolor="#FFFFFF" uuid="307db27a-8d64-4f70-83b5-b76e8ad7bae6"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO EL BILLETON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="-16" width="403" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cajero con mas transacciones realizadas en intervalo:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="681" y="-12" width="223" height="82" uuid="eeabbf87-ea34-4c3c-912d-5ae596896c70"/>
+				<imageExpression><![CDATA["/home/lex/NetBeansProjects/ElBilleton/ElBilleton/src/main/webapp/img/logo1.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="413" y="-16" width="93" height="20" uuid="e90f9183-95a9-4319-ab6e-5a91e056d343"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="522" y="-16" width="103" height="20" uuid="f42c41fb-6913-48a8-b1f6-cedab23f8721"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="506" y="-16" width="16" height="20" uuid="49c0855b-7370-44ee-ba07-b74a757a6d74"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-28" y="-4" width="857" height="32" forecolor="#CCCCCC" backcolor="#999999" uuid="7717754d-4f7e-4054-aa8a-e81024407a7c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="-3" width="101" height="30" uuid="3cff1b62-f2cb-40de-b304-8d9011d1ecf0"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="0" width="109" height="27" uuid="b67efd9b-5296-44be-811f-df14736bc44d"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DPI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="-1" width="101" height="23" uuid="d79938bf-6b2c-4c83-bb57-9fe323541ee3"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="367" y="0" width="109" height="23" uuid="73cb2d2e-445b-4619-a724-40fe2f9a7d06"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Direccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="605" y="3" width="76" height="23" uuid="c25aeece-5759-4d33-ad54-94b59594c86c"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="699" y="3" width="76" height="23" uuid="9a8b4e92-66e0-467b-9429-5e04280dcdcf"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="100" y="0" width="1" height="28" uuid="2398296e-093e-4066-80f8-025798ae3147"/>
+			</line>
+			<line>
+				<reportElement x="-28" y="27" width="827" height="1" uuid="458bea88-c809-4a45-a9e8-c7edc613bd3c"/>
+			</line>
+			<line>
+				<reportElement x="604" y="0" width="1" height="28" uuid="fe4d3865-d045-4008-9cad-498facf47626"/>
+			</line>
+			<line>
+				<reportElement x="366" y="0" width="1" height="28" uuid="2a1d77f6-e32d-4f4b-ada2-49e3a33c444c"/>
+			</line>
+			<line>
+				<reportElement x="681" y="0" width="1" height="28" uuid="7980f0d5-cd0d-43bd-a863-3edf1c4d01f1"/>
+			</line>
+			<line>
+				<reportElement x="251" y="0" width="1" height="28" uuid="d8b17ce9-b4b1-48a1-9d51-c3e26c7a7abb"/>
+			</line>
+			<textField>
+				<reportElement x="101" y="0" width="101" height="20" uuid="fda24b72-3eb0-4c07-b08b-0b336b42fceb"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="252" y="0" width="100" height="20" uuid="bc2201bd-6041-41e7-9614-97576ca7ed43"/>
+				<textFieldExpression><![CDATA[$F{dpi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="367" y="0" width="200" height="20" uuid="60d82392-69fd-449b-be3a-6f7c7425ac4b"/>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="605" y="1" width="78" height="20" uuid="0916b2d6-2108-4136-a52b-22b3bb91dbae"/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="699" y="6" width="100" height="20" uuid="c51a6743-7877-4757-8749-680cdef54b94"/>
+				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="799" y="0" width="1" height="28" uuid="519df579-a7af-479a-8382-8f71a9858ad9"/>
+			</line>
+			<textField>
+				<reportElement x="5" y="1" width="70" height="20" uuid="aa337538-decf-4837-af5b-e11d2fd8589a"/>
+				<textFieldExpression><![CDATA[$F{transacciones}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
