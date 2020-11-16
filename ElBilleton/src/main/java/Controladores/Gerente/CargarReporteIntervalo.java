@@ -41,6 +41,8 @@ public class CargarReporteIntervalo extends HttpServlet {
                         ArrayList<Cliente> listaClientes = clienteModel.sinTransacciones(fecha1, fecha2);
 
                         request.setAttribute("listaClientes", listaClientes);
+                        request.setAttribute("fecha1", fecha1);
+                        request.setAttribute("fecha2", fecha2);
 
                         request.getRequestDispatcher("/Gerente/Reporte5Clientes.jsp").forward(request, response);
 

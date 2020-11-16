@@ -3,8 +3,14 @@
 	<property name="ireport.zoom" value="1.1000000000000028"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="fecha1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT C.*,SUM(CU.monto) AS suma FROM CLIENTE C INNER JOIN CUENTA CU ON C.codigo=CU.cliente_codigo GROUP BY C.codigo ORDER BY suma DESC LIMIT 10;]]>
+		<![CDATA[SELECT * FROM CLIENTE WHERE nombre NOT IN(SELECT C.nombre FROM CLIENTE C INNER JOIN CUENTA CU ON CU.cliente_codigo=C.codigo RIGHT JOIN TRANSACCION T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN $P{fecha1} AND $P{fecha2} GROUP BY C.codigo)]]>
 	</queryString>
 	<field name="codigo" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -21,7 +27,7 @@
 	<field name="sexo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fecha_nacimiento" class="java.sql.Date">
+	<field name="fecha_nacimiento" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="pdfDPI" class="java.lang.Object">
@@ -30,7 +36,6 @@
 	<field name="password" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="suma" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -50,30 +55,28 @@
 				<text><![CDATA[BANCO EL BILLETON]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="-16" width="361" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
+				<reportElement x="5" y="-16" width="584" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
 				<textElement>
 					<font fontName="Nimbus Sans" size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Los 10 clientes con más dinero en sus cuentas.]]></text>
+				<text><![CDATA[Clientes que no han realizado transacciones dentro de un intervalo de tiempo]]></text>
 			</staticText>
 			<image>
 				<reportElement x="681" y="-12" width="223" height="82" uuid="eeabbf87-ea34-4c3c-912d-5ae596896c70"/>
 				<imageExpression><![CDATA["/home/lex/NetBeansProjects/ElBilleton/ElBilleton/src/main/webapp/img/logo1.png"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="397" y="43" width="147" height="27" uuid="937d9302-fe14-4170-ae12-a8f95f20b230"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<text><![CDATA[Codigo de Cliente:]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="544" y="43" width="100" height="20" uuid="b328c861-0ef2-4b48-b1c5-71935e3661a7"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				<reportElement x="442" y="4" width="63" height="20" uuid="4a5a8a9e-069c-4405-9f24-49b3cec9db93"/>
+				<textFieldExpression><![CDATA[$P{fecha1}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="523" y="4" width="100" height="20" uuid="5d4da797-ca86-4fdc-b8be-4da92eff7c66"/>
+				<textFieldExpression><![CDATA[$P{fecha2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="505" y="4" width="11" height="20" uuid="e0bc9d8b-dd9d-4d8c-9e8a-4892f3f851d9"/>
+				<text><![CDATA[a]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>

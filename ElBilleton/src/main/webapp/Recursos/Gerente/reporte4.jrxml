@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b428fd1-e07a-4e8b-9258-57b587e865d5">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b428fd1-e07a-4e8b-9258-57b587e865d5">
 	<property name="ireport.zoom" value="1.1000000000000028"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="fecha1" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="fecha2" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<queryString>
-		<![CDATA[SELECT * FROM CLIENTE WHERE nombre NOT IN(SELECT C.nombre FROM CLIENTE C INNER JOIN CUENTA CU ON CU.cliente_codigo=C.codigo RIGHT JOIN TRANSACCION T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN $P{fecha1} AND $P{fecha2} GROUP BY C.codigo)]]>
+		<![CDATA[SELECT C.*,SUM(CU.monto) AS suma FROM CLIENTE C INNER JOIN CUENTA CU ON C.codigo=CU.cliente_codigo GROUP BY C.codigo ORDER BY suma DESC LIMIT 10;]]>
 	</queryString>
 	<field name="codigo" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -36,6 +30,7 @@
 	<field name="password" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="suma" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -55,42 +50,16 @@
 				<text><![CDATA[BANCO EL BILLETON]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="-16" width="584" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
+				<reportElement x="5" y="-16" width="361" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
 				<textElement>
 					<font fontName="Nimbus Sans" size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Clientes que no han realizado transacciones dentro de un intervalo de tiempo]]></text>
+				<text><![CDATA[Los 10 clientes con más dinero en sus cuentas.]]></text>
 			</staticText>
 			<image>
 				<reportElement x="681" y="-12" width="223" height="82" uuid="eeabbf87-ea34-4c3c-912d-5ae596896c70"/>
 				<imageExpression><![CDATA["/home/lex/NetBeansProjects/ElBilleton/ElBilleton/src/main/webapp/img/logo1.png"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="397" y="43" width="147" height="27" uuid="937d9302-fe14-4170-ae12-a8f95f20b230"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<text><![CDATA[Codigo de Cliente:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="544" y="43" width="100" height="20" uuid="b328c861-0ef2-4b48-b1c5-71935e3661a7"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="405" y="4" width="100" height="20" uuid="4a5a8a9e-069c-4405-9f24-49b3cec9db93"/>
-				<textFieldExpression><![CDATA[$P{fecha1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="523" y="4" width="100" height="20" uuid="5d4da797-ca86-4fdc-b8be-4da92eff7c66"/>
-				<textFieldExpression><![CDATA[$P{fecha2}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="505" y="4" width="11" height="20" uuid="e0bc9d8b-dd9d-4d8c-9e8a-4892f3f851d9"/>
-				<text><![CDATA[a]]></text>
-			</staticText>
 		</band>
 	</title>
 	<columnHeader>
@@ -138,7 +107,7 @@
 				<textElement>
 					<font size="18" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Fecha de Nac.]]></text>
+				<text><![CDATA[Monto]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -186,8 +155,8 @@
 				<reportElement x="800" y="1" width="1" height="27" uuid="c9e60fd4-8acb-4c46-b174-4389f8ead981"/>
 			</line>
 			<textField>
-				<reportElement x="685" y="2" width="119" height="20" uuid="f25d9b46-406c-431b-b699-67e4f8658957"/>
-				<textFieldExpression><![CDATA[$F{fecha_nacimiento}]]></textFieldExpression>
+				<reportElement x="691" y="2" width="100" height="20" uuid="12d87918-4186-451d-a68e-8ed9d5d44ebd"/>
+				<textFieldExpression><![CDATA[$F{suma}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

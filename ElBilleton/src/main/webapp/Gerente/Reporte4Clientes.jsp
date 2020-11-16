@@ -15,6 +15,8 @@
             <input type="hidden" name="opcion" value="0">
             <h2 class="title">10 Clientes con mas dinero</h2>
             <hr>
+            <a href="ExportarReporte4Clientes" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered" style="font-size: 18px;">

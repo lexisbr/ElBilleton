@@ -18,6 +18,14 @@
             <div class="form-group" style="margin-left: -40px;">
                 <h1 style="font-size: 35px;">Cliente: ${cliente_codigo}</h1>
             </div>
+            </div>
+            <c:if test="${limite!=null}">
+             <a href="ExportarReporte6?limite=${limite}&codigo=${cliente_codigo}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            </c:if>
+            <c:if test="${limite==null}">
+             <a href="ExportarReporte6?limite=0&codigo=${cliente_codigo}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            </c:if>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered" style="font-size: 15px;">
