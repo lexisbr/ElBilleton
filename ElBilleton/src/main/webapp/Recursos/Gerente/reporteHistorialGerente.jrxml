@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b428fd1-e07a-4e8b-9258-57b587e865d5">
+	<property name="ireport.zoom" value="1.1000000000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="gerente_codigo" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM HISTORIAL_GERENTE WHERE gerente_codigo=$P{gerente_codigo};]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="turno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dpi" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="password" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gerente_codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-28" y="-26" width="873" height="105" backcolor="#000099" uuid="3215b696-2afa-4c87-9f98-10f359955482"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="24" width="392" height="46" forecolor="#FFFFFF" uuid="307db27a-8d64-4f70-83b5-b76e8ad7bae6"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO EL BILLETON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="-16" width="210" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte Historial Gerente]]></text>
+			</staticText>
+			<image>
+				<reportElement x="681" y="-12" width="223" height="82" uuid="eeabbf87-ea34-4c3c-912d-5ae596896c70"/>
+				<imageExpression><![CDATA["/home/lex/NetBeansProjects/ElBilleton/ElBilleton/src/main/webapp/img/logo1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="397" y="43" width="147" height="27" uuid="937d9302-fe14-4170-ae12-a8f95f20b230"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Codigo de Gerente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="544" y="43" width="137" height="27" uuid="93895669-4823-4cac-831f-5a4b956e9d9e"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gerente_codigo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-28" y="-4" width="857" height="32" forecolor="#CCCCCC" backcolor="#999999" uuid="7717754d-4f7e-4054-aa8a-e81024407a7c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="-3" width="101" height="30" uuid="3cff1b62-f2cb-40de-b304-8d9011d1ecf0"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="0" width="109" height="27" uuid="b67efd9b-5296-44be-811f-df14736bc44d"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DPI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="-1" width="101" height="23" uuid="d79938bf-6b2c-4c83-bb57-9fe323541ee3"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="367" y="0" width="109" height="23" uuid="73cb2d2e-445b-4619-a724-40fe2f9a7d06"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Direccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="605" y="3" width="76" height="23" uuid="c25aeece-5759-4d33-ad54-94b59594c86c"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="684" y="3" width="76" height="23" uuid="aca64cdb-0be0-464d-9a38-692a7f40cc71"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<line>
+				<reportElement x="100" y="0" width="1" height="28" uuid="2398296e-093e-4066-80f8-025798ae3147"/>
+			</line>
+			<line>
+				<reportElement x="-28" y="27" width="830" height="1" uuid="458bea88-c809-4a45-a9e8-c7edc613bd3c"/>
+			</line>
+			<line>
+				<reportElement x="604" y="0" width="1" height="28" uuid="fe4d3865-d045-4008-9cad-498facf47626"/>
+			</line>
+			<line>
+				<reportElement x="366" y="0" width="1" height="28" uuid="2a1d77f6-e32d-4f4b-ada2-49e3a33c444c"/>
+			</line>
+			<line>
+				<reportElement x="681" y="0" width="1" height="28" uuid="7980f0d5-cd0d-43bd-a863-3edf1c4d01f1"/>
+			</line>
+			<line>
+				<reportElement x="251" y="0" width="1" height="28" uuid="d8b17ce9-b4b1-48a1-9d51-c3e26c7a7abb"/>
+			</line>
+			<textField>
+				<reportElement x="-1" y="6" width="100" height="20" uuid="b93f01f6-6ef7-44d2-a27d-15441076749e"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="6" width="100" height="20" uuid="99e159ad-d628-49c5-a79d-135d93535af5"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="7" width="100" height="20" uuid="370b6583-3726-4e55-a0ed-a4cdc70f4dd4"/>
+				<textFieldExpression><![CDATA[$F{dpi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="368" y="7" width="100" height="20" uuid="83a6f072-1125-4b7c-8451-a6dd761fd1bc"/>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="6" width="67" height="20" uuid="b1e8faf1-f5dc-4a88-a524-8454c8b67965"/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="802" y="0" width="1" height="28" uuid="550a47b7-2080-4fca-a34c-60cd70691727"/>
+			</line>
+			<textField>
+				<reportElement x="686" y="8" width="100" height="20" uuid="7c64be4b-62d9-469f-8c26-c3b2dfdec8e6"/>
+				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

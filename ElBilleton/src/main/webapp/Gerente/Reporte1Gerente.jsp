@@ -13,6 +13,8 @@
         <form action="" method="GET">
             <h2 class="title">Historial de cambios de gerente</h2>
             <hr>
+            <a href="ExportarReporte1Gerente?codigo=${gerente_codigo}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered">

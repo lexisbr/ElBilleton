@@ -10,9 +10,11 @@
      <!--Encabezado-->
     <%@include file="Encabezado.jsp" %>
     <section class="contenido">
-        <form action="ObtenerCajeros" method="GET">
+        <form action="ExportarReporte1Cajero?codigo=${cajero_codigo}" method="GET">
             <h2 class="title">Historial de cambios de cajero</h2>
             <hr>
+            <a href="ExportarReporte1Cajero?codigo=${cajero_codigo}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered">

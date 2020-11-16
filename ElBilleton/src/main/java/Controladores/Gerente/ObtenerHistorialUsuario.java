@@ -48,6 +48,7 @@ public class ObtenerHistorialUsuario extends HttpServlet {
                     ArrayList<HistorialCliente> listaHistorialCliente = historialCliente.obtenerHistorialCliente(codigo);
 
                     request.setAttribute("listaHistorial", listaHistorialCliente);
+                    request.setAttribute("cliente_codigo", codigo.toString());
                     request.getRequestDispatcher("/Gerente/Reporte1Cliente.jsp").forward(request, response);
                     break;
                 case "cajero":
@@ -56,13 +57,16 @@ public class ObtenerHistorialUsuario extends HttpServlet {
                     ArrayList<HistorialCajero> listaHistorialCajero = historialCajero.obtenerHistorial(codigo);
                     
                     request.setAttribute("listaHistorial", listaHistorialCajero);
+                    request.setAttribute("cajero_codigo", codigo.toString());
                     request.getRequestDispatcher("/Gerente/Reporte1Cajero.jsp").forward(request, response);
                     break;
                 case "gerente":
                     HistorialGerenteModel historialGerente = new HistorialGerenteModel();
                     
                     ArrayList<HistorialGerente> listaHistorialGerente = historialGerente.obtenerHistorial(codigo);
+                    
                     request.setAttribute("listaHistorial", listaHistorialGerente);
+                    request.setAttribute("gerente_codigo", codigo.toString());
                     request.getRequestDispatcher("/Gerente/Reporte1Gerente.jsp").forward(request, response);
                     break;
             }

@@ -14,6 +14,8 @@
             <input type="hidden" name="opcion" value="0">
             <h2 class="title">Historial de cambios de cliente</h2>
             <hr>
+            <a href="ExportarReporte1Cliente?codigo=${cliente_codigo}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered">
@@ -26,6 +28,7 @@
                         <th class="text-center">Sexo</th>
                         <th class="text-center">Fecha de nacimiento</th>
                     </tr>
+                    
                     <c:forEach items="${listaHistorial}" var="historialCliente">
                     <tr>
                         <td class="text-center">${historialCliente.getCodigo()}</td>
