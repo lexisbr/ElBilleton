@@ -6,14 +6,14 @@
 package Controladores.Gerente;
 
 import Modelos.Banco.CuentaModel;
+import Modelos.Banco.TransaccionModel;
 import Objetos.Banco.Cuenta;
-import java.awt.geom.CubicCurve2D;
+import Objetos.Banco.Transaccion;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Time;
+import java.time.LocalTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CrearCuenta extends HttpServlet {
     
     CuentaModel cuentaModel = new CuentaModel();
+    TransaccionModel transaccionModel = new TransaccionModel();
     
     
     @Override
@@ -42,6 +43,9 @@ public class CrearCuenta extends HttpServlet {
             Cuenta cuenta = new Cuenta(0,fecha_convertida,Double.parseDouble(monto), Long.parseLong(cliente_codigo));
             
             long codigoGenerado = cuentaModel.agregarCuenta(cuenta);
+            
+            Transaccion transaccion = new Transaccion(0, fecha_convertida, Time.valueOf(LocalTime.now()), "CREDITO", Double.parseDouble(monto), codigoGenerado, 101);
+            transaccionModel.agregarTransaccion(transaccion);
             
             request.setAttribute("cuentaCreada", codigoGenerado);
             request.getRequestDispatcher("Gerente/ExitoCrearCuenta.jsp").forward(request, response);

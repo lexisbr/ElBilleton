@@ -10,7 +10,6 @@
 <%@page import="Modelos.Usuario.GerenteModel"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
-<!DOCTYPE html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,14 +28,14 @@
         <ul class="menu">
             <li><a href="${pageContext.request.contextPath}/Cliente/IndexCliente.jsp">Inicio</a></li>
             <li><a href="#">Transferencias</a></li>
-            <li><a href="#">Cuenta</a>
+            <li><a href="#" style="width: 180px;">Cuenta</a>
                 <ul class="submenu">
-                    <li><a href="${pageContext.request.contextPath}/">Ver estado de cuenta</a></li>
+                    <li><a href="${pageContext.request.contextPath}/ObtenerCuentas">Ver estado de cuenta</a></li>
                     <li><a href="${pageContext.request.contextPath}/">Ver solicitudes</a></li>
                     <li><a href="${pageContext.request.contextPath}/Cliente/IngresarCuentaAsociacion.jsp">Solicitar Asociacion</a></li>
                 </ul>
             </li>
-            <li><a href="#" style="">Reportes</a>
+            <li><a href="#" style="width: 180;">Reportes</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/">Reporte</a></li>
                 </ul>

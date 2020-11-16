@@ -7,11 +7,16 @@ package Modelos.Banco;
 
 import Modelos.Conexion.Conexion;
 import Objetos.Banco.Cuenta;
+import Objetos.Banco.Transaccion;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -23,9 +28,12 @@ public class CuentaModel {
     private final String CREAR_CUENTA_SIN_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?)";
     private final String CREAR_CUENTA_CON_CODIGO = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.CUENTA_ID_DB_NAME + "," + Cuenta.FECHA_CREACION_DB_NAME + "," + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?,?)";
     private final String OBTENER_CUENTA = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=? && " + Cuenta.CLIENTE_CODIGO_DB_NAME + "!=?";
+    private final String OBTENER_CUENTA_ESPECIFICA = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=?";
     private final String OBTENER_CUENTAS = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? ";
+    private final String OBTENER_CUENTAS_FILTRANDO = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? && " + Cuenta.CUENTA_ID_DB_NAME + " LIKE CONCAT ('%',?,'%')";
 
     private static Connection connection = Conexion.getInstance();
+    TransaccionModel transaccionModel = new TransaccionModel();
 
     /**
      * Agregamos una nueva cuenta desde la carga de archivos, al completar la
@@ -46,7 +54,8 @@ public class CuentaModel {
             preSt.setLong(4, cuenta.getCliente_codigo());
 
             preSt.executeUpdate();
-
+            Transaccion transaccion = new Transaccion(0, Date.valueOf(LocalDate.now()), Time.valueOf(LocalTime.now()), "CREDITO", cuenta.getMonto(), cuenta.getCodigo(), 101);
+            transaccionModel.agregarTransaccion(transaccion);
             ResultSet result = preSt.getGeneratedKeys();
             if (result.first()) {
                 return result.getLong(1);
@@ -89,7 +98,7 @@ public class CuentaModel {
     }
 
     /**
-     * Obtiene cuenta ingresada por el cliente
+     * Obtiene cuenta ingresada por el cliente al enviar solicitud de asociacion
      *
      * @param codigo
      * @return
@@ -121,6 +130,45 @@ public class CuentaModel {
         }
     }
 
+    /**
+     * Se obtiene una cuenta en especifico segun su codigo
+     *
+     * @param codigo
+     * @param cliente_codigo
+     * @return
+     */
+    public Cuenta obtenerCuenta(long cuenta_codigo) {
+
+        try {
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTA_ESPECIFICA);
+            preSt.setLong(1, cuenta_codigo);
+
+            Cuenta cuenta = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cuenta = new Cuenta(
+                        rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                        rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                        rs.getDouble(Cuenta.MONTO_DB_NAME),
+                        rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+            }
+            return cuenta;
+
+        } catch (SQLException e) {
+            System.out.println("Cuenta no existe " + e);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene las cuentas de un cliente en especifico
+     *
+     * @param cliente_codigo
+     * @return
+     */
     public ArrayList<Cuenta> obtenerCuentas(long cliente_codigo) {
 
         try {
@@ -142,8 +190,38 @@ public class CuentaModel {
                 listaCuentas.add(cuenta);
             }
             return listaCuentas;
-            
+
         } catch (SQLException e) {
+            System.out.println("Cuenta no existe " + e);
+            return null;
+        }
+    }
+
+    public ArrayList<Cuenta> obtenerCuentasFiltrando(long cliente_codigo, String cuenta_codigo) {
+
+        try {
+            long cuenta_codigoL = Long.parseLong(cuenta_codigo);
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTAS_FILTRANDO);
+            preSt.setLong(1, cliente_codigo);
+            preSt.setLong(2, cuenta_codigoL);
+
+            ArrayList<Cuenta> listaCuentas = new ArrayList<>();
+            Cuenta cuenta = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cuenta = new Cuenta(
+                        rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                        rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                        rs.getDouble(Cuenta.MONTO_DB_NAME),
+                        rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+                listaCuentas.add(cuenta);
+            }
+            return listaCuentas;
+
+        } catch (NumberFormatException | SQLException e) {
             System.out.println("Cuenta no existe " + e);
             return null;
         }

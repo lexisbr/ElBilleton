@@ -6,17 +6,20 @@
 package Clases;
 
 import Modelos.Banco.CuentaModel;
+import Modelos.Banco.TransaccionModel;
 import Modelos.Usuario.ClienteModel;
 import Objetos.Banco.Cuenta;
+import Objetos.Banco.Transaccion;
 import Objetos.Usuarios.Cliente;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -79,7 +82,6 @@ public class XMLCliente {
                         cuentas.get(j).setCliente_codigo(cliente.getCodigo());
                         cuentaModel.agregarCuentaArchivo(cuentas.get(j));
                     }
-
                 }
 
             }
