@@ -17,6 +17,8 @@
             <div class="wrap" style="margin-left: -100px; font-size: 25px">
                 <h1>Limite: ${limite}</h1>
             </div>
+             <a href="ExportarReporte2Clientes?limite=${limite}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered" style="font-size: 18px;">

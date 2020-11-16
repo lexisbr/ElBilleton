@@ -12,11 +12,13 @@
     <section class="contenido">
         <form action="" method="GET">
             <input type="hidden" name="opcion" value="0">
-            <h2 class="title">Clientes con transacciones mayores al limite</h2>
+            <h2 class="title">Clientes con transacciones sumadas mayores al limite</h2>
             <hr>
             <div class="wrap" style="margin-left: -100px; font-size: 25px">
                 <h1>Limite: ${limite}</h1>
             </div>
+            <a href="ExportarReporte3Clientes?limite=${limite}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
+            <br>
             <br>
             <div class="container">
                 <table class="table table-dark table-bordered" style="font-size: 18px;">
