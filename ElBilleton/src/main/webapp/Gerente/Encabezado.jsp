@@ -30,7 +30,7 @@
     <nav class="navbar">
         <ul class="menu">
             <li><a href="${pageContext.request.contextPath}/Gerente/IndexGerente.jsp">Inicio</a></li>
-            <li><a href="#">Crear</a>
+            <li><a href="#" style="">Crear</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=1">Cliente</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=2">Cuenta</a></li>
@@ -38,20 +38,27 @@
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=4">Gerente</a></li>
                 </ul>
             </li>
-            <li><a href="#">Actualizar</a>
+            <li><a href="#" style="">Actualizar</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=5">Cliente</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=6">Cajero</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=7">Mis datos</a></li>
                 </ul>
             </li>
-            <li><a href="#">Opciones</a>
+            <li><a href="#" style="">Visualizar</a>
+                <ul class="submenu">
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=8">Cliente</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=9">Cajero</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=10">Mis datos</a></li>
+                </ul>
+            </li>
+            <li><a href="#" style="">Opciones</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/CargarLimites">Establecer limites para reportes</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoArchivo">Cargar archivos</a></li>
                 </ul>
             </li>
-            <li><a href="#" style="width: 280px;">Reportes</a>
+            <li><a href="#" style="width: 210px;">Reportes</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/Gerente/Reporte1SeleccionarEntidad.jsp">Historial de cambios</a></li>
                     <li><a href="${pageContext.request.contextPath}/ObtenerClientesReporte2">Clientes con transacciones mayores a limite 1</a></li>

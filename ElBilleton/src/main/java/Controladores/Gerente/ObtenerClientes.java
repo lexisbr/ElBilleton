@@ -43,13 +43,17 @@ public class ObtenerClientes extends HttpServlet {
 
             request.setAttribute("listaClientes", listaClientes);
             String opcion = request.getParameter("opcion");
-
+            System.out.println("VISUALIZAR  "+opcion);
             switch (opcion) {
                 case "0":
                     request.getRequestDispatcher("/Gerente/CrearCuentaTablaClientes.jsp").forward(request, response);
                     break;
                 case "1":
                     request.getRequestDispatcher("/Gerente/Reporte1TablaClientes.jsp").forward(request, response);
+                    break;
+                case "2":
+                    request.setAttribute("opcion", 0);
+                    request.getRequestDispatcher("/Gerente/Reporte1TablaClientes.jsp?").forward(request, response);
                     break;
                 default:
                     break;

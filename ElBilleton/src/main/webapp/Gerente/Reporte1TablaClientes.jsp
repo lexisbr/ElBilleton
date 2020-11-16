@@ -10,8 +10,14 @@
     <%@include file="Encabezado.jsp"%>
     <section class="contenido">
         <form action="ObtenerClientes" method="GET">
+            <c:if test="${opcion!=0}">
             <input type="hidden" name="opcion" value="1">
             <h2 class="title">Seleccionar cliente</h2>
+            </c:if>
+            <c:if test="${opcion==0}">
+            <input type="hidden" name="opcion" value="2">
+            <h2 class="title">Visualizar clientes</h2>
+            </c:if>
             <hr>
 
             <div class="wrap">
@@ -36,9 +42,11 @@
                             <td class="text-center">${cliente.getDireccion()}</td>
                             <td class="text-center">${cliente.getSexo()}</td>
                             <td class="text-center">${cliente.getFecha_nacimiento()}</td>
+                            <c:if test="${opcion!=0}">
                             <td>
                                 <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerHistorialUsuario?codigo=${cliente.getCodigo()}&&tipo=cliente">Historial de cambios</a>
                             </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </table>
