@@ -33,6 +33,8 @@ public class CuentaModel {
     private final String OBTENER_CUENTA_ESPECIFICA = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=?";
     private final String OBTENER_CUENTAS = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? ";
     private final String OBTENER_CUENTAS_FILTRANDO = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? && " + Cuenta.CUENTA_ID_DB_NAME + " LIKE CONCAT ('%',?,'%')";
+    private final String OBTENER_CUENTAS_TODAS_FILTRANDO = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE "+Cuenta.CUENTA_ID_DB_NAME+ " LIKE CONCAT ('%',?,'%')";
+    private final String OBTENER_CUENTAS_TODAS = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME;
     public final String BUSCAR_CUENTAS_CLIENTE = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE CUENTA.cliente_codigo=? && CUENTA.codigo!=?";
     private final String EDITAR_MONTO = "UPDATE " + Cuenta.CUENTA_DB_NAME + " SET " + Cuenta.MONTO_DB_NAME + "=? WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=?";
     private final String CUENTA_MAS_DINERO = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? ORDER BY " + Cuenta.MONTO_DB_NAME + " DESC LIMIT 1";
@@ -204,6 +206,38 @@ public class CuentaModel {
             return null;
         }
     }
+    /**
+     * Obtiene todas las cuentas existentes
+     *
+     * @param cliente_codigo
+     * @return
+     */
+    public ArrayList<Cuenta> obtenerCuentasExistentes() {
+
+        try {
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTAS_TODAS);
+
+            ArrayList<Cuenta> listaCuentas = new ArrayList<>();
+            Cuenta cuenta = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cuenta = new Cuenta(
+                        rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                        rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                        rs.getDouble(Cuenta.MONTO_DB_NAME),
+                        rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+                listaCuentas.add(cuenta);
+            }
+            return listaCuentas;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener cuentas " + e);
+            return null;
+        }
+    }
 
     /**
      * Se obtiene las cuentas con filtro de cliente o codigo
@@ -219,6 +253,41 @@ public class CuentaModel {
             PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTAS_FILTRANDO);
             preSt.setLong(1, cliente_codigo);
             preSt.setLong(2, cuenta_codigoL);
+
+            ArrayList<Cuenta> listaCuentas = new ArrayList<>();
+            Cuenta cuenta = null;
+
+            ResultSet rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                cuenta = new Cuenta(
+                        rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                        rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                        rs.getDouble(Cuenta.MONTO_DB_NAME),
+                        rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+                listaCuentas.add(cuenta);
+            }
+            return listaCuentas;
+
+        } catch (NumberFormatException | SQLException e) {
+            System.out.println("Cuenta no existe " + e);
+            return null;
+        }
+    }
+    /**
+     * Se obtiene las cuentas con filtro de codigo
+     *
+     * @param cliente_codigo
+     * @param cuenta_codigo
+     * @return
+     */
+    public ArrayList<Cuenta> obtenerCuentasFiltrando(String cuenta_codigo) {
+
+        try {
+            long cuenta_codigoL = Long.parseLong(cuenta_codigo);
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_CUENTAS_TODAS_FILTRANDO);
+            preSt.setLong(1, cuenta_codigoL);
 
             ArrayList<Cuenta> listaCuentas = new ArrayList<>();
             Cuenta cuenta = null;

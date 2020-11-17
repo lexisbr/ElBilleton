@@ -49,7 +49,7 @@ public class VerificarTurno extends HttpServlet{
             } else {
                 request.setAttribute("exito", 0);
                 request.getSession().setAttribute("estado", "INACTIVO");
-                request.getRequestDispatcher("Gerente/EstadoInactivo.jsp").forward(request, response);
+                request.getRequestDispatcher("Cajero/EstadoInactivo.jsp").forward(request, response);
             }
 
         } catch (SQLException | IOException | NumberFormatException  e) {

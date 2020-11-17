@@ -40,7 +40,7 @@ public class CajeroModel {
             + Cajero.TURNO_DB_NAME + "=?," + Cajero.DPI_DB_NAME + "=?," + Cajero.DIRECCION_DB_NAME + "=?," + Cajero.SEXO_DB_NAME + "=?,"
             + Cajero.PASSWORD_DB_NAME + "=? WHERE codigo=?";
     private final String CAJERO_MAS_TRANSACCIONES = "SELECT COUNT(*) AS transacciones,C.* FROM " + Cajero.CAJERO_DB_NAME + " C INNER JOIN " + Transaccion.TRANSACCION_DB_NAME
-            + " T ON C.codigo=T.cajero_codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1";
+            + " T ON C.codigo=T.cajero_codigo WHERE C.codigo!=101 && T.fecha BETWEEN ? AND ? GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1";
     private final String TURNO_CAJERO = "SELECT turno FROM " + Cajero.CAJERO_DB_NAME + " WHERE " + Cajero.CAJERO_ID_DB_NAME + " =?";
 
     private static Connection connection = Conexion.getInstance();

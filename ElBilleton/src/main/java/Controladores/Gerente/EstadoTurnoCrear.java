@@ -67,6 +67,9 @@ public class EstadoTurnoCrear extends HttpServlet{
                      case "10":
                         response.sendRedirect(request.getContextPath() + "/ObtenerGerentes?opcion=1");
                         break;
+                     case "11":
+                        response.sendRedirect(request.getContextPath() + "/ObtenerCuentasGerente");
+                        break;
                     default:
                         break;
                 }

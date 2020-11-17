@@ -20,7 +20,12 @@
                 </select>
             </div>
             <div class="wrap">
-                <%@include file="SearchBar.html" %>
+                <div class="search">
+                    <input type="text" name="campo" class="searchTerm" placeholder="Buscar...">
+                    <button type="submit" class="searchButton" name="buscar">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
             </div>
             <br>
 

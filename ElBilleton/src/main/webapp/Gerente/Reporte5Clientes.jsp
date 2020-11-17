@@ -15,8 +15,12 @@
             <input type="hidden" name="opcion" value="0">
             <h2 class="title">Clientes sin transacciones</h2>
             <hr>
-            <h1 class="subtitulo">Fecha inicio: ${fecha1}</h1>
-            <h1 class="subtitulo">Fecha final: ${fecha2}</h1>
+            <div class="form-group">
+                <h1 class="subtitulo">Fecha inicio: ${fecha1}</h1>
+            </div>
+            <div class="form-group">
+                <h1 class="subtitulo">Fecha final: ${fecha2}</h1>
+            </div>
             <a href="ExportarReporte5Clientes?fecha1=${fecha1}&fecha2=${fecha2}" target="_blank" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Exportar</a>
             <br>
             <br>

@@ -10,8 +10,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT COUNT(*) AS transacciones,C.* FROM CAJERO C INNER JOIN TRANSACCION T ON C.codigo=T.cajero_codigo WHERE T.fecha BETWEEN $P{fecha1} AND $P{fecha2} GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1;
-]]>
+		<![CDATA[SELECT COUNT(*) AS transacciones,C.* FROM CAJERO C INNER JOIN TRANSACCION T ON C.codigo=T.cajero_codigo WHERE C.codigo!=101 && T.fecha BETWEEN $P{fecha1} AND $P{fecha2} GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1;]]>
 	</queryString>
 	<field name="transacciones" class="java.lang.Long"/>
 	<field name="codigo" class="java.lang.Long">

@@ -50,12 +50,13 @@
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=8">Cliente</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=9">Cajero</a></li>
                     <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=10">Gerente</a></li>
+                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoCrear?opcion=11">Cuenta</a></li>
                 </ul>
             </li>
             <li><a href="#" style="">Opciones</a>
                 <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/CargarLimites">Establecer limites para reportes</a></li>
-                    <li><a href="${pageContext.request.contextPath}/EstadoTurnoArchivo">Cargar archivos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/Gerente/CargarDatos.jsp"">Cargar archivos</a></li>
                 </ul>
             </li>
             <li><a href="#" style="width: 210px;">Reportes</a>
