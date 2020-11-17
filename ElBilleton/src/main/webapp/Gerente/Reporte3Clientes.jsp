@@ -21,7 +21,7 @@
             <br>
             <br>
             <div class="container">
-                <table class="table table-dark table-bordered" style="font-size: 18px;">
+                <table class="table table-dark table-bordered" style="font-size: 16px;">
                     <tr>
                         <th class="text-center">Codigo</th>
                         <th class="text-center">Nombre</th>
@@ -44,6 +44,9 @@
                                 <a href="${pageContext.request.contextPath}/MostrarDPI?codigo=${cliente.getCodigo()}" target="_blank" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">Obtener DPI</a>
                             </td>
                             <td class="text-center">${cliente.getTotal_transacciones()}</td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/ObtenerTransaccionesReporte3?codigo=${cliente.getCodigo()}">Mostrar transacciones</a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>
