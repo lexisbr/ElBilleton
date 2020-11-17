@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controladores.Cliente;
+package Controladores.Cajero;
 
 import Modelos.Usuario.CajeroModel;
 import Objetos.Usuarios.Cajero;
@@ -41,7 +41,7 @@ public class VerificarTurno extends HttpServlet{
                         response.sendRedirect(request.getContextPath() + "/Cajero/BuscarCuentaDeposito.jsp");
                         break;
                     case "2":
-                        response.sendRedirect(request.getContextPath() + "/ObtenerClientes?opcion=0");
+                        response.sendRedirect(request.getContextPath() + "/Cajero/BuscarCuentaRetiro.jsp");
                         break;
                 }
         

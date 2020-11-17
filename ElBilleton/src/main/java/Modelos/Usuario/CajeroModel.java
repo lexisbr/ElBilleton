@@ -340,13 +340,13 @@ public class CajeroModel {
         LocalTime horaInicio;
         LocalTime horaFinal;
         if (turno.equalsIgnoreCase("MATUTINO")) {
-            horaInicio = LocalTime.parse("00:00");
-            horaFinal = LocalTime.parse("23:59");
+            horaInicio = LocalTime.parse("06:00");
+            horaFinal = LocalTime.parse("14:30");
             return horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual);
 
         } else if (turno.equalsIgnoreCase("VESPERTINO")) {
-            horaInicio = LocalTime.parse("00:00");
-            horaFinal = LocalTime.parse("23:59");
+            horaInicio = LocalTime.parse("13:00");
+            horaFinal = LocalTime.parse("22:00");
             return horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual);
 
         }

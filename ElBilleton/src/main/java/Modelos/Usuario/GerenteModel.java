@@ -278,6 +278,12 @@ public class GerenteModel {
         }
     }
 
+    /**
+     * Obtenemos los gerentes segun el filtro aplicado
+     * @param codigo
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList obtenerGerentesFiltrando(long codigo) throws SQLException {
         try {
             PreparedStatement preSt = connection.prepareStatement(GERENTES_FILTRO);

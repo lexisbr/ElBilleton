@@ -16,8 +16,13 @@
             <h1 class="title">Codigo de transaccion: ${transaccion_codigo}</h1>
         </c:if>
         <c:if test="${mensaje==1}">
-            <h2 class="title">Se ha rechazado la solicitud correctamente</h2>
+            <h2 class="title">Se ha autorizado el retiro</h2>
+            <h1 class="title">Monto a retirar:Q.${monto}</h1>
+            <h1 class="title">Codigo de transaccion: ${transaccion_codigo}</h1>
         </c:if>
     </section>
+            <% 
+               request.removeAttribute("cuenta_codigo");
+            %>
 </body>
 </html>
