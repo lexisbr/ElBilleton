@@ -24,11 +24,11 @@
             GerenteModel gerenteModel = new GerenteModel();
             HistorialGerenteModel historialModel = new HistorialGerenteModel();
             
-            Gerente gerente = new Gerente(1, "Lexis", "VESPERTINO", "1213213", "29 AVENIDA", "MASCULINO", "123456");
-            /*long codigoGenerado = gerenteModel.agregarGerenteArchivo(gerente);
+            Gerente gerente = new Gerente(1, "Gerente de Prueba", "VESPERTINO", "1213213", "29 AVENIDA", "MASCULINO", "123456");
+            long codigoGenerado = gerenteModel.agregarGerenteArchivo(gerente);
             
             gerente.setCodigo(codigoGenerado);
-            historialModel.agregarHistorialGerente(gerente);*/
+            historialModel.agregarHistorialGerente(gerente);
 
         } catch (Exception e) {
             System.out.println("Error al cargar gerente"+e);
