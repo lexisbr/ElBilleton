@@ -13,6 +13,15 @@
         <c:if test="${mensaje==0}">
             <h2 class="title">Se ha enviado solicitud correctamente</h2>
         </c:if>
+        <c:if test="${mensaje==1}">
+            <h2 class="title">Se ha rechazado la solicitud correctamente</h2>
+        </c:if>
+        <c:if test="${mensaje==2}">
+            <h2 class="title">Se ha aceptado la solicitud correctamente</h2>
+        </c:if>
+        <c:if test="${mensaje==3}">
+            <h2 class="title">Se ha hecho la transferencia correctamente</h2>
+        </c:if>
     </section>
 </body>
 </html>

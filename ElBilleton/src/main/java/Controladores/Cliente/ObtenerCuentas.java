@@ -49,8 +49,28 @@ public class ObtenerCuentas extends HttpServlet {
             } else {
                 listaCuentas = cuentaModel.obtenerCuentasFiltrando(cliente_codigo, cuenta_codigo);
             }
+
+            String opcion = request.getParameter("opcion");
             request.setAttribute("listaCuentas", listaCuentas);
-            request.getRequestDispatcher("/Cliente/TablaCuentas.jsp").forward(request, response);
+
+            switch (opcion) {
+                case "0":
+                    request.setAttribute("opcion", 0);
+                    request.getRequestDispatcher("/Cliente/TablaCuentas.jsp").forward(request, response);
+                    break;
+                case "1":
+                    request.setAttribute("opcion", 1);
+                    request.getRequestDispatcher("/Cliente/TablaCuentas.jsp").forward(request, response);
+                    break;
+                case "2":
+                    request.setAttribute("opcion", 2);
+                    request.getRequestDispatcher("/Cliente/TablaCuentas.jsp").forward(request, response);
+                    break;
+                case "3":
+                    request.setAttribute("opcion", 3);
+                    request.getRequestDispatcher("/Cliente/TablaCuentas.jsp").forward(request, response);
+                    break;
+            }
 
         } catch (IOException | NumberFormatException | ServletException e) {
             System.out.println("Error al obtener cuentas del cliente " + e);

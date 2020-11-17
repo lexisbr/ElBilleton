@@ -8,9 +8,9 @@ package Modelos.Banco;
 import Modelos.Conexion.Conexion;
 import Objetos.Banco.Cuenta;
 import Objetos.Banco.Transaccion;
-import Objetos.Banco.Transaccion;
 import Objetos.Usuarios.Cliente;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +31,10 @@ public class TransaccionModel {
     private final String OBTENER_TRANSACCIONES_REPORTE6 = "SELECT T.*,CL." + Cliente.CLIENTE_ID_DB_NAME + " AS codigo_cliente FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN " + Cuenta.CUENTA_DB_NAME + " C "
             + "ON T." + Transaccion.CUENTA_CODIGO_DB_NAME + " = C." + Cuenta.CUENTA_ID_DB_NAME + " INNER JOIN " + Cliente.CLIENTE_DB_NAME + " CL ON CL." + Cliente.CLIENTE_ID_DB_NAME + " = C." + Cuenta.CLIENTE_CODIGO_DB_NAME
             + " WHERE CL." + Cliente.CLIENTE_ID_DB_NAME + " = ?";
-    private final String OBTENER_TRANSACCIONES_CUENTA = "SELECT * FROM "+Transaccion.TRANSACCION_DB_NAME+" WHERE "+Transaccion.CUENTA_CODIGO_DB_NAME+"=?";
-
+    private final String OBTENER_TRANSACCIONES_CUENTA = "SELECT * FROM " + Transaccion.TRANSACCION_DB_NAME + " WHERE " + Transaccion.CUENTA_CODIGO_DB_NAME + "=?";
+    private final String ULTIMAS_15_TRANSACCIONES = "SELECT * FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN " + Cuenta.CUENTA_DB_NAME + " C ON C.codigo=T.cuenta_codigo WHERE C.codigo=? && T.fecha >= date_sub(CURDATE(), INTERVAL 1 YEAR) ORDER BY T.monto DESC LIMIT 15  ";
+    private final String REPORTE3_CLIENTE = "SELECT * FROM " + Transaccion.TRANSACCION_DB_NAME + " WHERE "+Transaccion.CUENTA_CODIGO_DB_NAME+"=? && "+Transaccion.FECHA_DB_NAME+" BETWEEN ? AND ?";
+    
     private static Connection connection = Conexion.getInstance();
 
     /**
@@ -133,12 +135,12 @@ public class TransaccionModel {
         }
     }
 
-    
     /**
-     * Obtener todas las transacciones de un cliente en especifico 
+     * Obtener todas las transacciones de un cliente en especifico
+     *
      * @param limite
      * @param cliente_codigo
-     * @return 
+     * @return
      */
     public ArrayList<Transaccion> obtenerTransacciones(long cliente_codigo) {
         try {
@@ -169,10 +171,10 @@ public class TransaccionModel {
             return null;
         }
     }
-    
+
     /**
      * Obtenemos las transacciones de una cuenta en especifico
-     * al limite establecido
+     *
      *
      * @param limite
      * @param cliente_codigo
@@ -203,7 +205,86 @@ public class TransaccionModel {
             return listaTransacciones;
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener las transacciones para reporte 2 " + e);
+            System.out.println("Error al obtener las transacciones para estado de cuenta" + e);
+            return null;
+        }
+    }
+
+    /**
+     * Obtenemos las 15 transacciones mas grandes en el ultimo anio de una
+     * cuenta en especifico
+     *
+     *
+     * @param limite
+     * @param cliente_codigo
+     * @return
+     */
+    public ArrayList<Transaccion> obtener15TransaccionesCuenta(long cuenta_codigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(ULTIMAS_15_TRANSACCIONES);
+            preSt.setLong(1, cuenta_codigo);
+
+            ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
+            Transaccion transaccion = null;
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                transaccion = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                listaTransacciones.add(transaccion);
+            }
+            return listaTransacciones;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las transacciones para estado de cuenta" + e);
+            return null;
+        }
+    }
+    
+    
+    /**
+     * Obtener todas las transacciones de una cuenta en especifico con un intervalo
+     *
+     * @param limite
+     * @param cliente_codigo
+     * @return
+     */
+    public ArrayList<Transaccion> enIntervaloCliente(long cuenta_codigo, Date fecha1, Date fecha2) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE3_CLIENTE);
+            preSt.setLong(1, cuenta_codigo);
+            preSt.setDate(2, fecha1);
+            preSt.setDate(3, fecha2);
+
+            ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
+            Transaccion transaccion = null;
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                transaccion = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                listaTransacciones.add(transaccion);
+            }
+            return listaTransacciones;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las transacciones " + e);
             return null;
         }
     }

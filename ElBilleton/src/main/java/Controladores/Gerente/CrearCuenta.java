@@ -44,9 +44,6 @@ public class CrearCuenta extends HttpServlet {
             
             long codigoGenerado = cuentaModel.agregarCuenta(cuenta);
             
-            Transaccion transaccion = new Transaccion(0, fecha_convertida, Time.valueOf(LocalTime.now()), "CREDITO", Double.parseDouble(monto), codigoGenerado, 101);
-            transaccionModel.agregarTransaccion(transaccion);
-            
             request.setAttribute("cuentaCreada", codigoGenerado);
             request.getRequestDispatcher("Gerente/ExitoCrearCuenta.jsp").forward(request, response);
             

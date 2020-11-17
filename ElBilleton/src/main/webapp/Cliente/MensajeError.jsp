@@ -13,6 +13,9 @@
         <c:if test="${mensaje==0}">
             <h2 class="title">Ya no puede enviar mas solicitudes a esta cuenta</h2>
         </c:if>
+        <c:if test="${mensaje==1}">
+            <h2 class="title">Esta solicitud fue aceptada con anterioridad</h2>
+        </c:if>
     </section>
 </body>
 </html>

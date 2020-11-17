@@ -8,9 +8,8 @@ package Controladores.Cliente;
 import Modelos.Banco.SolicitudModel;
 import Objetos.Banco.Solicitud;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet(name = "CrearSolicitud", urlPatterns = {"/CrearSolicitud"})
-public class CrearSolicitud extends HttpServlet {
+@WebServlet(name = "ObtenerSolicitudesPendientes", urlPatterns = {"/ObtenerSolicitudesPendientes"})
+public class ObtenerSolicitudesPendientes extends HttpServlet {
 
-    SolicitudModel solicitudModel = new SolicitudModel();
+     SolicitudModel solicitudModel = new SolicitudModel();
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -36,7 +36,18 @@ public class CrearSolicitud extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+        try {
+            long cuenta_codigo = Long.valueOf(request.getParameter("cuenta_codigo"));
+            ArrayList<Solicitud> listaSolicitudes= solicitudModel.obtenerSolicitudesPendientes(cuenta_codigo);
+            
+            request.setAttribute("listaSolicitudes", listaSolicitudes);
+            
+            request.getRequestDispatcher("/Cliente/TablaSolicitudes.jsp").forward(request, response);
+            
+        } catch (IOException | NumberFormatException | SQLException | ServletException e) {
+            System.out.println("Error al obtener solicitudes "+e);
+        }
+        
     }
 
     /**
@@ -50,26 +61,6 @@ public class CrearSolicitud extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          try {
-            long codigo_envia = Long.parseLong(request.getParameter("cuenta_envia"));
-            long codigo_recibe = Long.parseLong(request.getParameter("cuenta_recibe"));
-            int cuenta = solicitudModel.obtenerCount(codigo_envia, codigo_recibe);
-              System.out.println("CUENTA "+cuenta);
-            if(cuenta<3){
-                Solicitud solicitud = new Solicitud(0,Date.valueOf(LocalDate.now()),"PENDIENTE",codigo_envia,codigo_recibe);
-                solicitudModel.agregarSolicitud(solicitud);
-                request.setAttribute("mensaje", 0);
-                request.getRequestDispatcher("/Cliente/MensajeExito.jsp").forward(request, response);
-            }else{
-                request.setAttribute("mensaje", 0);
-                request.getRequestDispatcher("/Cliente/MensajeError.jsp").forward(request, response);
-                
-            }
-            
-            
-        } catch (IOException | SQLException | NumberFormatException | ServletException e) {
-            System.out.println("Error al procesar solicitud "+e);
-        } 
-    } 
+    }
 
 }

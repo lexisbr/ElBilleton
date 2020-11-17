@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b428fd1-e07a-4e8b-9258-57b587e865d5">
+	<property name="ireport.zoom" value="1.3310000000000064"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cliente_codigo" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT C.* FROM CUENTA C WHERE C.cliente_codigo=$P{cliente_codigo} ORDER BY C.monto DESC LIMIT 1;]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_creacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente_codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-18" y="-26" width="852" height="104" backcolor="#000099" uuid="3215b696-2afa-4c87-9f98-10f359955482"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="24" width="392" height="46" forecolor="#FFFFFF" uuid="307db27a-8d64-4f70-83b5-b76e8ad7bae6"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO EL BILLETON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="-16" width="584" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuenta con mas dinero]]></text>
+			</staticText>
+			<image>
+				<reportElement x="681" y="-12" width="223" height="82" uuid="eeabbf87-ea34-4c3c-912d-5ae596896c70"/>
+				<imageExpression><![CDATA["/home/lex/NetBeansProjects/ElBilleton/ElBilleton/src/main/webapp/img/logo1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="397" y="24" width="148" height="20" uuid="a57e9de1-f03c-45ae-9510-711a36ee39af"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Codigo de cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="548" y="24" width="123" height="20" uuid="2c2ea229-5b27-4023-92fe-a18f15f12443"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente_codigo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-18" y="-4" width="840" height="32" forecolor="#CCCCCC" backcolor="#999999" uuid="7717754d-4f7e-4054-aa8a-e81024407a7c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="-3" width="101" height="30" uuid="3cff1b62-f2cb-40de-b304-8d9011d1ecf0"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="3" width="179" height="23" uuid="d79938bf-6b2c-4c83-bb57-9fe323541ee3"/>
+				<textElement>
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Fecha de Creacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="3" width="76" height="23" uuid="c25aeece-5759-4d33-ad54-94b59594c86c"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="100" y="0" width="1" height="28" uuid="2398296e-093e-4066-80f8-025798ae3147"/>
+			</line>
+			<line>
+				<reportElement x="-29" y="27" width="413" height="1" uuid="458bea88-c809-4a45-a9e8-c7edc613bd3c"/>
+			</line>
+			<line>
+				<reportElement x="384" y="0" width="1" height="28" uuid="2a1d77f6-e32d-4f4b-ada2-49e3a33c444c"/>
+			</line>
+			<line>
+				<reportElement x="281" y="-1" width="1" height="28" uuid="d8b17ce9-b4b1-48a1-9d51-c3e26c7a7abb"/>
+			</line>
+			<textField>
+				<reportElement x="15" y="0" width="75" height="20" uuid="2f215318-fc98-4317-84ef-2a4667a0e71e"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="4" width="110" height="20" uuid="c0ac5a50-912c-471c-ab85-8f77f51a1d6f"/>
+				<textFieldExpression><![CDATA[$F{fecha_creacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="297" y="6" width="100" height="20" uuid="cd288ff7-6595-496c-b5c6-22855364c7a0"/>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -21,12 +21,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet(name = "EstadoDeCuenta", urlPatterns = {"/EstadoDeCuenta"})
-public class EstadoDeCuenta extends HttpServlet {
+@WebServlet(name = "Reporte3", urlPatterns = {"/Reporte3"})
+public class Reporte3 extends HttpServlet {
 
-    TransaccionModel transaccionModel = new TransaccionModel();
+
     CuentaModel cuentaModel = new CuentaModel();
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,18 +38,18 @@ public class EstadoDeCuenta extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            long cuenta_codigo = Long.parseLong(request.getParameter("cuenta_codigo"));
+            long cliente_codigo = Long.parseLong(request.getSession().getAttribute("user").toString());
+            String fecha1 = request.getParameter("fecha1");
+            String fecha2 = request.getParameter("fecha2");
+            Cuenta cuenta = cuentaModel.conMasDinero(cliente_codigo);
             
-            ArrayList<Transaccion> listaTransacciones = transaccionModel.obtenerTransaccionesCuenta(cuenta_codigo);
-            Cuenta cuenta = cuentaModel.obtenerCuenta(cuenta_codigo);
-            
-            request.setAttribute("listaTransacciones", listaTransacciones);
             request.setAttribute("cuenta", cuenta);
-            request.getRequestDispatcher("/Cliente/EstadoDeCuenta.jsp").forward(request, response);
+            request.setAttribute("fecha1", fecha1);
+            request.setAttribute("fecha2", fecha2);
+            request.getRequestDispatcher("/Cliente/Reporte3Cuenta.jsp").forward(request, response);
             
-
         } catch (IOException | NumberFormatException | ServletException e) {
-            System.out.println("Error al crear estado de cuenta");
+            System.out.println("Error al cargar reporte 1 "+e);
         }
     }
 
@@ -66,5 +65,6 @@ public class EstadoDeCuenta extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
+
 
 }

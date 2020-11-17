@@ -8,19 +8,20 @@ package Controladores.Gerente;
 import Clases.CrearArchivo;
 import Clases.DuplicarPDF;
 import Modelos.Banco.CuentaModel;
+import Modelos.Banco.TransaccionModel;
 import Modelos.Historial.HistorialClienteModel;
-import Modelos.Historial.HistorialGerenteModel;
 import Modelos.Usuario.ClienteModel;
 import Objetos.Banco.Cuenta;
+import Objetos.Banco.Transaccion;
 import Objetos.Usuarios.Cliente;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -73,6 +74,7 @@ public class CrearCliente extends HttpServlet {
                 Cuenta cuenta = new Cuenta(0, Date.valueOf(fecha), Double.parseDouble(monto), codigoGeneradoCliente);
 
                 long codigoGeneradoCuenta = cuentaModel.agregarCuenta(cuenta);
+                
 
                 request.setAttribute("cuenta_codigo", codigoGeneradoCuenta);
                 request.setAttribute("cliente_codigo", codigoGeneradoCliente);

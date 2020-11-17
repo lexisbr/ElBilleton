@@ -28,9 +28,6 @@ public class ObtenerClientesParaReporte6 extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            if (request.getSession().getAttribute("user") == null) {
-                response.sendRedirect(request.getContextPath() + "/Login");
-            }
             ArrayList<Cliente> listaClientes = null;
             String campo = request.getParameter("campo");
             String filtro = request.getParameter("filtro");

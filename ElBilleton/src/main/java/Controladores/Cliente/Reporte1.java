@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lex
  */
-@WebServlet(name = "EstadoDeCuenta", urlPatterns = {"/EstadoDeCuenta"})
-public class EstadoDeCuenta extends HttpServlet {
+@WebServlet(name = "Reporte1", urlPatterns = {"/Reporte1"})
+public class Reporte1 extends HttpServlet {
+
 
     TransaccionModel transaccionModel = new TransaccionModel();
     CuentaModel cuentaModel = new CuentaModel();
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -40,17 +40,15 @@ public class EstadoDeCuenta extends HttpServlet {
             throws ServletException, IOException {
         try {
             long cuenta_codigo = Long.parseLong(request.getParameter("cuenta_codigo"));
-            
-            ArrayList<Transaccion> listaTransacciones = transaccionModel.obtenerTransaccionesCuenta(cuenta_codigo);
+            ArrayList<Transaccion> listaTransacciones = transaccionModel.obtener15TransaccionesCuenta(cuenta_codigo);
             Cuenta cuenta = cuentaModel.obtenerCuenta(cuenta_codigo);
             
             request.setAttribute("listaTransacciones", listaTransacciones);
             request.setAttribute("cuenta", cuenta);
-            request.getRequestDispatcher("/Cliente/EstadoDeCuenta.jsp").forward(request, response);
+            request.getRequestDispatcher("/Cliente/Reporte1Transacciones.jsp").forward(request, response);
             
-
         } catch (IOException | NumberFormatException | ServletException e) {
-            System.out.println("Error al crear estado de cuenta");
+            System.out.println("Error al cargar reporte 1 "+e);
         }
     }
 
@@ -66,5 +64,6 @@ public class EstadoDeCuenta extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
+
 
 }

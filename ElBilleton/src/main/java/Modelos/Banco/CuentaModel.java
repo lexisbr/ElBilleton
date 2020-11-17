@@ -6,7 +6,9 @@
 package Modelos.Banco;
 
 import Modelos.Conexion.Conexion;
+import Objetos.Banco.Asociacion;
 import Objetos.Banco.Cuenta;
+import Objetos.Banco.Solicitud;
 import Objetos.Banco.Transaccion;
 import java.sql.Connection;
 import java.sql.Date;
@@ -31,6 +33,9 @@ public class CuentaModel {
     private final String OBTENER_CUENTA_ESPECIFICA = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=?";
     private final String OBTENER_CUENTAS = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? ";
     private final String OBTENER_CUENTAS_FILTRANDO = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? && " + Cuenta.CUENTA_ID_DB_NAME + " LIKE CONCAT ('%',?,'%')";
+    public final String BUSCAR_CUENTAS_CLIENTE = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE CUENTA.cliente_codigo=? && CUENTA.codigo!=?";
+    private final String EDITAR_MONTO = "UPDATE " + Cuenta.CUENTA_DB_NAME + " SET " + Cuenta.MONTO_DB_NAME + "=? WHERE " + Cuenta.CUENTA_ID_DB_NAME + "=?";
+    private final String CUENTA_MAS_DINERO = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + "=? ORDER BY " + Cuenta.MONTO_DB_NAME + " DESC LIMIT 1";
 
     private static Connection connection = Conexion.getInstance();
     TransaccionModel transaccionModel = new TransaccionModel();
@@ -87,6 +92,8 @@ public class CuentaModel {
 
             ResultSet result = preSt.getGeneratedKeys();
             if (result.first()) {
+                Transaccion transaccion = new Transaccion(0, Date.valueOf(LocalDate.now()), Time.valueOf(LocalTime.now()), "CREDITO", cuenta.getMonto(), result.getLong(1), 101);
+                transaccionModel.agregarTransaccion(transaccion);
                 return result.getLong(1);
             }
 
@@ -99,6 +106,7 @@ public class CuentaModel {
 
     /**
      * Obtiene cuenta ingresada por el cliente al enviar solicitud de asociacion
+     * sin incluir las cuentas del cliente
      *
      * @param codigo
      * @return
@@ -197,6 +205,13 @@ public class CuentaModel {
         }
     }
 
+    /**
+     * Se obtiene las cuentas con filtro de cliente o codigo
+     *
+     * @param cliente_codigo
+     * @param cuenta_codigo
+     * @return
+     */
     public ArrayList<Cuenta> obtenerCuentasFiltrando(long cliente_codigo, String cuenta_codigo) {
 
         try {
@@ -225,6 +240,83 @@ public class CuentaModel {
             System.out.println("Cuenta no existe " + e);
             return null;
         }
+    }
+
+    /**
+     * *
+     * Obenemos las cuentas excluyendo a la enviada
+     *
+     * @param cliente_codigo
+     * @param cuenta_codigo
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerCuentasRestantes(long cliente_codigo, long cuenta_codigo) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_CUENTAS_CLIENTE);
+        preSt.setLong(1, cliente_codigo);
+        preSt.setLong(2, cuenta_codigo);
+        ResultSet result = preSt.executeQuery();
+
+        ArrayList listaCuentas = new ArrayList();
+        Cuenta cuenta = null;
+
+        while (result.next()) {
+            cuenta = new Cuenta(
+                    result.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                    result.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                    result.getDouble(Cuenta.MONTO_DB_NAME),
+                    result.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+            );
+            listaCuentas.add(cuenta);
+        }
+        return listaCuentas;
+    }
+
+    /**
+     * Se actualiza el monto luego de una transaccion
+     *
+     * @param cuenta
+     * @return
+     * @throws SQLException
+     * @throws UnsupportedEncodingException
+     */
+    public void modificarMonto(Cuenta cuenta) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(EDITAR_MONTO);
+            preSt.setDouble(1, cuenta.getMonto());
+            preSt.setLong(2, cuenta.getCodigo());
+            preSt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error al modificar al modificar los montos");
+        }
+
+    }
+
+    public Cuenta conMasDinero(long cliente_codigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CUENTA_MAS_DINERO);
+            preSt.setLong(1, cliente_codigo);
+            
+            ResultSet rs = preSt.executeQuery();
+            
+            Cuenta cuenta = null;
+            
+           while (rs.next()) {                
+                cuenta = new Cuenta(
+                rs.getLong(Cuenta.CUENTA_ID_DB_NAME),
+                rs.getDate(Cuenta.FECHA_CREACION_DB_NAME),
+                rs.getDouble(Cuenta.MONTO_DB_NAME),
+                rs.getLong(Cuenta.CLIENTE_CODIGO_DB_NAME)
+                );
+            }
+           
+           return cuenta;
+        } catch (SQLException e) {
+            System.out.println("Error al obtener cuenta con mas dinero "+e);
+            return null;
+        }
+
     }
 
 }

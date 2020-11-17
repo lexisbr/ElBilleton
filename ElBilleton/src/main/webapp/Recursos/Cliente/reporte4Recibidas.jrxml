@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b428fd1-e07a-4e8b-9258-57b587e865d5">
+	<property name="ireport.zoom" value="1.464100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cliente_codigo" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM SOLICITUD S INNER JOIN CUENTA C ON C.codigo=S.cuenta_codigo_recibe where C.cliente_codigo=$P{cliente_codigo};]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuenta_codigo_envia" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuenta_codigo_recibe" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_creacion" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente_codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-18" y="-26" width="852" height="104" backcolor="#000099" uuid="3215b696-2afa-4c87-9f98-10f359955482"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="24" width="392" height="46" forecolor="#FFFFFF" uuid="307db27a-8d64-4f70-83b5-b76e8ad7bae6"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO EL BILLETON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="-16" width="584" height="20" forecolor="#FFFFFF" uuid="697f234c-a252-4334-8d8f-1b78e49db270"/>
+				<textElement>
+					<font fontName="Nimbus Sans" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Historial de Solicitudes de Asociacion de cuenta recibidas.]]></text>
+			</staticText>
+			<image>
+				<reportElement x="681" y="-12" width="223" height="82" uuid="eeabbf87-ea34-4c3c-912d-5ae596896c70"/>
+				<imageExpression><![CDATA["/home/lex/NetBeansProjects/ElBilleton/ElBilleton/src/main/webapp/img/logo1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="403" y="50" width="142" height="20" uuid="e0bc9d8b-dd9d-4d8c-9e8a-4892f3f851d9"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Codigo de Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="545" y="50" width="136" height="20" uuid="034b073a-0a88-4cb0-abd5-27fd89a27ff5"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente_codigo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-18" y="-4" width="840" height="32" forecolor="#CCCCCC" backcolor="#999999" uuid="7717754d-4f7e-4054-aa8a-e81024407a7c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="419" y="5" width="170" height="23" uuid="8bf552e7-4013-4c83-9103-ddc1cf2e54ca"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cuenta que envio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="626" y="3" width="174" height="23" uuid="fd4d6fdf-895e-4e1c-b305-178c050feee3"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cuenta que recibio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="3" width="68" height="23" uuid="b67efd9b-5296-44be-811f-df14736bc44d"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="66" height="23" uuid="eff0411d-4dca-4b84-b2ef-d8dfd7510185"/>
+				<textElement>
+					<font size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="-29" y="27" width="829" height="1" uuid="458bea88-c809-4a45-a9e8-c7edc613bd3c"/>
+			</line>
+			<line>
+				<reportElement x="596" y="0" width="1" height="28" uuid="7980f0d5-cd0d-43bd-a863-3edf1c4d01f1"/>
+			</line>
+			<line>
+				<reportElement x="206" y="0" width="1" height="28" uuid="d8b17ce9-b4b1-48a1-9d51-c3e26c7a7abb"/>
+			</line>
+			<line>
+				<reportElement x="800" y="1" width="1" height="27" uuid="c9e60fd4-8acb-4c46-b174-4389f8ead981"/>
+			</line>
+			<line>
+				<reportElement x="406" y="0" width="1" height="28" uuid="fe4d3865-d045-4008-9cad-498facf47626"/>
+			</line>
+			<textField>
+				<reportElement x="46" y="7" width="100" height="20" uuid="68cd5dea-e205-4a3c-bf47-b875f3ef163c"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="8" width="100" height="20" uuid="6145ab3b-cc3d-4d9b-956f-a32ebc1cbbfd"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="419" y="7" width="154" height="20" uuid="374b69ec-e056-4f9a-8b71-2ee00140c620"/>
+				<textFieldExpression><![CDATA[$F{cuenta_codigo_envia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="7" width="136" height="20" uuid="70dc0b39-da80-48a7-ad08-8497af8c9c78"/>
+				<textFieldExpression><![CDATA[$F{cuenta_codigo_recibe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
