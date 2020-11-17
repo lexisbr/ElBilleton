@@ -11,6 +11,7 @@ import Modelos.Historial.HistorialCajeroModel;
 import Objetos.Banco.Transaccion;
 import Objetos.Usuarios.Cajero;
 import Objetos.Usuarios.Cliente;
+import Objetos.Usuarios.Gerente;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -27,8 +29,8 @@ import java.util.ArrayList;
 public class CajeroModel {
 
     //Constantes estaticas para base de datos
-    private final String CAJEROS_FILTRO = "SELECT * FROM " + Cajero.CAJERO_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + " LIKE CONCAT('%',?,'%') && "+Cajero.CAJERO_ID_DB_NAME+"!= 101";
-    private final String CAJEROS = "SELECT * FROM " + Cajero.CAJERO_DB_NAME+" WHERE "+Cajero.CAJERO_ID_DB_NAME+"!=101";
+    private final String CAJEROS_FILTRO = "SELECT * FROM " + Cajero.CAJERO_DB_NAME + " WHERE " + Cliente.CLIENTE_ID_DB_NAME + " LIKE CONCAT('%',?,'%') && " + Cajero.CAJERO_ID_DB_NAME + "!= 101";
+    private final String CAJEROS = "SELECT * FROM " + Cajero.CAJERO_DB_NAME + " WHERE " + Cajero.CAJERO_ID_DB_NAME + "!=101";
     private final String BUSCAR_CAJERO = "SELECT * FROM " + Cajero.CAJERO_DB_NAME + " WHERE " + Cajero.CAJERO_ID_DB_NAME + " =?";
     private final String CREAR_CAJERO_SIN_CODIGO = "INSERT INTO " + Cajero.CAJERO_DB_NAME + " (" + Cajero.NOMBRE_DB_NAME + "," + Cajero.TURNO_DB_NAME + "," + Cajero.DPI_DB_NAME + "," + Cajero.DIRECCION_DB_NAME
             + "," + Cajero.SEXO_DB_NAME + "," + Cajero.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?)";
@@ -39,8 +41,8 @@ public class CajeroModel {
             + Cajero.PASSWORD_DB_NAME + "=? WHERE codigo=?";
     private final String CAJERO_MAS_TRANSACCIONES = "SELECT COUNT(*) AS transacciones,C.* FROM " + Cajero.CAJERO_DB_NAME + " C INNER JOIN " + Transaccion.TRANSACCION_DB_NAME
             + " T ON C.codigo=T.cajero_codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1";
-    
-    
+    private final String TURNO_CAJERO = "SELECT turno FROM " + Cajero.CAJERO_DB_NAME + " WHERE " + Cajero.CAJERO_ID_DB_NAME + " =?";
+
     private static Connection connection = Conexion.getInstance();
 
     HistorialCajeroModel historialCajero = new HistorialCajeroModel();
@@ -149,8 +151,10 @@ public class CajeroModel {
         }
         return null;
     }
+
     /**
-     * Obtenemos el cajero que mas transacciones ha realizado en un intervalo de tiempo
+     * Obtenemos el cajero que mas transacciones ha realizado en un intervalo de
+     * tiempo
      *
      * @param codigo
      * @return
@@ -221,8 +225,9 @@ public class CajeroModel {
 
     /**
      * Obtener cajeros basado en filtro por codigo
+     *
      * @param codigo
-     * @return 
+     * @return
      */
     public ArrayList<Cajero> obtenerCajerosFiltrando(long codigo) {
         try {
@@ -253,19 +258,19 @@ public class CajeroModel {
         }
         return null;
     }
-    
-    
+
     /**
      * Se utiliza para actualizar los datos del cajero
+     *
      * @param cajero
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public void modificarCajero(Cajero cajero) throws SQLException{
+    public void modificarCajero(Cajero cajero) throws SQLException {
         try {
             cajero.setPassword(Encriptador.encriptar(cajero.getPassword()));
             PreparedStatement preSt = connection.prepareStatement(MODIFICAR_CAJERO);
 
-           preSt.setString(1, cajero.getNombre());
+            preSt.setString(1, cajero.getNombre());
             preSt.setString(2, cajero.getTurno());
             preSt.setString(3, cajero.getDpi());
             preSt.setString(4, cajero.getDireccion());
@@ -275,7 +280,7 @@ public class CajeroModel {
             preSt.executeUpdate();
 
         } catch (UnsupportedEncodingException | SQLException e) {
-            System.out.println("Error en actualizar "+e);
+            System.out.println("Error en actualizar " + e);
         }
 
     }
@@ -300,6 +305,52 @@ public class CajeroModel {
             System.out.println("Error en cajero " + e);
         }
         return null;
+    }
+
+    /**
+     * Obtiene turno para verificar que este dentro de su turno para permitir
+     * ejectuar acciones de creacion y edicion
+     *
+     * @param codigo
+     * @return String
+     * @throws SQLException
+     */
+    public String obtenerTurno(long codigo) throws SQLException {
+
+        PreparedStatement preSt = connection.prepareStatement(TURNO_CAJERO);
+        preSt.setLong(1, codigo);
+        ResultSet result = preSt.executeQuery();
+
+        while (result.next()) {
+            return result.getString(Cajero.TURNO_DB_NAME);
+        }
+        return null;
+    }
+
+    /**
+     * Verifica si esta dentro de su turno
+     *
+     * @param codigo
+     * @return Boolean
+     * @throws SQLException
+     */
+    public Boolean estaDentroTurno(long codigo) throws SQLException {
+        String turno = obtenerTurno(codigo);
+        LocalTime horaActual = LocalTime.now();
+        LocalTime horaInicio;
+        LocalTime horaFinal;
+        if (turno.equalsIgnoreCase("MATUTINO")) {
+            horaInicio = LocalTime.parse("00:00");
+            horaFinal = LocalTime.parse("23:59");
+            return horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual);
+
+        } else if (turno.equalsIgnoreCase("VESPERTINO")) {
+            horaInicio = LocalTime.parse("00:00");
+            horaFinal = LocalTime.parse("23:59");
+            return horaFinal.isAfter(horaActual) && horaInicio.isBefore(horaActual);
+
+        }
+        return false;
     }
 
 }

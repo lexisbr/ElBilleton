@@ -82,8 +82,9 @@ public class Login extends HttpServlet {
                 Cajero cajero = cajeroModel.validacionLogin(username, password);
                 if (cajero != null) {
                     request.getSession().setAttribute("user", username);
+                    request.getSession().setAttribute("usuario", cajero);
                     System.out.println("Ingresa cajero" + username);
-                    // response.sendRedirect(request.getContextPath()+"");
+                    response.sendRedirect(request.getContextPath() + "/EstadoTurnoCajero");
                 } else {
                     request.setAttribute("message", 0);
                     request.getRequestDispatcher("/Login.jsp").forward(request, response);
